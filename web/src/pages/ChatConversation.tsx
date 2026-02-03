@@ -84,8 +84,9 @@ export default function ChatConversation() {
     sendChatMessage(userId, text, token)
       .then((res) => {
         if (res.message === 'Success') {
-          if (res.data?.chatData) {
-            setMessages((prev) => [...prev, res.data.chatData!])
+          const chatData = res.data?.chatData
+          if (chatData) {
+            setMessages((prev) => [...prev, chatData])
           } else {
             setMessages((prev) => [...prev, {
               senderId: { _id: currentUserId ?? undefined },
