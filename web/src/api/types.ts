@@ -76,3 +76,20 @@ export interface PostComment {
   commentText?: string;
   commentAuthor?: PostAuthor;
 }
+
+/** GET /api/user/getProfile – controller returns { customerData, topFourFriend } */
+export interface GetProfileResponseData {
+  customerData: CustomerData;
+  topFourFriend?: unknown[];
+}
+
+/** POST /api/v1/user/saveProfileData – payload (backend Joi) */
+export interface SaveProfilePayload {
+  fullName?: string;
+  country?: string;
+  city?: string;
+  state?: string;
+  phoneNumber?: string;
+  about?: string;
+  gender?: string;
+}

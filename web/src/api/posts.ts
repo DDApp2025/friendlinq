@@ -53,3 +53,15 @@ export async function getFriendFeed(
     body: JSON.stringify({ skip, limit }),
   });
 }
+
+/** POST /api/post/getMyPost – backend PostRoute.js getMyPost */
+export async function getMyPost(
+  skip: number,
+  limit: number,
+  accessToken: string
+): Promise<ApiResponse<FeedResponseData>> {
+  return requestWithAuth<FeedResponseData>('/post/getMyPost', accessToken, {
+    method: 'POST',
+    body: JSON.stringify({ skip, limit }),
+  });
+}

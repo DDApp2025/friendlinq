@@ -1,6 +1,7 @@
 .profile-wrapper {
   min-height: 100vh;
   background-color: #f0f2f5;
+  padding-bottom: 24px;
 }
 
 .profile-header {
@@ -32,17 +33,261 @@
 .profile-main {
   max-width: 600px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 0 16px 24px;
 }
 
-.profile-placeholder {
+.profile-loading,
+.profile-posts-loading,
+.profile-posts-empty {
   color: #65676b;
-  margin: 0 0 20px;
+  margin: 24px 0;
   font-size: 0.95rem;
 }
 
-.profile-logout {
+.profile-error {
+  margin: 16px 0;
+  padding: 12px;
+  background: #fee;
+  color: #c00;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Banner / avatar */
+.profile-banner {
+  margin: 16px 0 24px;
+}
+
+.profile-banner-img-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e4e6eb;
+}
+
+.profile-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-banner-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e4e6eb 0%, #ccd0d5 100%);
+}
+
+.profile-banner-upload {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #e4e6eb;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-banner-upload:hover:not(:disabled) {
+  background: #f0f2f5;
+}
+
+.profile-banner-upload:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.profile-file-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Section */
+.profile-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e4e6eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.profile-section-title {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c1e21;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+/* Detail rows */
+.profile-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-detail-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  align-items: center;
+  min-height: 40px;
+}
+
+.profile-detail-label {
+  font-size: 0.9rem;
+  color: #65676b;
+  font-weight: 500;
+}
+
+.profile-detail-value {
+  font-size: 0.95rem;
+  color: #1c1e21;
+}
+
+.profile-detail-input {
+  width: 100%;
+  max-width: 280px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+}
+
+.profile-detail-input:focus {
+  outline: none;
+  border-color: #2d5128;
+  box-shadow: 0 0 0 2px rgba(45, 81, 40, 0.15);
+}
+
+.profile-detail-actions {
+  margin-top: 8px;
+  grid-template-columns: 1fr;
+}
+
+.profile-btn {
   padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-right: 12px;
+}
+
+.profile-btn-edit {
+  background: #2d5128;
+  color: #fff;
+}
+
+.profile-btn-edit:hover {
+  background: #244320;
+}
+
+.profile-btn-save {
+  background: #2d5128;
+  color: #fff;
+}
+
+.profile-btn-save:hover:not(:disabled) {
+  background: #244320;
+}
+
+.profile-btn-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.profile-btn-cancel {
+  background: #fff;
+  color: #65676b;
+  border: 1px solid #ddd;
+}
+
+.profile-btn-cancel:hover {
+  background: #f0f2f5;
+}
+
+/* My posts */
+.profile-posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-post-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid #e4e6eb;
+}
+
+.profile-post-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-post-author {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1c1e21;
+}
+
+.profile-post-date {
+  font-size: 0.8rem;
+  color: #65676b;
+}
+
+.profile-post-content {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #1c1e21;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.profile-post-media {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #000;
+  margin-bottom: 8px;
+}
+
+.profile-post-stats {
+  font-size: 0.85rem;
+  color: #65676b;
+}
+
+/* Logout */
+.profile-logout-wrap {
+  margin-top: 24px;
+}
+
+.profile-logout {
+  padding: 10px 24px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
