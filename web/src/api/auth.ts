@@ -60,3 +60,11 @@ export async function signup(
     body: JSON.stringify(payload),
   });
 }
+
+/** POST /api/v1/user/forgotPassword – backend contract from CustomerRoute.js */
+export async function forgotPassword(email: string): Promise<ApiResponse<null>> {
+  return request<null>('/v1/user/forgotPassword', {
+    method: 'POST',
+    body: JSON.stringify({ email: email.trim() }),
+  });
+}
