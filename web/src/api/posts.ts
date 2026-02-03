@@ -65,3 +65,16 @@ export async function getMyPost(
     body: JSON.stringify({ skip, limit }),
   });
 }
+
+/** POST /api/post/getAnotherUsersPost – payload { userToId, skip, limit } */
+export async function getAnotherUsersPost(
+  userToId: string,
+  skip: number,
+  limit: number,
+  accessToken: string
+): Promise<ApiResponse<FeedResponseData>> {
+  return requestWithAuth<FeedResponseData>('/post/getAnotherUsersPost', accessToken, {
+    method: 'POST',
+    body: JSON.stringify({ userToId, skip, limit }),
+  });
+}

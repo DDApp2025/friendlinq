@@ -64,6 +64,18 @@ export async function saveProfileData(
   });
 }
 
+/** POST /api/user/getProfileofAnotherUser – payload { userId } */
+export async function getProfileOfAnotherUser(
+  accessToken: string,
+  userId: string
+): Promise<ApiResponse<GetProfileResponseData>> {
+  return requestWithAuth<GetProfileResponseData>('/user/getProfileofAnotherUser', accessToken, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId }),
+  });
+}
+
 /** POST /api/v1/user/uploadsProfilePic – multipart form field "document" */
 export async function uploadProfilePic(
   accessToken: string,

@@ -95,7 +95,13 @@ export default function Dashboard() {
                     className="feed-avatar"
                   />
                   <div className="feed-meta">
-                    <span className="feed-author">{post.postAuthor?.fullName ?? 'Unknown'}</span>
+                    {post.postAuthor?._id ? (
+                      <Link to={`/profile/${post.postAuthor._id}`} className="feed-author feed-author-link">
+                        {post.postAuthor?.fullName ?? 'Unknown'}
+                      </Link>
+                    ) : (
+                      <span className="feed-author">{post.postAuthor?.fullName ?? 'Unknown'}</span>
+                    )}
                     <span className="feed-date">{formatDate(post.createdAt)}</span>
                   </div>
                 </div>
