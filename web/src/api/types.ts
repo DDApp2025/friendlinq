@@ -45,3 +45,34 @@ export interface SignupPayload {
 export interface RegistrationResponseData {
   customerData: CustomerData;
 }
+
+/** Feed response – PostController.getAllFriendsPost returns { totalMyPost, myPost } */
+export interface FeedResponseData {
+  totalMyPost: number;
+  myPost: Post[];
+}
+
+export interface PostAuthor {
+  _id?: string;
+  fullName?: string;
+  imageURL?: { original?: string; [key: string]: unknown };
+}
+
+export interface Post {
+  _id?: string;
+  postContent?: string;
+  postAuthor?: PostAuthor;
+  imageURL?: { original?: string | null; [key: string]: unknown };
+  videoURL?: string | null;
+  totalLike?: number;
+  totalComment?: number;
+  isLike?: boolean;
+  sensitive?: boolean;
+  createdAt?: string;
+  comment?: PostComment[];
+}
+
+export interface PostComment {
+  commentText?: string;
+  commentAuthor?: PostAuthor;
+}
