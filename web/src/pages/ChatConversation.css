@@ -1,0 +1,146 @@
+.chat-conv-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.chat-conv-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e4e6eb;
+}
+
+.chat-conv-header a {
+  color: #2d5128;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chat-conv-header a:hover {
+  text-decoration: underline;
+}
+
+.chat-conv-header h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.chat-conv-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.chat-conv-error {
+  margin: 12px 0;
+  padding: 10px;
+  background: #fee;
+  color: #c00;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.chat-conv-loading {
+  margin: 24px 0;
+  color: #65676b;
+  font-size: 0.95rem;
+}
+
+.chat-conv-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-conv-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  align-self: flex-start;
+}
+
+.chat-conv-msg.me {
+  align-self: flex-end;
+  background: #2d5128;
+  color: #fff;
+}
+
+.chat-conv-msg.them {
+  background: #fff;
+  border: 1px solid #e4e6eb;
+  color: #1c1e21;
+}
+
+.chat-conv-msg-text {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chat-conv-msg-img {
+  display: block;
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+
+.chat-conv-msg-time {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.chat-conv-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0 24px;
+  border-top: 1px solid #e4e6eb;
+  background: #f0f2f5;
+  margin: 0 -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.chat-conv-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #e4e6eb;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  background: #fff;
+}
+
+.chat-conv-send {
+  padding: 12px 20px;
+  background: #2d5128;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.chat-conv-send:hover:not(:disabled) {
+  background: #244320;
+}
+
+.chat-conv-send:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

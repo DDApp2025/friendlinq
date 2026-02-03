@@ -9,6 +9,8 @@ import Friends from './pages/Friends'
 import CreatePost from './pages/CreatePost'
 import PostDetail from './pages/PostDetail'
 import EditPost from './pages/EditPost'
+import ChatList from './pages/ChatList'
+import ChatConversation from './pages/ChatConversation'
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
         <Route path="/post/:postId/edit" element={<EditPost />} />
         <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/chat/:userId" element={<ChatConversation />} />
+        <Route path="/chat" element={<ChatList />} />
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/friends" element={<Friends />} />

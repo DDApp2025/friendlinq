@@ -101,6 +101,7 @@ export default function Dashboard() {
         <h1>Friendlinq</h1>
         <nav>
           <Link to="/create-post">New Post</Link>
+          <Link to="/chat">Messages</Link>
           <Link to="/friends">Friends</Link>
           <Link to="/profile">Profile</Link>
         </nav>

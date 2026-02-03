@@ -1,0 +1,84 @@
+import { useEffect, useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { getFriendList } from '../api/friends'
+import { FRIEND_LIST_STATUS } from '../api/types'
+import type { CustomerData } from '../api/types'
+import './ChatList.css'
+
+const LOGGED_IN_USER_KEY = 'loggedInUser'
+const IMAGE_BASE = 'https://natural.selectnaturally.com'
+
+function avatarUrl(user: CustomerData): string {
+  const img = user?.imageURL as { original?: string; thumbnail?: string } | undefined
+  const path = img?.original ?? img?.thumbnail
+  return path ? `${IMAGE_BASE}/${path}` : ''
+}
+
+export default function ChatList() {
+  const navigate = useNavigate()
+  const [token, setToken] = useState<string | null>(null)
+  const [friends, setFriends] = useState<CustomerData[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
+    if (!raw) {
+      navigate('/login', { replace: true })
+      return
+    }
+    try {
+      const u = JSON.parse(raw) as { accessToken?: string }
+      setToken(u.accessToken ?? null)
+    } catch {
+      navigate('/login', { replace: true })
+    }
+  }, [navigate])
+
+  useEffect(() => {
+    if (!token) return
+    setLoading(true)
+    getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, token)
+      .then((res) => {
+        if (res.message === 'Success' && res.data?.friendList) {
+          setFriends(res.data.friendList)
+        }
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
+      .finally(() => setLoading(false))
+  }, [token])
+
+  if (!token) return null
+
+  return (
+    <div className="chat-list-wrapper">
+      <header className="chat-list-header">
+        <Link to="/dashboard">← Back</Link>
+        <h1>Messages</h1>
+      </header>
+      <main className="chat-list-main">
+        {error && <div className="chat-list-error" role="alert">{error}</div>}
+        {loading ? (
+          <p className="chat-list-loading">Loading…</p>
+        ) : friends.length === 0 ? (
+          <p className="chat-list-empty">No friends yet. Add friends to start messaging.</p>
+        ) : (
+          <ul className="chat-list-ul">
+            {friends.map((user) => (
+              <li key={user._id ?? ''} className="chat-list-item">
+                <Link to={`/chat/${user._id}`} className="chat-list-item-link">
+                  <img src={avatarUrl(user)} alt="" className="chat-list-avatar" />
+                  <div className="chat-list-info">
+                    <span className="chat-list-name">{user.fullName ?? '—'}</span>
+                    <span className="chat-list-email">{user.email ?? ''}</span>
+                  </div>
+                  <span className="chat-list-arrow">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </main>
+    </div>
+  )
+}
