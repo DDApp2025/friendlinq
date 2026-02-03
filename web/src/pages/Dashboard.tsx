@@ -103,6 +103,8 @@ export default function Dashboard() {
           <Link to="/create-post">New Post</Link>
           <Link to="/chat">Messages</Link>
           <Link to="/friends">Friends</Link>
+          <Link to="/groups">Groups</Link>
+          <Link to="/notifications">Notifications</Link>
           <Link to="/profile">Profile</Link>
         </nav>
       </header>

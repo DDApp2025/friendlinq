@@ -362,7 +362,8 @@ export default function Profile() {
           )}
         </section>
 
-        <div className="profile-logout-wrap">
+        <div className="profile-actions-wrap">
+          <Link to="/settings" className="profile-settings-link">Settings</Link>
           <button type="button" className="profile-logout" onClick={handleLogout}>
             Log out
           </button>

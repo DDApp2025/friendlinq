@@ -1,0 +1,14 @@
+.notifications-wrapper { min-height: 100vh; background: #f0f2f5; }
+.notifications-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border-bottom: 1px solid #e4e6eb; }
+.notifications-header a { color: #2d5128; text-decoration: none; }
+.notifications-header a:hover { text-decoration: underline; }
+.notifications-header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.notifications-main { max-width: 600px; margin: 0 auto; padding: 16px; }
+.notifications-error { margin-bottom: 12px; padding: 10px; background: #fee; color: #c00; border-radius: 8px; font-size: 0.9rem; }
+.notifications-loading, .notifications-empty { color: #65676b; margin: 24px 0; }
+.notifications-view-all { margin-bottom: 16px; padding: 8px 14px; background: #2d5128; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; cursor: pointer; }
+.notifications-view-all:hover { background: #244320; }
+.notifications-list { list-style: none; margin: 0; padding: 0; }
+.notifications-item { background: #fff; padding: 14px; margin-bottom: 8px; border-radius: 10px; border: 1px solid #e4e6eb; }
+.notifications-text { margin: 0 0 6px; font-size: 0.95rem; }
+.notifications-date { font-size: 0.8rem; color: #65676b; }

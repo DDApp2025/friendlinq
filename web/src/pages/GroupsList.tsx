@@ -1,0 +1,68 @@
+import { useEffect, useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { getGroupList } from '../api/groups'
+import type { GroupItem } from '../api/groups'
+import './GroupsList.css'
+
+const LOGGED_IN_USER_KEY = 'loggedInUser'
+
+export default function GroupsList() {
+  const navigate = useNavigate()
+  const [token, setToken] = useState<string | null>(null)
+  const [groups, setGroups] = useState<GroupItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
+    if (!raw) {
+      navigate('/login', { replace: true })
+      return
+    }
+    try {
+      const u = JSON.parse(raw) as { accessToken?: string }
+      setToken(u.accessToken ?? null)
+    } catch {
+      navigate('/login', { replace: true })
+    }
+  }, [navigate])
+
+  useEffect(() => {
+    if (!token) return
+    getGroupList(0, 50, token)
+      .then((res) => {
+        if (res.message === 'Success' && res.data?.groupList) {
+          setGroups(res.data.groupList)
+        }
+      })
+      .finally(() => setLoading(false))
+  }, [token])
+
+  if (!token) return null
+
+  return (
+    <div className="groups-list-wrapper">
+      <header className="groups-list-header">
+        <Link to="/dashboard">← Back</Link>
+        <h1>Groups</h1>
+        <Link to="/groups/create" className="groups-list-create">Create</Link>
+      </header>
+      <main className="groups-list-main">
+        {loading ? (
+          <p className="groups-list-loading">Loading…</p>
+        ) : groups.length === 0 ? (
+          <p className="groups-list-empty">No groups yet. Create a group to get started.</p>
+        ) : (
+          <ul className="groups-list-ul">
+            {groups.map((g) => (
+              <li key={g._id ?? ''}>
+                <Link to={`/groups/${g._id}`} className="groups-list-item">
+                  {g.groupName ?? 'Unnamed group'}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </main>
+    </div>
+  )
+}

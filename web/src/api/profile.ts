@@ -76,6 +76,31 @@ export async function getProfileOfAnotherUser(
   });
 }
 
+/** POST /api/v1/user/changePassword – payload { oldPassword, newPassword } */
+export async function changePassword(
+  oldPassword: string,
+  newPassword: string,
+  accessToken: string
+): Promise<ApiResponse<null>> {
+  return requestWithAuth<null>('/v1/user/changePassword', accessToken, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ oldPassword: oldPassword.trim(), newPassword: newPassword.trim() }),
+  });
+}
+
+/** POST /api/v1/user/updateWallpaperData – payload { wallpaper } */
+export async function updateWallpaper(
+  wallpaper: string,
+  accessToken: string
+): Promise<ApiResponse<null>> {
+  return requestWithAuth<null>('/v1/user/updateWallpaperData', accessToken, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ wallpaper }),
+  });
+}
+
 /** POST /api/v1/user/uploadsProfilePic – multipart form field "document" */
 export async function uploadProfilePic(
   accessToken: string,

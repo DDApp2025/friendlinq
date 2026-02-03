@@ -11,6 +11,17 @@ import PostDetail from './pages/PostDetail'
 import EditPost from './pages/EditPost'
 import ChatList from './pages/ChatList'
 import ChatConversation from './pages/ChatConversation'
+import Notifications from './pages/Notifications'
+import Settings from './pages/Settings'
+import ChangePassword from './pages/ChangePassword'
+import Wallpapers from './pages/Wallpapers'
+import GroupsList from './pages/GroupsList'
+import CreateGroup from './pages/CreateGroup'
+import GroupDetail from './pages/GroupDetail'
+import GroupMembers from './pages/GroupMembers'
+import Portfolio from './pages/Portfolio'
+import NearbyUsers from './pages/NearbyUsers'
+import ScheduleCalls from './pages/ScheduleCalls'
 
 export default function App() {
   return (
@@ -26,6 +37,17 @@ export default function App() {
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/chat/:userId" element={<ChatConversation />} />
         <Route path="/chat" element={<ChatList />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/wallpapers" element={<Wallpapers />} />
+        <Route path="/groups/create" element={<CreateGroup />} />
+        <Route path="/groups/:groupId/members" element={<GroupMembers />} />
+        <Route path="/groups/:groupId" element={<GroupDetail />} />
+        <Route path="/groups" element={<GroupsList />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/nearby" element={<NearbyUsers />} />
+        <Route path="/schedule-calls" element={<ScheduleCalls />} />
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/friends" element={<Friends />} />

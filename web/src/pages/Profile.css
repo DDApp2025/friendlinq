@@ -281,9 +281,22 @@
   color: #65676b;
 }
 
-/* Logout */
-.profile-logout-wrap {
+/* Logout & Settings */
+.profile-actions-wrap {
   margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-settings-link {
+  color: #2d5128;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.profile-settings-link:hover {
+  text-decoration: underline;
 }
 
 .profile-logout {
