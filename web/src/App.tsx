@@ -5,6 +5,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import UserProfile from './pages/UserProfile'
+import Friends from './pages/Friends'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/friends" element={<Friends />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

@@ -24,6 +24,11 @@
   color: #1c1e21;
 }
 
+.dashboard-header nav {
+  display: flex;
+  gap: 12px;
+}
+
 .dashboard-header nav a {
   color: #2d5128;
   text-decoration: none;

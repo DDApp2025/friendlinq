@@ -61,6 +61,7 @@ export default function Dashboard() {
       <header className="dashboard-header">
         <h1>Friendlinq</h1>
         <nav>
+          <Link to="/friends">Friends</Link>
           <Link to="/profile">Profile</Link>
         </nav>
       </header>

@@ -93,3 +93,23 @@ export interface SaveProfilePayload {
   about?: string;
   gender?: string;
 }
+
+/** Friend list status – backend FRIEND_REQUEST_TYPE */
+export const FRIEND_LIST_STATUS = {
+  ACCEPTED: 'ACCEPTED',
+  INVITATION: 'INVITATION',
+  SEND: 'SEND',
+} as const
+
+/** POST /api/user/getFriendList – returns { totalCount, friendList, topFourFriendList } */
+export interface GetFriendListResponseData {
+  totalCount: number;
+  friendList: CustomerData[];
+  topFourFriendList?: unknown[];
+}
+
+/** POST /api/user/searchUser – returns { totalCount, customerData } */
+export interface SearchUserResponseData {
+  totalCount: number;
+  customerData: CustomerData[];
+}
