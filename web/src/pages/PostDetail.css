@@ -1,0 +1,262 @@
+.post-detail-wrapper {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding-bottom: 24px;
+}
+
+.post-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e4e6eb;
+}
+
+.post-detail-header a {
+  color: #2d5128;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.post-detail-header a:hover {
+  text-decoration: underline;
+}
+
+.post-detail-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1c1e21;
+}
+
+.post-detail-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.post-detail-loading,
+.post-detail-error {
+  margin: 24px 0;
+  color: #65676b;
+}
+
+.post-detail-error {
+  color: #c00;
+  margin-bottom: 12px;
+}
+
+.post-detail-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e4e6eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.post-detail-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.post-detail-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e4e6eb;
+}
+
+.post-detail-meta {
+  flex: 1;
+}
+
+.post-detail-author-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1c1e21;
+  text-decoration: none;
+}
+
+.post-detail-author-name:hover {
+  color: #2d5128;
+  text-decoration: underline;
+}
+
+.post-detail-date {
+  display: block;
+  font-size: 0.8rem;
+  color: #65676b;
+}
+
+.post-detail-edit {
+  padding: 6px 12px;
+  margin-right: 8px;
+  font-size: 0.85rem;
+  color: #2d5128;
+  text-decoration: none;
+  border: 1px solid #2d5128;
+  border-radius: 6px;
+}
+
+.post-detail-edit:hover {
+  background: #f0f2f5;
+}
+
+.post-detail-delete {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #c00;
+}
+
+.post-detail-delete:hover {
+  background: #fee;
+}
+
+.post-detail-content {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post-detail-media {
+  display: block;
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #000;
+  margin-bottom: 12px;
+}
+
+.post-detail-actions {
+  display: flex;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f2f5;
+  font-size: 0.9rem;
+}
+
+.post-detail-like {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #65676b;
+  padding: 0;
+}
+
+.post-detail-like:hover:not(:disabled) {
+  color: #2d5128;
+}
+
+.post-detail-like.active {
+  color: #2d5128;
+  font-weight: 500;
+}
+
+.post-detail-like:disabled {
+  opacity: 0.7;
+}
+
+.post-detail-comment-count {
+  color: #65676b;
+}
+
+.post-detail-comments {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e4e6eb;
+}
+
+.post-detail-comments-title {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.post-detail-comment-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.post-detail-comment-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e4e6eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.post-detail-comment-submit {
+  padding: 10px 16px;
+  background: #2d5128;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.post-detail-comment-submit:hover:not(:disabled) {
+  background: #244320;
+}
+
+.post-detail-comment-submit:disabled {
+  opacity: 0.6;
+}
+
+.post-detail-comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-detail-comment-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.post-detail-comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e4e6eb;
+  flex-shrink: 0;
+}
+
+.post-detail-comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-detail-comment-author {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #1c1e21;
+  text-decoration: none;
+}
+
+.post-detail-comment-author:hover {
+  text-decoration: underline;
+  color: #2d5128;
+}
+
+.post-detail-comment-text {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}

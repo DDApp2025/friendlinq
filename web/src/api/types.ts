@@ -60,6 +60,7 @@ export interface PostAuthor {
 
 export interface Post {
   _id?: string;
+  postTitle?: string;
   postContent?: string;
   postAuthor?: PostAuthor;
   imageURL?: { original?: string | null; [key: string]: unknown };
@@ -73,8 +74,21 @@ export interface Post {
 }
 
 export interface PostComment {
+  _id?: string;
   commentText?: string;
   commentAuthor?: PostAuthor;
+  childComment?: PostComment[];
+}
+
+/** POST /api/post/postDetail – returns { postDetails } */
+export interface PostDetailResponseData {
+  postDetails: Post;
+}
+
+/** POST /api/post/getPostComment – returns { totalComment, comments } */
+export interface GetPostCommentResponseData {
+  totalComment: number;
+  comments: PostComment[];
 }
 
 /** GET /api/user/getProfile – controller returns { customerData, topFourFriend } */
