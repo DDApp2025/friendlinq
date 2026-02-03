@@ -1,0 +1,167 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-12">
+            <div class="friends-heading">
+                <form [formGroup]="searchFriendForm">
+                    <h1 *ngIf="isSearchEnable">Add Friends <span id="a"><i (click)="showSearchBox()"
+                                class="fa fa-search" aria-hidden="true"></i></span></h1>
+                    <div [ngClass]="statusClass">
+                        <input type="text" placeholder="search" name="searchValue" (input)="searchFriend()"
+                            formControlName="searchValue">
+                        <i class="fa fa-search" aria-hidden="true" (click)="searchFriend()"></i>
+                        <a (click)="hideSearchBox()" style="cursor: pointer;" id="cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="add-friends">
+                <div class="tab-content">
+                    <div id="home" [ngClass]="isSearchTabVisible">
+                        <h3 style="margin-top: 30px;">Search Results</h3>
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div [ngClass]="showResponseClass">No Records Found.
+                        </div>
+                        <div class="friends-list">
+                            <div class="friends-list-inner" *ngFor="let item of searchFriendList">
+                                <div class="friends-list-image" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+                                <div class="friends-list-add" *ngIf="!item.isFriendRequestSend && !item.isFriend">
+                                    <button (click)="AddFriend(item)">Add Friend</button>
+                                </div>
+                                <div class="friends-list-add" *ngIf="item.isFriendRequestSend">
+                                    Friend Request Sent.
+                                </div>
+                                <div class="friends-list-add" *ngIf="item.isFriend">
+                                    Friends.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <ul [ngClass]="hideNavPill">
+                    <li class="active" (click)="showRequestTab()" style="cursor: pointer;"><a
+                            data-toggle="pill">Requests</a></li>
+                    <li style="cursor: pointer;" (click)="showMyFriendTab()"><a data-toggle="pill">My Friends</a></li>
+                    <li style="cursor: pointer;" (click)="showSentRequestTab()"><a data-toggle="pill">Sent Request</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="home" [ngClass]="isRequestTabVisible">
+                        <h3>People you may know</h3>
+
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div [ngClass]="showResponseClass">No Friend Suggestions Available. Please user the search to
+                            find your
+                            friend.
+                        </div>
+
+                        <div class="friends-list">
+                            <div class="friends-list-inner" *ngFor="let item of friendSuggestionList">
+                                <div class="friends-list-image" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+                                <div class="friends-list-add">
+                                    <button (click)="AddFriend(item)">Add Friend</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu3" [ngClass]="isInvitationTabVisible">
+                        <h3>Invitations</h3>
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div [ngClass]="showResponseClass">No Invitation. Please user the search to
+                            find your
+                            friend.
+                        </div>
+                        <div class="friends-list">
+                            <div class="friends-list-inner" *ngFor="let item of invitationList">
+                                <div class="friends-list-image" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+                                <div class="friends-list-add">
+                                    <button (click)="AcceptRequest(item)">Accept</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu1" [ngClass]="isMyFriendTabVisible">
+                        <h3>My Friends</h3>
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div class="friends-list">
+
+                            <div class="friends-list-inner" style="cursor: pointer;" *ngFor="let item of friendsList"
+                                (click)="openFriendProfile(item,'Yes')">
+                                <div class="friends-list-image">
+                                    <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu2" [ngClass]="isSentRequestTabVisible">
+                        <h3>Send Request</h3>
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div [ngClass]="showResponseClass">No Active Sent Request. Please user the search to
+                            find your
+                            friend.
+                        </div>
+                        <div class="friends-list">
+                            <div class="friends-list-inner" *ngFor="let item of sentRequestList">
+                                <div class="friends-list-image" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+                                <div class="friends-list-add">
+                                    Friend Request Sent.
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

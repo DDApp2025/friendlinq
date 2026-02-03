@@ -1,0 +1,219 @@
+<div class="profile" style="margin-top: -10px;">
+    <div class="profile-banner">
+
+        <img src="{{isPicExists}}">
+        <div style="height: 20px;">
+
+        </div>
+
+    </div>
+</div>
+
+<div class="general-setting">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <div class="profile-inner">
+                    <h1>General Account Settings</h1>
+                    <div class="heading-border"></div>
+                </div>
+
+                <div class="account-details">
+                    <form *ngIf="friendsProfile">
+                        <div class="profile-details">
+
+                            <div class="profile-label">
+                                <label>Name</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.fullName}}</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>Location</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.country}}</p>
+                            </div>
+                        </div>
+
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>Gender</label>
+                            </div>
+                            <div class="profile-name">
+                                <p> {{this.friendsProfile.gender}}</p>
+                            </div>
+                        </div>
+
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>State</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.state}}</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>City</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.city}}</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>Email</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.email}}</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="profile-label">
+                                <label>Phone Number</label>
+                            </div>
+                            <div class="profile-name">
+                                <p>{{this.friendsProfile.phoneNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="profile-details" *ngIf="isFriend === 'Yes'">
+                            <div class="calling-option" *ngIf="isFriend === 'Yes'">
+                                <p style=" cursor: pointer;"><a (click)="navigateToChat()"><i class="fa fa-comment"
+                                            aria-hidden="true"></i></a>
+                                    <a (click)="navigateToAudio()"> <i class="fa fa-phone" aria-hidden="true"></i></a>
+                                    <a (click)="navigateToVideo()"> <i class="fa fa-video-camera"
+                                            aria-hidden="true"></i></a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="change-background" *ngIf="myPosts && myPosts.length>0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <div class="heading">
+                    <h1>Post</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <div class="people-all-comment">
+                    <div *ngFor="let item of myPosts;let i = index">
+                        <div class="person-post">
+                            <p><img src="{{imageUrl}}/{{friendsProfile.imageURL.original}}"></p>
+                            <p>{{friendsProfile.fullName}} <span>{{ item.createdAt | date :'h:mm a dd-MMM-yy'
+                                    }}</span></p>
+                            <p>
+                                <a (click)="toggleClass(previewClass,i)"><i class=" fa fa-ellipsis-v delete"
+                                        aria-hidden="true">
+                                    </i></a>
+                                <span *ngIf="previewClass==='as'" class="as"><a (click)="deletePost(item._id,i)">Delete
+                                        Post</a></span>
+                                <span *ngIf="previewClass==='ash' && clickIndex === i" class="ash"><a
+                                        (click)="reportPost(item._id,'Friend')">Report this
+                                        Post</a></span>
+                            </p>
+                        </div>
+                        <div class="latest-post" *ngIf="!item.sensitive">
+                            <p>{{item.postContent}}</p>
+                            <p *ngIf="item.imageURL.original !== null"><img
+                                    src="{{imageUrl}}/{{item.imageURL.original}}">
+                            <p *ngIf="item.videoURL !== null"> <video width="420" height="345" controls>
+                                    <source src="{{imageUrl}}/{{item.videoURL}}" type="video/mp4">
+                                </video>
+                            </p>
+                        </div>
+                        <div class="latest-post" *ngIf="item.sensitive">
+                            <p>{{item.postContent}}</p>
+                            <p *ngIf="item.imageURL.original !== null && clickBlurIndex === -1"><img class="blurPost"
+                                    src="{{imageUrl}}/{{item.imageURL.original}}">
+                            </p>
+
+                            <p *ngIf="item.imageURL.original !== null && clickBlurIndex === i"><img
+                                    src="{{imageUrl}}/{{item.imageURL.original}}">
+                            </p>
+                            <p *ngIf="item.videoURL !== null &&  clickBlurIndex === -1">
+                                <video width="420" height="345" controls class="blurPost">
+                                    <source src="{{imageUrl}}/{{item.videoURL}}" type="video/mp4">
+                                </video>
+                            </p>
+                            <p *ngIf="item.videoURL !== null &&  clickBlurIndex === i"> <video width="420" height="345"
+                                    controls>
+                                    <source src="{{imageUrl}}/{{item.videoURL}}" type="video/mp4">
+                                </video>
+                            </p>
+                            <p>This post is bad content.
+                                <strong> <a style="color: #0041c1;cursor: pointer;" (click)="removeBlur(i)">See this
+                                        post</a></strong>
+                            </p>
+                        </div>
+                        <div class="likecomment-section">
+                            <div class="like-part">
+                                <p><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span> {{item.totalLike}}
+                                </p>
+                            </div>
+                            <div class="comment-part">
+                                <p>{{item.totalComment}} Comments</p>
+                            </div>
+                        </div>
+                        <div class="share">
+                            <div class="like-part">
+                                <p *ngIf="item.isLike" style="color: #0041c1"
+                                    (click)="UpdateLikeUnlikeStatus(item._id,item.isLike,i)"><i
+                                        class="fa fa-thumbs-o-up" aria-hidden="true" style="color: #0041c1"></i>
+                                    Like</p>
+                                <p *ngIf="!item.isLike" (click)="UpdateLikeUnlikeStatus(item._id,item.isLike,i)"><i
+                                        class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                    Like</p>
+                            </div>
+                            <div class="comment-part">
+                                <p (click)="openDialog(item._id,item,i,'Friend')"><i class="fa fa-comment-o"
+                                        aria-hidden="true"></i>
+                                    Comment</p>
+                            </div>
+                            <div class="comment-part">
+                                <p (click)="openShareDialog(item)"><i class="fa fa-share" aria-hidden="true"></i> Share
+                                </p>
+                            </div>
+                        </div>
+                        <div class="public-comments-main">
+                            <div *ngFor="let comment of item.comment">
+                                <div class="public-comments">
+                                    <div class="public-img">
+                                        <img src="{{imageUrl}}/{{comment.commentAuthor.imageURL.original}}">
+                                    </div>
+                                    <div class="publiccommentInner">
+                                        <h5>{{comment.commentAuthor.fullName}}</h5>
+                                        <p class="comment">{{comment.commentText}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

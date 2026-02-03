@@ -1,0 +1,11 @@
+export const environment = {
+  production: false,
+  rearGuardApiBaseUri: 'http://107.180.75.184:3002/api/v1/user/',
+  rearGuardBaseUri: 'http://107.180.75.184:3002/api/user/',
+  rearGuardBaseChatUri: 'http://107.180.75.184:3002/api/v1/chat/',
+  rearGuardBasePostUri: 'http://107.180.75.184:3002/api/post/',
+  rearGuardBasePostVersionUri: 'http://107.180.75.184:3002/api/v1/post/',
+  rearGuradNetBaseUri: 'https://rearguard.devbinfotech.in/api/',
+  rearGuradSocketBaseUri: 'http://localhost:3000/',
+  rearGuardImageUri: 'https://rearguardsocial.devdevelopment.net',
+};

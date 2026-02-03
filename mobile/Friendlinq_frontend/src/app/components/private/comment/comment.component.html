@@ -1,0 +1,134 @@
+<a class="close-button" (click)="closeComment()"><i class="fa fa-close" style="color: #0041c1"></i></a>
+<h2 mat-dialog-title class="title">Comments</h2>
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-md-12 col-12">
+
+            <div class="people-all-comment">
+
+                <div class="person-post">
+                    <p *ngIf="postDetail.postAuthor.imageURL!== undefined"><img
+                            src="{{imageUrl}}/{{postDetail.postAuthor.imageURL.original}}"></p>
+                    <p *ngIf="postDetail.postAuthor.imageURL!== undefined">{{postDetail.postAuthor.fullName}} <span>{{
+                            postDetail.createdAt |
+                            date :'h:mm a dd-MMM-yy'
+                            }}</span></p>
+                    <p *ngIf="postDetail.Author && postDetail.Author.imageURL!== undefined"><img
+                            src="{{imageUrl}}/{{postDetail.Author.imageURL.original}}"></p>
+                    <p *ngIf="postDetail.Author && postDetail.Author.imageURL!== undefined">
+                        {{postDetail.Author.fullName}} <span>{{
+                            postDetail.createdAt |
+                            date :'h:mm a dd-MMM-yy'
+                            }}</span></p>
+                    <p>
+
+                    </p>
+                </div>
+                <!-- <div class="latest-post">
+                    <p>{{postDetail.postContent}}</p>
+                    <p *ngIf="postDetail.imageURL.original !== null"><img
+                            src="{{imageUrl}}/{{postDetail.imageURL.original}}">
+                    <p *ngIf="postDetail.videoURL !== null"> <video width="420" height="345" controls>
+                            <source src="{{imageUrl}}/{{postDetail.videoURL}}" type="video/mp4">
+                        </video>
+                    </p>
+                </div> -->
+
+                <div class="latest-post" *ngIf="!postDetail.sensitive">
+                    <p>{{postDetail.postContent}}</p>
+                    <p *ngIf="postDetail.imageURL.original !== null"><img
+                            src="{{imageUrl}}/{{postDetail.imageURL.original}}">
+                    <p *ngIf="postDetail.videoURL !== null"> <video width="420" height="345" controls>
+                            <source src="{{imageUrl}}/{{postDetail.videoURL}}" type="video/mp4">
+                        </video>
+                    </p>
+                </div>
+                <div class="latest-post" *ngIf="postDetail.sensitive">
+                    <p>{{postDetail.postContent}}</p>
+                    <p *ngIf="postDetail.imageURL.original !== null && clickBlurIndex === -1"><img class="blurPost"
+                            src="{{imageUrl}}/{{postDetail.imageURL.original}}">
+                    </p>
+
+                    <p *ngIf="postDetail.imageURL.original !== null && clickBlurIndex === 0"><img
+                            src="{{imageUrl}}/{{postDetail.imageURL.original}}">
+                    </p>
+                    <p *ngIf="postDetail.videoURL !== null &&  clickBlurIndex === -1">
+                        <video width="420" height="345" controls class="blurPost">
+                            <source src="{{imageUrl}}/{{postDetail.videoURL}}" type="video/mp4">
+                        </video>
+                    </p>
+                    <p *ngIf="postDetail.videoURL !== null &&  clickBlurIndex === 0"> <video width="420" height="345"
+                            controls>
+                            <source src="{{imageUrl}}/{{postDetail.videoURL}}" type="video/mp4">
+                        </video>
+                    </p>
+                    <p>This post is bad content.
+                        <strong> <a style="color: #0041c1;cursor: pointer;" (click)="removeBlur()">See this
+                                post</a></strong>
+                    </p>
+                </div>
+                <div class="likecomment-section">
+                    <div class="like-part">
+                        <p><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span> {{postDetail.totalLike}}
+                        </p>
+                    </div>
+                    <div class="comment-part">
+                        <p>{{commentDetail.length}} Comments</p>
+                    </div>
+                </div>
+                <div class="share">
+                    <div class="like-part">
+                        <p *ngIf="postDetail.isLike" style="color: #0041c1"
+                            (click)="UpdateLikeUnlikeStatus(postDetail._id,postDetail.isLike)"><i
+                                class="fa fa-thumbs-o-up" aria-hidden="true" style="color: #0041c1"></i>
+                            Like</p>
+                        <p *ngIf="!postDetail.isLike"
+                            (click)="UpdateLikeUnlikeStatus(postDetail._id,postDetail.isLike)"><i
+                                class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                            Like</p>
+                    </div>
+                    <div class="comment-part">
+                        <p><i class="fa fa-comment-o" aria-hidden="true"></i> Comment</p>
+                    </div>
+                    <!-- <div class="comment-part">
+                        <p><i class="fa fa-share" aria-hidden="true"></i> Share</p>
+                    </div> -->
+                </div>
+                <div class="public-comments-main">
+                    <div *ngFor="let comment of commentDetail,let i = index">
+                        <div class="public-comments">
+                            <div class="public-img">
+                                <img src="{{imageUrl}}/{{comment.commentAuthor.imageURL.original}}">
+                            </div>
+                            <div class="publiccommentInner">
+                                <h5>{{comment.commentAuthor.fullName}}</h5>
+                                <p class="comment">{{comment.commentText}} <a
+                                        *ngIf="comment.commentAuthor._id===userDetails._id" class="comment-delete"
+                                        (click)="deleteComment(comment._id,i)"><i class="fa fa-close"
+                                            style="color: #0041c1"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="self-commnet">
+                    <div class="public-comments">
+                        <div class="public-img">
+                            <img src="{{imageUrl}}/{{userDetails.imageURL.original}}">
+                        </div>
+                        <div class="mycomment">
+                            <textarea name="txtComment" placeholder="Write a public comment here..."
+                                (keydown.enter)="onKeydown($event)" (keyup.enter)="saveComment(comment)"
+                                [(ngModel)]="comment"> </textarea>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,40 @@
+<div class="login">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12 col-12">
+            <div class="login-inner">
+               <!-- FriendLinq Logo -->
+               <div class="logo-icon">
+                  <span>∞</span>
+               </div>
+               
+               <form [formGroup]="loginForm">
+                  <h1>Welcome Back!</h1>
+                  <p class="subtitle">Sign in to continue to FriendLinq</p>
+                  
+                  <div class="form-group">
+                     <label for="userName">Phone Number</label>
+                     <input type="tel" placeholder="Enter your phone number" name="userName" formControlName="userName" id="userName">
+                  </div>
+                  <div class="form-group">
+                     <label for="password">Password</label>
+                     <input type="password" placeholder="Enter your password" name="password" formControlName="password" id="password">
+                  </div>
+                  <div class="form-group button-div">
+                     <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid"
+                        (click)="login()">Sign In</button>
+                     <button type="button" class="google" (click)="loginWithGoogle()">
+                        <img src="../../../../assets/images/google.png" alt="Google">
+                        Continue with Google
+                     </button>
+                  </div>
+                  <div class="extra-text">
+                     <p>Don't have an account? <span><a routerLink="/signup">Sign Up</a></span></p>
+                     <p class="forget"><a routerLink="/forgotpassword">Forgot Password?</a></p>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,708 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("assets/fonts/SFProDisplay-Regular.eot");
+  src: url("assets/fonts/SFProDisplay-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("assets/fonts/SFProDisplay-Regular.woff2") format("woff2"),
+    url("assets/fonts/SFProDisplay-Regular.woff") format("woff"),
+    url("assets/fonts/SFProDisplay-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "SF Pro Display";
+}
+
+body {
+  color: #000;
+  font-family: "SF Pro Display";
+  font-size: 18px; /* Senior-friendly base size */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button {
+  font-family: "SF Pro Display";
+  line-height: 120%;
+}
+
+/* ============================================
+   FRIENDLINQ BRAND COLORS
+   Primary Green: #006633
+   Light Green: #00873d
+   Dark Green: #004d26
+   Accent: #f5f5dc (cream)
+   ============================================ */
+
+.wrapper ul.links li a img {
+  width: 115px;
+  object-fit: cover;
+}
+
+.wrapper {
+  background: #006633; /* FriendLinq Green */
+  width: 100%;
+}
+
+.wrapper nav {
+  position: relative;
+  display: flex;
+  max-width: calc(100% - 200px);
+  margin: 0 auto;
+  height: 70px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav .content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.content .logo a {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100px;
+  height: 125px;
+}
+
+.content .logo a img {
+  width: 100%;
+}
+
+nav .content .links {
+  margin-left: 80px;
+  display: flex;
+  margin-bottom: 0;
+}
+
+.content .logo a {
+  color: #fff;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.content .links li {
+  list-style: none;
+  line-height: 70px;
+}
+
+.content .links li a,
+.content .links li label {
+  color: #fff;
+  font-size: 20px; /* Larger for seniors */
+  font-weight: 500;
+  padding: 9px 17px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.content .links li label {
+  display: none;
+}
+
+.content .links li a:hover,
+.content .links li a.active,
+.content .links li label:hover {
+  background: #004d26; /* Darker green on hover */
+}
+
+.wrapper .search-icon,
+.wrapper .menu-icon {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 70px;
+  width: 70px;
+  text-align: center;
+}
+
+.wrapper .menu-icon {
+  display: none;
+}
+
+.wrapper #show-search:checked ~ .search-icon i::before {
+  content: "\f00d";
+}
+
+.wrapper .search-box {
+  position: absolute;
+  height: 100%;
+  max-width: calc(100% - 50px);
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.wrapper #show-search:checked ~ .search-box {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-box input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  color: #fff;
+  background: #004d26;
+  padding: 0 100px 0 15px;
+}
+
+.search-box input::placeholder {
+  color: #f2f2f2;
+}
+
+.search-box .go-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 60px;
+  width: 70px;
+  background: #004d26;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.wrapper input[type="checkbox"] {
+  display: none;
+}
+
+/* Dropdown Menu code start */
+
+.content .links ul {
+  position: absolute;
+  background: #006633;
+  top: 80px;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.content .links li:hover > ul {
+  top: 70px;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease;
+}
+
+.content .links ul li a {
+  display: block;
+  width: 100%;
+  line-height: 30px;
+  border-radius: 0px !important;
+}
+
+.content .links ul ul {
+  position: absolute;
+  top: 0;
+  right: calc(-100% + 8px);
+}
+
+.content .links ul li {
+  position: relative;
+}
+
+.content .links ul li:hover ul {
+  top: 0;
+}
+
+.dummy-text h2 {
+  font-size: 45px;
+  margin: 5px 0;
+}
+
+/* ============================================
+   LOGIN PAGE - FRIENDLINQ REBRAND
+   ============================================ */
+
+.login {
+  background: linear-gradient(135deg, #f5f5dc 0%, #e8e8d0 100%); /* Cream background */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login button.google {
+  background: #fff;
+  border: 2px solid #ddd;
+}
+
+.login button {
+  background: #006633; /* FriendLinq Green */
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 16px 40px; /* Larger touch target for seniors */
+  border: none;
+  font-weight: 600;
+  font-size: 22px; /* Larger text */
+  cursor: pointer;
+  transition: background 0.3s ease;
+  min-height: 52px; /* WCAG touch target */
+}
+
+.login button:hover {
+  background: #00873d; /* Lighter green on hover */
+}
+
+.login button:focus {
+  outline: 3px solid #004d26;
+  outline-offset: 2px;
+}
+
+.login button.google {
+  color: #333;
+  display: block;
+  margin: 20px auto 0;
+  background: #fff;
+}
+
+.login button.google:hover {
+  background: #f5f5f5;
+}
+
+.login button.google img {
+  width: 24px;
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+.login .login-inner {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login input,
+.login select {
+  padding: 16px 20px; /* Larger for easier input */
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  outline: none;
+  font-size: 18px; /* Larger text */
+  transition: border-color 0.3s ease;
+}
+
+.login input:focus,
+.login select:focus {
+  border-color: #006633;
+  box-shadow: 0 0 0 3px rgba(0, 102, 51, 0.1);
+}
+
+.login-inner h1 {
+  color: #006633; /* FriendLinq Green */
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.login-inner form input,
+.login-inner form select {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.login-inner {
+  text-align: center;
+}
+
+.login-inner .form-group {
+  margin-bottom: 20px;
+}
+
+.login-inner .form-group label {
+  display: block;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* FriendLinq Logo */
+.login-inner .logo-icon {
+  width: 80px;
+  height: 80px;
+  background: #006633;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.login-inner .logo-icon span {
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.extra-text span a {
+  color: #006633; /* FriendLinq Green */
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.extra-text span a:hover {
+  text-decoration: underline;
+}
+
+.extra-text p {
+  color: #333;
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+.extra-text button {
+  padding: 10px 20px;
+  background: #006633;
+  font-size: 18px;
+}
+
+.login-inner form h1 {
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+
+.login-inner .subtitle {
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.login-inner.forgot form p {
+  color: #333;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 15px;
+}
+
+p.forget a {
+  color: #006633;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+p.forget a:hover {
+  text-decoration: underline;
+}
+
+/* Form error messages */
+.form-error {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.form-error.error {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.form-error.success {
+  background: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+/* Button row for side-by-side buttons */
+.button-div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media screen and (max-width: 1250px) {
+  .wrapper nav {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+  nav .content .links {
+    margin-left: 30px;
+  }
+  .content .links li a {
+    padding: 8px 13px;
+  }
+  .wrapper .search-box {
+    max-width: calc(100% - 100px);
+  }
+  .wrapper .search-box input {
+    padding: 0 100px 0 15px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .content .logo a {
+    left: 20px;
+  }
+  .wrapper .menu-icon {
+    display: block;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+  }
+  .wrapper #show-menu:checked ~ .menu-icon i::before {
+    content: "\f00d";
+  }
+  nav .content .links {
+    display: block;
+    position: fixed;
+    background: #006633;
+    height: 100%;
+    width: 100%;
+    top: 69px;
+    right: -100%;
+    margin-left: 0;
+    max-width: 350px;
+    overflow-y: auto;
+    padding-bottom: 100px;
+    transition: all 0.3s ease;
+    z-index: 9999;
+  }
+  nav #show-menu:checked ~ .content .links {
+    right: 0%;
+  }
+  .content .links li {
+    margin: 15px 20px;
+  }
+  .content .links li a,
+  .content .links li label {
+    line-height: 40px;
+    font-size: 20px;
+    display: block;
+    padding: 8px 18px;
+    cursor: pointer;
+  }
+  .content .links li a.desktop-link {
+    display: none;
+  }
+  /* dropdown responsive code start */
+  .content .links ul,
+  .content .links ul ul {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    background: none;
+    max-height: 0px;
+    overflow: hidden;
+  }
+  .content .links #show-features:checked ~ ul,
+  .content .links #show-services:checked ~ ul,
+  .content .links #show-items:checked ~ ul {
+    max-height: 100vh;
+  }
+  .content .links ul li {
+    margin: 7px 20px;
+  }
+  .content .links ul li a {
+    font-size: 18px;
+    line-height: 30px;
+    border-radius: 5px !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .login {
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .login .login-inner {
+    padding: 30px 20px;
+  }
+  .login button {
+    width: 100%;
+    margin: 10px 0 0;
+  }
+  .login .login-inner {
+    max-width: 100%;
+  }
+  .login-inner form input,
+  .login-inner form select {
+    width: 100%;
+  }
+  .login button.google img {
+    width: 24px;
+  }
+  .extra-text p {
+    font-size: 18px;
+  }
+  .extra-text button {
+    width: 100%;
+    padding: 14px 20px;
+  }
+}
+
+@media screen and (max-width: 463px) {
+  .login-inner form h1 {
+    font-size: 28px;
+  }
+  .login button {
+    padding: 14px 10px;
+    font-size: 18px;
+  }
+  .login .login-inner {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .wrapper nav {
+    padding: 0 10px;
+  }
+  .content .logo a {
+    font-size: 27px;
+  }
+  .wrapper .search-box {
+    max-width: calc(100% - 70px);
+  }
+  .wrapper .search-box .go-icon {
+    width: 30px;
+    right: 0;
+  }
+  .wrapper .search-box input {
+    padding-right: 30px;
+  }
+}
+
+/* ============================================
+   FOOTER - FRIENDLINQ REBRAND
+   ============================================ */
+
+footer a {
+  color: #fff;
+}
+
+footer {
+  margin-top: auto;
+  background: #006633; /* FriendLinq Green */
+  color: #fff;
+  padding-top: 50px;
+}
+
+.social-icons ul li {
+  display: inline-block;
+  border: 1px solid #fff;
+  text-align: center;
+  margin-right: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.social-icons ul li i {
+  font-size: 20px;
+}
+
+.footer-contact {
+  display: flex;
+}
+
+.footer-contact i {
+  max-width: 10%;
+  flex: 0 0 10%;
+}
+
+.footer-contact p {
+  max-width: 90%;
+  flex: 0 0 90%;
+}
+
+.footer-section h3 {
+  font-size: 22px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-section h3:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  bottom: 0;
+}
+
+.social-icons ul li:hover {
+  background: #004d26;
+  color: #fff;
+}
+
+.footer-bottom {
+  background: #004d26;
+}
+
+.footer-bottom p {
+  margin-bottom: 0;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.rem-pad .col-md-12.col-12 {
+  padding: 0;
+}
+
+footer p,
+footer ul li a {
+  font-size: 18px;
+}
+
+.wrapper ul.links a.nav-img:hover {
+  background: transparent !important;
+}
+
+.custom .mat-dialog-container {
+  background: #006633;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "SF Pro Display", Roboto, "Helvetica Neue", sans-serif;
+}

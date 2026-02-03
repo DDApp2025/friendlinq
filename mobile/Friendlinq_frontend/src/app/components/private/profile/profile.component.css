@@ -1,0 +1,588 @@
+body {
+  color: #000;
+  font-family: "SF Pro Display";
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button {
+  font-family: "SF Pro Display";
+  line-height: 100%;
+}
+.profile-banner img {
+  width: 100%;
+  object-fit: cover;
+  height: 300px;
+}
+.profile p {
+  position: absolute;
+  color: #000;
+  z-index: 1;
+  right: 90px;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0;
+  top: 20px;
+}
+.upload-camera img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-top: -110px;
+  margin-left: 50px;
+}
+.dashboard {
+  box-shadow: 0px 4px 10px #f0f2f5;
+  width: 100%;
+  z-index: 999;
+  position: fixed;
+  background: #fff;
+  margin-top: -100px;
+}
+.dashboard a.navbar-brand img {
+  width: 70px;
+}
+.dashboard nav .form-inline input {
+  border-radius: 50px;
+}
+.profile-navbar li.nav-item.dropdown img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+ul.navbar-nav,
+.profile-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dashboard nav i {
+  font-size: 25px;
+  color: #0000009e;
+}
+.dashboard i:not(last-child) {
+  margin-right: 30px;
+}
+.dropdown-menu.profile-dropdown.show a i {
+  margin-right: 10px;
+}
+.dropdown-menu.profile-dropdown.show {
+  width: 250px;
+  right: 0;
+  left: auto;
+}
+.dropdown-menu.profile-dropdown.show a i {
+  background: #e4e6eb;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 50%;
+  font-size: 21px;
+}
+.dropdown-menu.profile-dropdown.show a {
+  padding: 9px 15px;
+}
+.dropdown-menu.profile-dropdown.show a span i {
+  font-size: 22px;
+  background: transparent;
+  float: right;
+  font-weight: bold;
+}
+.dropdown-menu.profile-dropdown.show a.dropdown-item:active i {
+  color: #000;
+}
+ul.navbar-nav li a:hover i {
+  color: #0041c1;
+}
+/*****************/
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: #f0f2f5;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  left: 0;
+  top: 100px;
+}
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  font-size: 17px;
+  text-decoration: none;
+}
+.sidebar a.active {
+  background-color: #0041c1;
+  color: white;
+}
+.sidebar a:hover:not(.active) {
+  background-color: #0041c1;
+  color: white;
+  text-decoration: none;
+}
+.content {
+  margin-right: auto;
+  padding: 1px 16px;
+  height: 1000px;
+}
+.sidebar a img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+.sidebar {
+  font-weight: 500;
+}
+.sidebar a i {
+  font-size: 25px;
+  margin-right: 10px;
+  width: 36px;
+}
+footer {
+  margin-top: auto;
+}
+.main-body {
+  width: calc(100% - 300px);
+  padding-left: 50px;
+  padding-top: 10px;
+  margin-top: 100px;
+  margin-left: 150px;
+}
+.post {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+.post img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.post-area {
+  width: 80%;
+}
+.post-area textarea {
+  width: 100%;
+  height: 70px;
+  resize: none;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 0 15px;
+  outline: none;
+}
+.post-button a:hover {
+  text-decoration: none;
+}
+
+.post-button a {
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+.post-public p {
+  display: inline-block;
+  margin-right: 50px;
+}
+
+.post-public {
+  text-align: center;
+}
+
+.post-public p input[type="radio"] {
+  padding-right: 20px;
+  display: inline-block;
+  margin-right: 15px;
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.public-post i {
+  color: #007bff;
+  font-size: 36px;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.public-post button {
+  background: #007bff;
+  color: #fff;
+  border-color: transparent;
+  padding: 10px;
+  font-size: 22px;
+}
+
+.public-post img {
+  width: 50px;
+  margin-right: 15px;
+}
+.public-post {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 5px 0;
+}
+.public-post p {
+  border-right: 2px solid #000;
+  padding-right: 50px;
+  margin-bottom: 0px;
+  font-size: 20px;
+  color: #000;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.person-post p:last-child {
+  text-align: right;
+  max-width: 100%;
+  flex: 1;
+}
+.person-post {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+.delete.deleteactive + span.as {
+  visibility: visible;
+  opacity: 1;
+}
+span.as {
+  width: auto;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e2e2e2;
+  padding: 5px 10px;
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+}
+span.ash {
+  width: auto;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e2e2e2;
+  padding: 5px 10px;
+  opacity: 1;
+  visibility: visible;
+  cursor: pointer;
+}
+.blurPost {
+  filter: blur(25px);
+}
+
+.person-post p img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.person-post p span {
+  display: block;
+}
+.likecomment-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.likecomment-section .like-part p span {
+  background: #007bff;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+  margin-right: 10px;
+}
+.public-comments {
+  display: flex;
+  margin-top: 15px;
+}
+
+.public-comments .public-img img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+.publiccommentInner {
+  background: #e6eaed;
+  width: 100%;
+  border-radius: 15px;
+  padding: 10px 30px;
+}
+.publiccommentInner p,
+.publiccommentInner h5 {
+  margin: 0;
+}
+.publiccommentInner h5 {
+  font-weight: bold;
+  font-size: 18px;
+}
+.self-commnet textarea {
+  width: 100%;
+}
+.public-comments .mycomment {
+  width: 100%;
+}
+.public-comments .mycomment textarea {
+  border-radius: 15px;
+  background: #e6eaed;
+  border-color: transparent;
+  outline: none;
+  padding: 5px 30px;
+  resize: none;
+}
+.share {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.share p {
+  margin-bottom: 0;
+}
+.share p i {
+  font-size: 20px;
+  margin-right: 10px;
+}
+.load-commnet {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.load-commnet p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #8d8d8d;
+}
+.delete {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  color: #000;
+  cursor: pointer;
+}
+.general-setting {
+  width: 100%;
+}
+.profile-details {
+  display: flex;
+}
+.profile-details .profile-label {
+  max-width: 20%;
+  flex: 0 0 20%;
+}
+.profile-details .profile-name {
+  max-width: 60%;
+  flex: 0 0 60%;
+}
+.general-setting {
+  background: #007bff;
+}
+.profile-details p,
+.profile-details label,
+.profile-details a {
+  color: #fff;
+}
+.profile-label label {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 21px;
+}
+.profile-inner h1 {
+  color: #fff;
+  padding-bottom: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #fff;
+  margin-bottom: 30px;
+}
+.account-details .profile-details {
+  border-bottom: 1px solid #3e5fa2;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.account-details .profile-details p,
+.account-details .profile-details label,
+.account-details .profile-details a {
+  margin-bottom: 0;
+}
+.change-background {
+  width: 100%;
+  background: #007bff;
+}
+.change-background .heading {
+  text-align: center;
+  margin-top: 50px;
+}
+.change-background .heading h1 {
+  color: #fcbe4e;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.change-background .people-all-comment p {
+  color: #fff;
+}
+.change-background .person-post p {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.change-background .person-post p span {
+  font-weight: normal;
+}
+.change-background .share {
+  border-color: #fff;
+}
+.change-background .publiccommentInner p {
+  color: #151515;
+}
+.change-background .like-part p span {
+  background: #fff;
+  color: #007bff;
+}
+.profile-action a:hover {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.profile-button {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 22px;
+}
+.profile-button a:hover {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 22px;
+}
+footer {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+}
+
+footer p {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+.profile {
+  width: 100%;
+  position: relative;
+  background: #007bff;
+}
+
+@media (max-width: 767px) {
+  .general-setting .profile-details {
+    flex-direction: column;
+  }
+  .general-setting .profile-label label {
+    font-size: 25px;
+  }
+  .general-setting .profile-details p,
+  .general-setting .profile-details a {
+    font-size: 22px;
+  }
+  .profile-details p {
+    padding: 10px 0;
+    margin: 0;
+  }
+
+  .main-body {
+    margin-top: 0;
+  }
+  .main-body {
+    padding-left: 0;
+  }
+  .sidebar {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .post-area textarea {
+    width: 80%;
+  }
+  .public-post p {
+    padding-right: 10px;
+  }
+  .dashboard {
+    position: relative;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar {
+    overflow: inherit;
+    top: 0;
+  }
+  .sidebar a {
+    float: left;
+  }
+  div.content {
+    margin-left: 0;
+    height: auto;
+  }
+}
+
+@media (max-width: 466px) {
+  .public-post {
+    flex-direction: column;
+  }
+  .public-post p {
+    margin: 10px 0;
+    border: none;
+  }
+  .sidebar a {
+    padding: 16px 10px;
+  }
+  .sidebar a img {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .sidebar a i {
+    height: 36px;
+  }
+}
+
+@media (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}

@@ -1,0 +1,298 @@
+/*********	add friends css start from here	**************/
+.add-friends ul li {
+  background: #e6eaed;
+  display: inline-block;
+  margin-right: 50px;
+  padding: 10px 25px;
+  border-radius: 30px;
+}
+
+.add-friends ul li a {
+  color: #0b0c0e;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.add-friends ul li:last-child {
+  margin-right: 0;
+}
+
+.add-friends ul {
+  border-top: 1px solid #151515;
+  display: inline-block;
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 1px solid #151515;
+  margin: 15px 0;
+}
+.add-friends .tab-pane h3 {
+  font-weight: bold;
+  color: #0a40aa;
+  font-size: 20px;
+}
+.friends-list-inner {
+  display: flex;
+  margin-top: 20px;
+}
+
+.friends-list-inner .friends-list-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.friends-list-inner .friends-list-details p {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 19px;
+}
+
+.friends-list-inner .friends-list-details p span {
+  display: block;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.friends-list-inner .friends-list-add {
+  width: 100%;
+  text-align: right;
+}
+
+.friends-list-inner .friends-list-add button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border-color: transparent;
+  font-weight: bold;
+  font-size: 22px;
+  background: #e6eaed;
+}
+.friends-list-inner:not(last-child) {
+  border-bottom: 1px solid #000;
+  padding-bottom: 20px;
+}
+.friends-heading {
+  position: relative;
+  height: 40px;
+}
+.friends-heading h1 {
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #0a40aa;
+  font-size: 25px;
+}
+.friends-heading h1 span {
+  text-align: right;
+  font-weight: normal;
+  font-size: 21px;
+  color: #878787;
+  display: inline-block;
+  position: relative;
+  float: right;
+  top: 10px;
+  cursor: pointer;
+}
+.search-Friends {
+  position: absolute;
+  top: 0;
+}
+.hide-nav {
+  display: none !important;
+}
+
+.search-Friends input {
+  width: 100%;
+  padding: 10px 50px;
+  border-radius: 50px;
+  background: #e6eaeb;
+  border-color: transparent;
+  outline: none;
+}
+.search-Friends {
+  width: 91%;
+
+  transition: all 0.3s ease-out;
+}
+.search-Friends-not {
+  width: 91%;
+  transform: translateY(-400%);
+  transition: all 0.3s ease-out;
+}
+.search-Friends i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+}
+.search-Friends a {
+  color: #010101;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -70px;
+  left: auto;
+}
+.search-Friends.findfriends {
+  transform: translateX(0);
+}
+#cancel {
+  text-decoration: none;
+}
+.friends-list-details p,
+.friends-list-details p span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loaderImage {
+  text-align: center;
+  margin-top: 100px;
+  display: block;
+}
+.notloaderImage {
+  text-align: center;
+  margin-top: 100px;
+  display: none;
+}
+.emptyResponseShow {
+  font-size: 20px;
+  margin-top: 20px;
+  display: block;
+}
+.emptyResponseHide {
+  font-size: 20px;
+  margin-top: 20px;
+
+  display: none;
+}
+
+/*********	add friends css end here	**************/
+
+@media (max-width: 767px) {
+  .main-body {
+    width: calc(100%);
+  }
+  .friends-list-details {
+    max-width: 45%;
+    flex: 0 0 45%;
+    overflow: hidden;
+  }
+  .add-friends ul li {
+    margin-right: 10px;
+    padding: 10px 17px;
+  }
+  .search-Friends {
+    width: 100%;
+    transform: translateY(-500%);
+  }
+  .friends-list-inner .friends-list-add button {
+    padding: 10px 8px;
+    font-size: 20px;
+  }
+
+  .general-setting .profile-details {
+    flex-direction: column;
+  }
+  .general-setting .profile-label label {
+    font-size: 25px;
+  }
+  .general-setting .profile-details p,
+  .general-setting .profile-details a {
+    font-size: 22px;
+  }
+  .profile-details p {
+    padding: 10px 0;
+    margin: 0;
+  }
+
+  .main-body {
+    margin-top: 0;
+  }
+  .main-body {
+    padding-left: 0;
+  }
+  .sidebar {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .post-area textarea {
+    width: 80%;
+  }
+  .public-post p {
+    padding-right: 10px;
+  }
+  .dashboard {
+    position: relative;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar {
+    overflow: inherit;
+    top: 0;
+  }
+  .sidebar a {
+    float: left;
+  }
+  div.content {
+    margin-left: 0;
+    height: auto;
+  }
+}
+
+@media (max-width: 466px) {
+  .add-friends ul li:not(last-child) {
+    margin-bottom: 10px;
+  }
+  .friends-heading h1 {
+    font-size: 25px;
+  }
+  .friends-heading h1 span {
+    top: 10px;
+  }
+  .friends-list-inner .friends-list-add button {
+    font-size: 16px;
+  }
+
+  .search-Friends input {
+    width: 80%;
+    padding: 10px 10px 10px 50px;
+  }
+  .search-Friends a {
+    right: 0;
+  }
+
+  .public-post {
+    flex-direction: column;
+  }
+  .public-post p {
+    margin: 10px 0;
+    border: none;
+  }
+  .sidebar a {
+    padding: 16px 10px;
+  }
+  .sidebar a img {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .sidebar a i {
+    height: 36px;
+  }
+}
+
+@media (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}

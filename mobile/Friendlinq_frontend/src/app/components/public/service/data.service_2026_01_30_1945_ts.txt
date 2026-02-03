@@ -1,0 +1,742 @@
+import { Injectable } from '@angular/core';
+import {
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpEventType,
+} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { HttpService } from 'src/app/shared/api/http.service';
+import { RearGuardAPImethod } from 'src/app/shared/constants/constant';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { SignUp } from '../../models/signup.model';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { Login, LoginWithGoogle } from '../../models/login.model';
+import { AuthService } from 'src/app/shared/api/auth.service';
+import { Chat, ChatMedia, SendMessage } from '../../models/chat.model';
+import { Router } from '@angular/router';
+import { ReportPost, SharePost } from '../../models/sharePost.model';
+
+@Injectable({ providedIn: 'root' })
+export class DataService {
+  private baseUrl = environment.rearGuardApiBaseUri;
+  private rearGuradNetBaseUri = environment.rearGuradNetBaseUri;
+  private baseUrlWithoutVersion = environment.rearGuardBaseUri;
+  private baseUrlChat = environment.rearGuardBaseChatUri;
+  private basePostUrl = environment.rearGuardBasePostUri;
+  private basePostVersionUrl = environment.rearGuardBasePostVersionUri;
+
+  private userDetails: any;
+  constructor(
+    private httpService: HttpService,
+    private notifyService: NotificationService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+  // tslint:disable-next-line:typedef
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 401) {
+      sessionStorage.clear();
+      this.router.navigateByUrl('/login');
+    } else {
+      this.notifyService.showError(error.error.message, 'Error');
+    }
+  }
+  private getAccessToken(): any {
+    this.userDetails = this.authService.getloggedUserDetails();
+    if (this.userDetails && this.userDetails.accessToken) {
+      return this.userDetails.accessToken;
+    }
+  }
+  public getHeaders(): any {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+  }
+  public getHeaderswithAuthorization(): any {
+    console.log(this.getAccessToken());
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        authorization: this.getAccessToken(),
+      }),
+    };
+  }
+
+  public getHeadersForImageupload(): any {
+    return {
+      headers: new HttpHeaders({
+        authorization: this.getAccessToken(),
+      }),
+    };
+  }
+  //#region SignUp API
+  signup(signuUp: SignUp): any {
+    const signupUrl = `${this.baseUrl}${RearGuardAPImethod.registration}`;
+    return this.httpService.post(signupUrl, signuUp, this.getHeaders()).pipe(
+      catchError((error) => {
+        if (
+          error.status === 401 ||
+          error.status === 403 ||
+          error.status === 400
+        ) {
+          // handle error
+          this.handleError(error);
+        }
+        return throwError(error);
+      })
+    );
+  }
+  //#endregion
+  //#region Login API
+  login(login: Login): any {
+    const loginUrl = `${this.baseUrl}${RearGuardAPImethod.login}`;
+    return this.httpService.post(loginUrl, login, this.getHeaders()).pipe(
+      catchError((error) => {
+        if (
+          error.status === 401 ||
+          error.status === 403 ||
+          error.status === 400
+        ) {
+          // handle error
+          this.handleError(error);
+        }
+        return throwError(error);
+      })
+    );
+  }
+  //#endregion
+  //#region Upload Profile Pic
+  uploadProfilePic(imageData: any): any {
+    const name = imageData.get('document').name;
+    const imageUploadUrl = `${this.baseUrl}${RearGuardAPImethod.uploadsProfilePic}`;
+    return this.httpService
+      .post(imageUploadUrl, imageData, this.getHeadersForImageupload())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+
+  //#region Forgot Password
+  forgotPassword(email: string): any {
+    return this.httpService
+      .post(
+        'https://rearguarddating.devdevelopment.net/api/Customer/sendforgotemail',
+        email,
+        this.getHeaders()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+
+  //#region Login API
+  loginWithGoogle(loginWithGoogle: LoginWithGoogle): any {
+    const loginwithGoogleUrl = `${this.baseUrl}${RearGuardAPImethod.loginWithGoogle}`;
+    return this.httpService
+      .post(loginwithGoogleUrl, loginWithGoogle, this.getHeaders())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+
+  ////#region Update Profile Data
+  saveProfileDate(profileData): any {
+    const saveProfileDataUrl = `${this.baseUrl}${RearGuardAPImethod.saveProfileData}`;
+    return this.httpService
+      .post(saveProfileDataUrl, profileData, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  ////#region Update Profile Data
+  searchFriend(searchData): any {
+    const searchDataUrl = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.searchData}`;
+    return this.httpService
+      .post(searchDataUrl, searchData, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Sent Friend request
+  sendFriendRequest(friendRequestData): any {
+    const friendRequestUrl = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.sendFriendRequest}`;
+    return this.httpService
+      .post(
+        friendRequestUrl,
+        friendRequestData,
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+
+  //#region get sent Friend request
+  getFriendRequest(friendRequestData): any {
+    const friendRequestUrl = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.getInvitations}`;
+    return this.httpService
+      .post(
+        friendRequestUrl,
+        friendRequestData,
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region LogOut
+  logout(): any {
+    const logouturl = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.logout}`;
+    return this.httpService
+      .put(logouturl, {}, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region LogOut
+  friendSuggestions(): any {
+    const friendSuggestions = `${this.rearGuradNetBaseUri}${RearGuardAPImethod.friendSuggestion}`;
+    return this.httpService
+      .post(friendSuggestions, { authorization: this.getAccessToken() }, {})
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Accept Friend request
+  acceptFriendRequest(id): any {
+    const acceptFriend = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.acceptFriendRequest}`;
+    return this.httpService
+      .post(
+        acceptFriend,
+        { userToId: id, status: 'Accepted' },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Make User Friend to Admin
+  // tslint:disable-next-line:typedef
+  MakeUserFriendWithAdmin(accessToken: string) {
+    const friendWithAdmin = `${this.rearGuradNetBaseUri}${RearGuardAPImethod.friendWithAdmin}`;
+    return this.httpService
+      .post(friendWithAdmin, { authorization: accessToken }, {})
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Get Profile of Another User
+  getFriendProfile(id): any {
+    const getProfileofAnotherUser = `${this.baseUrlWithoutVersion}${RearGuardAPImethod.getProfileofAnotherUser}`;
+    return this.httpService
+      .post(
+        getProfileofAnotherUser,
+        { userId: id },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get chat messages
+  getChatMessage(chatModel: Chat): any {
+    const queryString =
+      '?receiverId=' + chatModel.receiverId + '&skip=0&limit=0';
+    const getChatMessage = `${this.baseUrlChat}${RearGuardAPImethod.getChatMessage}${queryString}`;
+    return this.httpService
+      .get(getChatMessage, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get chat messages
+  sendMessage(sendMessage: SendMessage): any {
+    const sendMessageUrl = `${this.baseUrlChat}${RearGuardAPImethod.sendMessage}`;
+    return this.httpService
+      .post(sendMessageUrl, sendMessage, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get chat messages
+  sendChatMedia(chatMedia: any): any {
+    const chatMediaUrl = `${this.baseUrlChat}${RearGuardAPImethod.chatMedia}`;
+    return this.httpService
+      .post(chatMediaUrl, chatMedia, this.getHeadersForImageupload())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get friend post
+  getFriendPost(): any {
+    const getFriendPost = `${this.basePostUrl}${RearGuardAPImethod.getAllFriendsPost}`;
+    return this.httpService
+      .post(
+        getFriendPost,
+        {
+          skip: 0,
+          limit: 0,
+        },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get public post
+  getPublicPost(): any {
+    const getPublicPost = `${this.rearGuradNetBaseUri}${RearGuardAPImethod.getAllPublicPost}`;
+    return this.httpService
+      .post(
+        getPublicPost,
+        {
+          authorization: this.getAccessToken(),
+          skip: 0,
+          limit: 0,
+        },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Post Comment
+  postComment(id: string, comment: string): any {
+    const postComment = `${this.basePostVersionUrl}${RearGuardAPImethod.postComment}`;
+    return this.httpService
+      .post(
+        postComment,
+        {
+          postId: id,
+          commentText: comment,
+        },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region Post Comment
+  postLike(id: string, likeStatus: boolean): any {
+    const postComment = `${this.basePostVersionUrl}${RearGuardAPImethod.likeUnlikePost}`;
+    return this.httpService
+      .post(
+        postComment,
+        {
+          postId: id,
+          isLike: likeStatus,
+        },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get chat messages
+  createPost(postMedia: any): any {
+    const postMediaUrl = `${this.basePostVersionUrl}${RearGuardAPImethod.createPost}`;
+    return this.httpService
+      .post(postMediaUrl, postMedia, this.getHeadersForImageupload())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  getPostDetail(id: any): any {
+    const postDetailUrl = `${this.basePostUrl}${RearGuardAPImethod.getPostDetail}`;
+    return this.httpService
+      .post(postDetailUrl, { postId: id }, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  getPostComment(id: any): any {
+    const postCommentUrl = `${this.basePostUrl}${RearGuardAPImethod.getPostCommentDetail}`;
+    return this.httpService
+      .post(
+        postCommentUrl,
+        { postId: id, skip: 0, limit: 0 },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  deleteComment(id: any): any {
+    const deleteCommentUrl = `${this.basePostUrl}${RearGuardAPImethod.deleteComment}`;
+    return this.httpService
+      .post(
+        deleteCommentUrl,
+        { commenttId: id },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  getMyPost(): any {
+    const getMyPost = `${this.basePostUrl}${RearGuardAPImethod.getMyPost}`;
+    return this.httpService
+      .post(
+        getMyPost,
+        {
+          skip: 0,
+          limit: 0,
+        },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  getAnotherUsersPost(id: any): any {
+    const getAnotherUserPost = `${this.basePostUrl}${RearGuardAPImethod.getAnotherUserPost}`;
+    return this.httpService
+      .post(
+        getAnotherUserPost,
+        { userToId: id, skip: 0, limit: 0 },
+        this.getHeaderswithAuthorization()
+      )
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+  //#region get post detail
+  sharePost(sharePostModel: SharePost): any {
+    const sharePostURl = `${this.rearGuradNetBaseUri}${RearGuardAPImethod.sharePost}`;
+    return this.httpService.post(sharePostURl, sharePostModel, {}).pipe(
+      catchError((error) => {
+        if (
+          error.status === 401 ||
+          error.status === 403 ||
+          error.status === 400
+        ) {
+          // handle error
+          this.handleError(error);
+        }
+        return throwError(error);
+      })
+    );
+  }
+  //#endregion
+  //#region get post detail
+  reportPost(reportPostModel: ReportPost): any {
+    const reportPostURl = `${this.rearGuradNetBaseUri}${RearGuardAPImethod.reportPost}`;
+    return this.httpService.post(reportPostURl, reportPostModel, {}).pipe(
+      catchError((error) => {
+        if (
+          error.status === 401 ||
+          error.status === 403 ||
+          error.status === 400
+        ) {
+          // handle error
+          this.handleError(error);
+        }
+        return throwError(error);
+      })
+    );
+  }
+  //#endregion
+  //#region get post detail
+  deletePost(id: any): any {
+    const deletePostUrl = `${this.basePostUrl}${RearGuardAPImethod.deleteMyPost}`;
+    return this.httpService
+      .post(deletePostUrl, { postId: id }, this.getHeaderswithAuthorization())
+      .pipe(
+        catchError((error) => {
+          if (
+            error.status === 401 ||
+            error.status === 403 ||
+            error.status === 400
+          ) {
+            // handle error
+            this.handleError(error);
+          }
+          return throwError(error);
+        })
+      );
+  }
+  //#endregion
+}

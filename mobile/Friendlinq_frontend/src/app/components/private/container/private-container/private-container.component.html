@@ -1,0 +1,139 @@
+<div [ngClass]="isdashboardVisible">
+    <div class=" container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+
+                    <a class="navbar-brand" a routerLink="/dashboard"><img
+                            src="../../../../../assets/images/logo.png"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <form class="form-inline" [formGroup]="searchMasterForm">
+                            <input class="form-control mr-sm-2" type="search" formControlName="searchValue"
+                                placeholder="Search" aria-label="Search" name="searchValue" (input)="searchFriend()">
+                        </form>
+                        <ul class="navbar-nav m-auto center-icons">
+                            <li class="nav-item" (click)="redirectToDashboard()">
+                                <a class="nav-link" routerLink="/dashboard"><i class="fa fa-home"
+                                        aria-hidden="true"></i></a>
+                            </li>
+                            <li class="nav-item" (click)="redirectToFriend()">
+                                <a class="nav-link" routerLink="/friend"><i class="fa fa-user-plus"
+                                        aria-hidden="true"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"><i class="fa fa-users" aria-hidden="true"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                            </li>
+
+                        </ul>
+                        <ul class="navbar-nav m-auto center-icons" *ngIf="showCallButton">
+                            <li class="nav-item" (click)="Acceptcall()"> <button id="Accept"
+                                    class="btn success">Accept</button>
+                            </li>
+                            <!-- <li class="nav-item" (click)="DeclineCall()"> <button id="Decline"
+                                    class="btn danger">Decline</button>
+                            </li> -->
+                        </ul>
+                        <ul class="navbar-nav ml-auto profile-navbar">
+                            <li class="nav-item">
+                                <a class="nav-link"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                            </li>
+                            <li [ngClass]="dropDownNavMenu" style="cursor: pointer;" (click)="showNavMenu()">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{isPicExists}}">
+                                </a>
+                                <div [ngClass]="dropDownNavMenuChild" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item"><i class="fa fa-cog" aria-hidden="true"></i>
+                                        Settings <span><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+                                    <a class="dropdown-item"><i class="fa fa-question-circle" aria-hidden="true"></i>
+                                        Help <span><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" (click)="logout()"><i class="fa fa-cog"
+                                            aria-hidden="true"></i>
+                                        Log
+                                        Out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sidebar">
+    <a (click)="navigateToProfile()"> <img src="{{isPicExists}}"> {{
+        this.userDetails.fullName}}</a>
+    <a><span class="icons"><i class="fa fa-users" aria-hidden="true"></i></span> Groups</a>
+    <a class="fav"><span class="icons"><i class="fa fa-star" aria-hidden="true"></i></span> Favourite</a>
+</div>
+<div [ngClass]="isSearchResultVisible">
+    <div class="container">
+        <div class="row">
+            <div class="add-friends" style="width: 100% !important;">
+                <div class="tab-content">
+                    <div id="home">
+                        <h3 style="margin-top: 125px;margin-bottom: 40px;">Search Results</h3>
+                        <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+                        </div>
+                        <div [ngClass]="showResponseClass">No Records Found.
+                        </div>
+                        <div class="friends-list">
+                            <div class="friends-list-inner" *ngFor="let item of searchFriendList">
+                                <div class="friends-list-image" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <img src="{{imageURl}}/{{item.imageURL.thumbnail}}">
+                                </div>
+                                <div class="friends-list-details" style="cursor: pointer;"
+                                    (click)="openFriendProfile(item,'No')">
+                                    <p>{{item.fullName}}
+                                        <span class="emailid">{{item.email}}</span>
+                                    </p>
+                                </div>
+                                <div class="friends-list-add" *ngIf="!item.isFriendRequestSend && !item.isFriend">
+                                    <button (click)="AddFriend(item)">Add Friend</button>
+                                </div>
+                                <div class="friends-list-add" *ngIf="item.isFriendRequestSend">
+                                    Friend Request Sent.
+                                </div>
+                                <div class="friends-list-add" *ngIf="item.isFriend">
+                                    Friends.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="isSearchTabVisible">
+
+    <router-outlet></router-outlet>
+</div>
+
+<!-- <footer>
+        <div class="footer-section">
+            <div class="container-fluid rem-pad">
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="footer-bottom text-center">
+                            <p>Loream Ipsum 2012 - 2016. All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer> -->

@@ -1,0 +1,46 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+  // This holds the data you type into the boxes
+  loginData = {
+    email: '',
+    password: ''
+  };
+
+  passwordVisible: boolean = false;
+  rememberMe: boolean = false;
+
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+  }
+
+  togglePassword() {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
+  onLogin() {
+    // This checks if you actually typed something
+    if (this.loginData.email && this.loginData.password) {
+      console.log('Login attempt for:', this.loginData.email);
+      // This is where the actual connection to AWS happens
+    } else {
+      alert('Please enter your credentials');
+    }
+  }
+
+  onSignUp() {
+    this.router.navigate(['/signup']);
+  }
+
+  forgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
+}

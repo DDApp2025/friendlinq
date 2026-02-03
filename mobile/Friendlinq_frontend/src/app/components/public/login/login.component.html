@@ -1,0 +1,33 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <div class="logo-box">
+      <img src="assets/images/friendlinq_logo.png" alt="FriendLinq" class="logo-img">
+    </div>
+
+    <form (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <input type="email" name="email" [(ngModel)]="loginData.email" placeholder="Email Address" class="form-control" required>
+      </div>
+
+      <div class="form-group password-wrapper">
+        <input [type]="passwordVisible ? 'text' : 'password'" name="password" [(ngModel)]="loginData.password" placeholder="Password" class="form-control" required>
+        <span class="toggle-eye" (click)="togglePassword()">👁️</span>
+      </div>
+
+      <div class="options-row">
+        <a (click)="forgotPassword()" class="forgot-link">Forgot Password ?</a>
+        <div class="remember-me">
+          <input type="checkbox" id="remMe" name="rememberMe" [(ngModel)]="rememberMe">
+          <label for="remMe">Remember Me</label>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="btn btn-login">Login</button>
+        <button type="button" class="btn btn-signup" (click)="onSignUp()">Sign Up</button>
+      </div>
+    </form>
+
+    <p class="footer-msg">Join others finding connections on FriendLinq</p>
+  </div>
+</div>

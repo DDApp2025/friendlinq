@@ -1,0 +1,12 @@
+node_modules/
+.env
+build/
+dist/
+.cache/
+# Big archives / binaries
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+

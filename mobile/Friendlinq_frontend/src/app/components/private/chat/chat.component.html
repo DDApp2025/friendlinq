@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="row chat-body">
+        <div class="col-md-12 col-12">
+            <div [ngClass]="showloader"> <img src="../../../../assets/images/loading.gif">
+            </div>
+            <!--	all people 	-->
+            <div [ngClass]="chatScreen">
+                <div class="people-list" id="all-people-list">
+                    <div class="search">
+                        <input type="text" placeholder="search" (input)="searchFriend($event)" />
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <ul class="list list-inline">
+                        <li class="clearfix" *ngFor="let item of friendsList" (click)="loadFriend(item)">
+                            <img src="{{imageUrl}}/{{item.imageURL.thumbnail}}" height="60px" width="60px">
+                            <div class="about">
+                                <div class="name">{{item.fullName}}</div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--	chat display-->
+                <div class="chat">
+                    <div class="chat-header clearfix">
+                        <span id="left"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+
+                        <img style="border-radius: 50%;" src="{{imageUrl}}/{{this.firstFriend.imageURL.thumbnail}}"
+                            height="60px" width="60px" />
+
+                        <div class="chat-about">
+                            <div class="chat-with">Chat with {{this.firstFriend.fullName}}</div>
+                            <!-- <div class="chat-num-messages">Online</div> -->
+                        </div>
+                        <div class="calling-option">
+                            <p><a (click)="navigateToAudio()" style="cursor: pointer;"><i class="fa fa-phone"
+                                        aria-hidden="true"></i></a>
+                                <a (click)="navigateToVideo()" style="cursor: pointer;"> <i class="fa fa-video-camera"
+                                        aria-hidden="true"></i></a>
+                            </p>
+
+
+                        </div>
+
+                    </div> <!-- end chat-header -->
+
+                    <div #scroll class="chat-history">
+                        <ul class="list-inline">
+                            <li *ngFor="let item of chatMessagesList">
+                                <ul class="list-inline" *ngIf="item.senderId._id===userDetails._id">
+                                    <li class="clearfix">
+                                        <div class="message-data align-right">
+                                            <span class="message-data-time">{{ item.createdAt | date :'h:mm a dd-MMM-yy'
+                                                }}</span>
+                                            &nbsp;
+                                            &nbsp;
+                                            <span class="message-data-name">{{userDetails.fullName}}</span> <i
+                                                class="fa fa-circle me"></i>
+
+                                        </div>
+                                        <div class="message other-message float-right"
+                                            *ngIf="item.textMessage !== null">
+                                            {{item.textMessage}}
+                                        </div>
+                                        <div class="message other-message float-right"
+                                            *ngIf="item.imageURL.original !== null && item.textMessage === null">
+                                            <img style="border-radius: 0;width: 200px;"
+                                                src="{{imageUrl}}/{{item.imageURL.original}}" alt="avatar" />
+                                        </div>
+                                        <div class="message other-message float-right" *ngIf="item.videoURL !== null ">
+
+                                            <video width="420" height="345" controls>
+                                                <source src="{{imageUrl}}/{{item.videoURL}}" type="video/mp4">
+                                            </video>
+                                        </div>
+                                        <div class="message other-message float-right"
+                                            *ngIf="item.audioURL !== null && item.textMessage === null && item.videoURL === null && item.imageURL.original === null">
+
+                                            <audio width=" 420" height="345" controls>
+                                                <source src="{{imageUrl}}/{{item.audioURL}}" type="video/mp4">
+                                            </audio>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                                <ul class="list-inline" *ngIf="item.receiverId._id===userDetails._id">
+                                    <li>
+                                        <div class="message-data">
+                                            <img src="{{imageUrl}}/{{item.senderId.imageURL.thumbnail}}"
+                                                alt="avatar8" />
+                                        </div>
+
+                                        <div class="message my-message" *ngIf="item.textMessage !== null">
+                                            {{item.textMessage}}
+                                        </div>
+                                        <div class="message my-message"
+                                            *ngIf="item.imageURL.original !== null && item.textMessage === null">
+                                            <img style="border-radius: 0;width: 200px;"
+                                                src="{{imageUrl}}/{{item.imageURL.original}}" alt="avatar" />
+                                        </div>
+                                        <div class="message my-message" *ngIf="item.videoURL !== null ">
+
+                                            <video width="420" height="345" controls>
+                                                <source src="{{imageUrl}}/{{item.videoURL}}" type="video/mp4">
+                                            </video>
+                                        </div>
+                                        <div class="message my-message"
+                                            *ngIf="item.audioURL !== null && item.textMessage === null && item.videoURL === null && item.imageURL.original === null">
+
+                                            <audio width=" 420" height="345" controls>
+                                                <source src="{{imageUrl}}/{{item.audioURL}}" type="video/mp4">
+                                            </audio>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div> <!-- end chat-history -->
+
+                    <div class="chat-message clearfix">
+                        <div class="send">
+                            <div class="send-option">
+                                <span><a (click)="onClick()"><i class="fa fa-plus" aria-hidden="true"></i>
+                                        <input type="file" #fileUpload id="fileUpload" (click)="onClick()"
+                                            name="fileUpload" accept="image/*" style="display:none;" /> </a> <a
+                                        (click)="startRecording()" *ngIf="!isRecordingStop"> <i class="fa fa-microphone"
+                                            aria-hidden="true"></i></a>
+                                    <a *ngIf="isRecordingStop" (click)="stopRecording()"> <i class="fa fa-stop"
+                                            aria-hidden="true"></i></a>
+                                </span>
+
+                            </div>
+
+                            <textarea name="message-to-send"
+                                *ngIf="(format!=='image' && format!=='video' && format!=='recording')"
+                                [(ngModel)]="message" id="message-to-send" placeholder="Type your message" rows="3"
+                                (keyup.enter)="sendMessage()"></textarea>
+
+                            <p [ngClass]="preview">
+                                <img src="{{imageSrc}}" *ngIf="format==='image'" height="110px" width="400px"
+                                    style="margin:15px 15px 15px 15px" />
+                                <video src="{{imageSrc}}" *ngIf="format==='video'" height="110px" width="400px"
+                                    controls></video>
+
+                                <audio *ngIf="!isRecording && blobUrl" style="margin:10px 10px 10px 10px" controls>
+                                    <source [src]="blobUrl" type="audio/webm">
+                                </audio>
+                            </p>
+
+
+                            <button *ngIf="format!=='image' && format!=='video' && format!=='recording'"
+                                (click)=" sendMessage()"><img src="../../../../assets/images/arrow.png"></button>
+                            <button *ngIf="format==='image' || format==='video' || format==='recording'"
+                                (click)=" sendFile()" (keyup.enter)="sendFile()"><img
+                                    src="../../../../assets/images/arrow.png"></button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

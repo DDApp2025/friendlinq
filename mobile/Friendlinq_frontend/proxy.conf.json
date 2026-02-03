@@ -1,0 +1,9 @@
+{
+  "/api": {
+    "target": "https://natural.friendlinq.com",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+

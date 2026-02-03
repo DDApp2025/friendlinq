@@ -1,0 +1,44 @@
+<a class="close-button" (click)="closeDialog()"><i class="fa fa-close" style="color: #fff"></i></a>
+
+<mat-dialog-content>
+
+    <div class="row row-margin">
+        <div class="col-md-12 col-12">
+
+            <div class="post">
+                <div class="post-img">
+                    <img src="{{imageUrl}}/{{userDetails.imageURL.original}}">
+                </div>
+                <div class="fake-input" *ngIf="postDetail.imageURL.original !== null">
+                    <img src="{{imageUrl}}/{{postDetail.imageURL.original}}">
+                </div>
+                <div class="fake-input" *ngIf="postDetail.videoURL !== null">
+                    <video style="height: 95px; width: 100px; margin-left: 5px; margin-top: 5px;"
+                        src="{{imageUrl}}/{{postDetail.videoURL}}" controls> </video>
+
+                </div>
+                <div class="post-area" *ngIf="postDetail.imageURL.original !== null || postDetail.videoURL !== null">
+                    <textarea name="postContent" [(ngModel)]="postComment"></textarea>
+                </div>
+                <div class="post-area-nomargin"
+                    *ngIf="postDetail.imageURL.original === null && postDetail.videoURL === null">
+                    <textarea name="postContent" [(ngModel)]="postComment"></textarea>
+                </div>
+            </div>
+
+            <div class="post-public">
+                <form [formGroup]="genderForm">
+                    <p><input type="radio" formControlName="postType" value="Friend_Only"> Friends</p>
+                    <p><input type="radio" formControlName="postType" value="Public"> Public</p>
+                </form>
+
+            </div>
+            <div class="public-post">
+
+                <button (click)="sharePost(postDetail)">Share Post on your Timeline</button>
+
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
