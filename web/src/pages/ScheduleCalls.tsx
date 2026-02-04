@@ -1,15 +1,58 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { getAllCalls } from '../api/scheduleCalls'
+import type { ScheduleCallItem } from '../api/scheduleCalls'
 import './ScheduleCalls.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
 
+function formatDate(s?: string): string {
+  if (!s) return ''
+  try {
+    const d = new Date(s)
+    return d.toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })
+  } catch {
+    return s
+  }
+}
+
 export default function ScheduleCalls() {
   const navigate = useNavigate()
-  const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-  if (!raw) {
-    navigate('/login', { replace: true })
-    return null
-  }
+  const [token, setToken] = useState<string | null>(null)
+  const [list, setList] = useState<ScheduleCallItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
+    if (!raw) {
+      navigate('/login', { replace: true })
+      return
+    }
+    try {
+      const u = JSON.parse(raw) as { accessToken?: string }
+      setToken(u.accessToken ?? null)
+    } catch {
+      navigate('/login', { replace: true })
+    }
+  }, [navigate])
+
+  useEffect(() => {
+    if (!token) return
+    setLoading(true)
+    setError(null)
+    getAllCalls(token)
+      .then((res) => {
+        if (res.message === 'Success') {
+          const data = res.data
+          setList(Array.isArray(data) ? data : [])
+        }
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
+      .finally(() => setLoading(false))
+  }, [token])
+
+  if (!token) return null
 
   return (
     <div className="schedule-calls-wrapper">
@@ -18,7 +61,34 @@ export default function ScheduleCalls() {
         <h1>Schedule Calls</h1>
       </header>
       <main className="schedule-calls-main">
-        <p className="schedule-calls-placeholder">Schedule calls – full implementation in next iteration.</p>
+        {error && (
+          <div className="schedule-calls-error" role="alert">
+            {error}
+          </div>
+        )}
+        {loading ? (
+          <p className="schedule-calls-loading">Loading…</p>
+        ) : list.length === 0 ? (
+          <p className="schedule-calls-placeholder">No scheduled calls. Schedule a call from the app when available.</p>
+        ) : (
+          <ul className="schedule-calls-list">
+            {list.map((item) => (
+              <li key={item._id ?? ''} className="schedule-calls-item">
+                <h3 className="schedule-calls-item-title">{item.title ?? 'Call'}</h3>
+                <p className="schedule-calls-item-date">{formatDate(item.scheduleDate)}</p>
+                {item.memberNames?.length ? (
+                  <p className="schedule-calls-item-members">With: {item.memberNames.join(', ')}</p>
+                ) : null}
+                {item.inviteLink && (
+                  <a href={item.inviteLink} target="_blank" rel="noopener noreferrer" className="schedule-calls-item-link">
+                    Join link
+                  </a>
+                )}
+                {item.isEnded && <span className="schedule-calls-item-ended">Ended</span>}
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
     </div>
   )

@@ -28,21 +28,17 @@
 | 18 | `/groups/create` | CreateGroup | ✓ | No | No – uses createGroup |
 | 19 | `/groups/:groupId` | GroupDetail | ✓ | **Yes** – placeholder text only | **Yes** – no getGroupDetails / getGroupPost; backend has `/api/postGroup/getGroupDetails` |
 | 20 | `/groups/:groupId/members` | GroupMembers | ✓ | **Yes** – placeholder text only | **Yes** – no getGroupMembers; backend getGroupDetails may return member list |
-| 21 | `/portfolio` | Portfolio | ✓ | **Yes** – placeholder only | **Yes** – no backend endpoint in web API layer |
-| 22 | `/nearby` | NearbyUsers | ✓ | **Yes** – placeholder only | **Yes** – no backend endpoint in web API layer |
-| 23 | `/schedule-calls` | ScheduleCalls | ✓ | **Yes** – placeholder only | **Yes** – no backend endpoint in web API layer |
+| 21 | `/portfolio` | Portfolio | ✓ | No | No – uses getMyPortfolio, deleteMyPortfolio (api/portfolio.ts) |
+| 22 | `/nearby` | NearbyUsers | ✓ | **Yes** – placeholder only | No backend route in repo – left as placeholder |
+| 23 | `/schedule-calls` | ScheduleCalls | ✓ | No | No – uses getAllCalls (api/scheduleCalls.ts) |
 
 ---
 
 ## Summary
 
 - **Renders:** All 26 screens render (DEV mode + fake user in sessionStorage).
-- **Uses fake data:** 5 screens — Dashboard (feed), GroupDetail, GroupMembers, Portfolio, NearbyUsers, ScheduleCalls.
-- **Missing API wiring:**  
-  - **Dashboard:** use getFriendFeed instead of local fake posts.  
-  - **GroupDetail:** wire getGroupDetails (and optionally getGroupPost).  
-  - **GroupMembers:** wire from getGroupDetails response or dedicated members endpoint if backend has one.  
-  - **Portfolio / NearbyUsers / ScheduleCalls:** no API client in `web/src/api`; need to confirm backend routes and add minimal client if they exist.
+- **Uses fake data:** 1 screen — NearbyUsers (no backend route in repo; left as placeholder).
+- **Missing API wiring:** None. Dashboard, GroupDetail, GroupMembers, Portfolio, and ScheduleCalls are wired. NearbyUsers has no backend endpoint in the codebase.
 
 ---
 
@@ -79,4 +75,16 @@ Done:
 API changes:
 - **web/src/api/groups.ts**: added getGroupDetails (POST /api/postGroup/getGroupDetails), getMemberOfGroup (POST /api/v1/postGroup/getMemberOfGroup), GroupDetailsResponseData, GetMemberOfGroupResponseData.
 
-Remaining (verify only, no wiring): Friends, PostDetail, CreatePost, ChatList, ChatConversation, Notifications, Settings, ChangePassword, Wallpapers. Advanced: Portfolio, NearbyUsers, ScheduleCalls when backend exists.
+Remaining (verify only, no wiring): Friends, PostDetail, CreatePost, ChatList, ChatConversation, Notifications, Settings, ChangePassword, Wallpapers — all already wired. Portfolio and ScheduleCalls wired in this pass. NearbyUsers: no backend route; left as placeholder.
+
+---
+
+## Git workflow (mandatory after each section)
+
+After each screen or logical section is done and builds:
+
+1. `git add <files changed>`
+2. `git commit -m "<short message>"`
+3. `git push`
+
+Do not skip. Each section must end with a successful push.
