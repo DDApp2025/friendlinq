@@ -25,6 +25,8 @@ export default function CreatePost() {
   const [content, setContent] = useState('')
   const [mediaFile, setMediaFile] = useState<File | null>(null)
   const [isVideo, setIsVideo] = useState(false)
+  const [userAvatar, setUserAvatar] = useState('')
+  const [audience, setAudience] = useState<'FRIEND_ONLY' | 'Public'>('FRIEND_ONLY')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

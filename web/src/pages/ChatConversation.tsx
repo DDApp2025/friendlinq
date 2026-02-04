@@ -32,16 +32,17 @@ export default function ChatConversation() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string; _id?: string }
       setToken(u.accessToken ?? null)
       setCurrentUserId(u._id ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
@@ -81,7 +82,7 @@ export default function ChatConversation() {
     const text = input.trim()
     setInput('')
     setSending(true)
-    sendChatMessage(userId, text, token)
+    sendChatMessage(userId, text, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           const chatData = res.data?.chatData
@@ -101,7 +102,8 @@ export default function ChatConversation() {
       .finally(() => setSending(false))
   }
 
-  if (!token) return null
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+  if (!token && !import.meta.env.DEV) return null
   if (!userId) {
     navigate('/chat', { replace: true })
     return null
@@ -109,9 +111,15 @@ export default function ChatConversation() {
 
   return (
     <div className="chat-conv-wrapper">
-      <header className="chat-conv-header">
+      <header className="chat-conv-header fl-header">
         <Link to="/chat">← Back</Link>
-        <h1>{otherUser?.fullName ?? 'Chat'}</h1>
+        <div className="chat-conv-header-center">
+          <h1 className="chat-conv-header-title">Chat with {otherUser?.fullName ?? '…'}</h1>
+        </div>
+        <div className="chat-conv-calling-option">
+          <Link to={`/schedule-calls`} className="chat-conv-header-icon" title="Call">📞</Link>
+          <Link to={`/schedule-calls`} className="chat-conv-header-icon" title="Video">📹</Link>
+        </div>
       </header>
 
       <main className="chat-conv-main">

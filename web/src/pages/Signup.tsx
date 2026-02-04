@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signup as signupApi } from '../api/auth'
 import type { SignupPayload } from '../api/types'
-import './Signup.css'
 
 function generateGuid(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -70,16 +69,16 @@ export default function Signup() {
   }
 
   return (
-    <div className="signup-wrapper">
-      <div className="signup-container">
-        <div className="logo-box">
-          <img src="/friendlinq_logo.png" alt="Friendlinq" className="logo-img" />
+    <div className="auth-screen">
+      <div className="auth-inner">
+        <div className="logo-icon">
+          <img src="/friendlinq_logo.png" alt="Friendlinq" />
         </div>
 
         <form onSubmit={handleSubmit}>
-          <h1 className="signup-title">Create Your Friendlinq Account</h1>
+          <h1>Create Your FriendLinq Account</h1>
 
-          {error && <div className="signup-error" role="alert">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <div className="form-group">
             <input
@@ -108,7 +107,7 @@ export default function Signup() {
           <div className="form-group">
             <input
               type="password"
-              placeholder="Create a strong password (min 5 characters)"
+              placeholder="Create a strong password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-control"
@@ -137,14 +136,14 @@ export default function Signup() {
           </div>
 
           <div className="button-group">
-            <button type="submit" className="btn btn-signup-submit" disabled={loading}>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Creating account…' : 'Next'}
             </button>
           </div>
 
-          <p className="extra-text">
-            Already have an account? <span><Link to="/login">Login</Link></span>
-          </p>
+          <div className="extra-text">
+            <p>Already have an account? <span><Link to="/login" className="fl-link">Login</Link></span></p>
+          </div>
         </form>
       </div>
     </div>

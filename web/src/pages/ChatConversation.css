@@ -1,34 +1,54 @@
+/* RN look: green header, Chat with X, calling options */
 .chat-conv-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: var(--fl-gray-bg);
 }
 
-.chat-conv-header {
+.chat-conv-header.fl-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6eb;
 }
 
-.chat-conv-header a {
-  color: #2d5128;
+.chat-conv-header.fl-header a {
+  color: #fff;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
-.chat-conv-header a:hover {
+.chat-conv-header.fl-header a:hover {
   text-decoration: underline;
 }
 
-.chat-conv-header h1 {
+.chat-conv-header-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-conv-header-title {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #1c1e21;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-conv-calling-option {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-conv-header-icon {
+  font-size: 1.2rem;
+  opacity: 0.95;
 }
 
 .chat-conv-main {
@@ -74,7 +94,7 @@
 
 .chat-conv-msg.me {
   align-self: flex-end;
-  background: #2d5128;
+  background: var(--fl-green);
   color: #fff;
 }
 
@@ -127,7 +147,7 @@
 
 .chat-conv-send {
   padding: 12px 20px;
-  background: #2d5128;
+  background: var(--fl-green);
   color: #fff;
   border: none;
   border-radius: 24px;
@@ -137,7 +157,7 @@
 }
 
 .chat-conv-send:hover:not(:disabled) {
-  background: #244320;
+  background: var(--fl-green-dark);
 }
 
 .chat-conv-send:disabled {

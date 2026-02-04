@@ -37,26 +37,28 @@ export default function Friends() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token) return
+    if (!apiToken) return
     setLoading(true)
     setError(null)
     Promise.all([
-      getFriendList(0, 100, FRIEND_LIST_STATUS.INVITATION, token),
-      getFriendList(0, 100, FRIEND_LIST_STATUS.SEND, token),
-      getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, token),
+      getFriendList(0, 100, FRIEND_LIST_STATUS.INVITATION, apiToken),
+      getFriendList(0, 100, FRIEND_LIST_STATUS.SEND, apiToken),
+      getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, apiToken),
     ])
       .then(([invRes, sendRes, accRes]) => {
         if (invRes.message === 'Success' && invRes.data) setRequests(invRes.data.friendList ?? [])
@@ -65,12 +67,12 @@ export default function Friends() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
       .finally(() => setLoading(false))
-  }, [token])
+  }, [apiToken])
 
   const handleSearch = () => {
-    if (!token || !searchQuery.trim()) return
+    if (!apiToken || !searchQuery.trim()) return
     setSearching(true)
-    searchUser(searchQuery.trim(), 0, 30, token)
+    searchUser(searchQuery.trim(), 0, 30, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.customerData) {
           setSearchResults(res.data.customerData)
@@ -83,9 +85,10 @@ export default function Friends() {
   }
 
   const handleAddFriend = (userToId: string) => {
-    if (!token) return
+    const t = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+    if (!t) return
     setActionLoading(userToId)
-    sendFriendRequest(userToId, token)
+    sendFriendRequest(userToId, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setRequests((prev) => prev.filter((u) => u._id !== userToId))
@@ -99,9 +102,9 @@ export default function Friends() {
   }
 
   const handleAccept = (userToId: string) => {
-    if (!token) return
+    if (!apiToken) return
     setActionLoading(userToId)
-    acceptFriendRequest(userToId, 'ACCEPTED', token)
+    acceptFriendRequest(userToId, 'ACCEPTED', apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setRequests((prev) => prev.filter((u) => u._id !== userToId))
@@ -114,9 +117,9 @@ export default function Friends() {
   }
 
   const handleReject = (userToId: string) => {
-    if (!token) return
+    if (!apiToken) return
     setActionLoading(userToId)
-    acceptFriendRequest(userToId, 'REJECTED', token)
+    acceptFriendRequest(userToId, 'REJECTED', apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setRequests((prev) => prev.filter((u) => u._id !== userToId))
@@ -125,7 +128,7 @@ export default function Friends() {
       .finally(() => setActionLoading(null))
   }
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
 
   const displayList =
     tab === 'suggestions'
@@ -138,9 +141,10 @@ export default function Friends() {
 
   return (
     <div className="friends-wrapper">
-      <header className="friends-header">
+      <header className="friends-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Friends</h1>
+        <h1 className="friends-header-title">Add Friends</h1>
+        <span />
       </header>
 
       <main className="friends-main">

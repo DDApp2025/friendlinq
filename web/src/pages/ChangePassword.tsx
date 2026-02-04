@@ -16,10 +16,11 @@ export default function ChangePassword() {
 
   const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
   const token = raw ? (() => { try { return (JSON.parse(raw) as { accessToken?: string }).accessToken ?? null; } catch { return null; } })() : null
+  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
@@ -33,7 +34,7 @@ export default function ChangePassword() {
     }
     setLoading(true)
     setError(null)
-    changePassword(oldPassword, newPassword, token)
+    changePassword(oldPassword, newPassword, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setSuccess(true)
@@ -48,16 +49,17 @@ export default function ChangePassword() {
       .finally(() => setLoading(false))
   }
 
-  if (!token) {
+  if (!token && !import.meta.env.DEV) {
     navigate('/login', { replace: true })
     return null
   }
 
   return (
     <div className="change-password-wrapper">
-      <header className="change-password-header">
+      <header className="change-password-header fl-header">
         <Link to="/settings">← Back</Link>
-        <h1>Change Password</h1>
+        <h1 className="change-password-header-title">Change Password</h1>
+        <span />
       </header>
       <main className="change-password-main">
         {success && <div className="change-password-success">Password updated successfully.</div>}

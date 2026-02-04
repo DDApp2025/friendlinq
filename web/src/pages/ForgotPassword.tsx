@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { forgotPassword } from '../api/auth'
-import './ForgotPassword.css'
 
 export default function ForgotPassword() {
   const navigate = useNavigate()
@@ -37,31 +36,30 @@ export default function ForgotPassword() {
 
   if (success) {
     return (
-      <div className="forgot-wrapper">
-        <div className="forgot-container">
-          <h1 className="forgot-title">Check your email</h1>
+      <div className="auth-screen">
+        <div className="auth-inner forgot">
+          <h1>Forgot Password</h1>
           <p>We sent an OTP to your email. Redirecting to login…</p>
-          <Link to="/login" className="forgot-link">Back to Login</Link>
+          <p><Link to="/login" className="fl-link">Back to Login</Link></p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="forgot-wrapper">
-      <div className="forgot-container">
-        <h1 className="forgot-title">Forgot Password</h1>
-        <p className="forgot-subtitle">
-          Enter the email you used when you joined and we'll send you an OTP to reset your password.
-        </p>
-
+    <div className="auth-screen">
+      <div className="auth-inner forgot">
         <form onSubmit={handleSubmit}>
-          {error && <div className="forgot-error" role="alert">{error}</div>}
+          <h1>Forgot Password</h1>
+          <p>Enter the email you used when you joined and we'll send you an otp to reset your password.</p>
+
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <div className="form-group">
             <input
               type="email"
               placeholder="Email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
@@ -70,16 +68,16 @@ export default function ForgotPassword() {
             />
           </div>
 
-          <div className="button-group">
-            <button type="submit" className="btn btn-forgot-submit" disabled={loading}>
+          <div className="form-group button-div">
+            <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Sending…' : 'Confirm'}
             </button>
           </div>
         </form>
 
-        <p className="extra-text">
-          <Link to="/login">Back to Login</Link>
-        </p>
+        <div className="extra-text">
+          <p><Link to="/login" className="fl-link">Back to Login</Link></p>
+        </div>
       </div>
     </div>
   )

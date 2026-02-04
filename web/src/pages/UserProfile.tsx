@@ -43,9 +43,10 @@ export default function UserProfile() {
       return null
     }
   })()
+  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
 
   useEffect(() => {
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
@@ -56,7 +57,7 @@ export default function UserProfile() {
     }
     setLoading(true)
     setError(null)
-    getProfileOfAnotherUser(token, userId)
+    getProfileOfAnotherUser(apiToken, userId)
       .then((res) => {
         if (res.message === 'Success' && res.data?.customerData) {
           setUser(res.data.customerData)
@@ -67,7 +68,7 @@ export default function UserProfile() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load profile'))
       .finally(() => setLoading(false))
 
-    getAnotherUsersPost(userId, 0, 50, token)
+    getAnotherUsersPost(userId, 0, 50, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.myPost) {
           setPosts((res.data.myPost as Post[]).slice().reverse())
@@ -77,16 +78,17 @@ export default function UserProfile() {
       .finally(() => setPostsLoading(false))
   }, [navigate, token, userId])
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
   if (loading && !user) {
     return (
       <div className="user-profile-wrapper">
-        <header className="user-profile-header">
-          <Link to="/dashboard">← Back</Link>
-          <h1>Profile</h1>
+        <header className="user-profile-header fl-header">
+          <Link to="/friends">← Back</Link>
+          <h1 className="user-profile-header-title">Profile</h1>
+          <span />
         </header>
         <main className="user-profile-main">
-          <p className="user-profile-loading">Loading…</p>
+          <p className="screen-loading">Loading…</p>
         </main>
       </div>
     )
@@ -95,12 +97,13 @@ export default function UserProfile() {
   if (error && !user) {
     return (
       <div className="user-profile-wrapper">
-        <header className="user-profile-header">
-          <Link to="/dashboard">← Back</Link>
-          <h1>Profile</h1>
+        <header className="user-profile-header fl-header">
+          <Link to="/friends">← Back</Link>
+          <h1 className="user-profile-header-title">Profile</h1>
+          <span />
         </header>
         <main className="user-profile-main">
-          <div className="user-profile-error" role="alert">{error}</div>
+          <div className="screen-error" role="alert">{error}</div>
           <Link to="/dashboard" className="user-profile-back-link">Back to dashboard</Link>
         </main>
       </div>
@@ -111,9 +114,10 @@ export default function UserProfile() {
 
   return (
     <div className="user-profile-wrapper">
-      <header className="user-profile-header">
-        <Link to="/dashboard">← Back</Link>
-        <h1>Profile</h1>
+      <header className="user-profile-header fl-header">
+        <Link to="/friends">← Back</Link>
+        <h1 className="user-profile-header-title">{user?.fullName ?? 'Profile'}</h1>
+        <span />
       </header>
 
       <main className="user-profile-main">
@@ -158,11 +162,21 @@ export default function UserProfile() {
               <span className="user-profile-detail-label">Phone</span>
               <span className="user-profile-detail-value">{(user?.phoneNumber as string) ?? '—'}</span>
             </div>
+            {userId && (
+              <div className="user-profile-detail-row user-profile-actions">
+                <span className="user-profile-detail-label" />
+                <div className="user-profile-calling-option">
+                  <Link to={`/chat/${userId}`} className="user-profile-action-link" title="Chat">💬 Chat</Link>
+                  <Link to="/schedule-calls" className="user-profile-action-link" title="Call">📞 Call</Link>
+                  <Link to="/schedule-calls" className="user-profile-action-link" title="Video">📹 Video</Link>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
-        <section className="user-profile-section">
-          <h2 className="user-profile-section-title">Posts</h2>
+        <section className="user-profile-section user-profile-section-posts">
+          <h2 className="user-profile-section-title">Post</h2>
           {postsLoading ? (
             <p className="user-profile-posts-loading">Loading posts…</p>
           ) : posts.length === 0 ? (

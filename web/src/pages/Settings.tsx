@@ -6,16 +6,17 @@ const LOGGED_IN_USER_KEY = 'loggedInUser'
 export default function Settings() {
   const navigate = useNavigate()
   const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-  if (!raw) {
+  if (!raw && !import.meta.env.DEV) {
     navigate('/login', { replace: true })
     return null
   }
 
   return (
     <div className="settings-wrapper">
-      <header className="settings-header">
+      <header className="settings-header fl-header">
         <Link to="/profile">← Back</Link>
-        <h1>Settings</h1>
+        <h1 className="settings-header-title">Settings</h1>
+        <span />
       </header>
       <main className="settings-main">
         <nav className="settings-nav">

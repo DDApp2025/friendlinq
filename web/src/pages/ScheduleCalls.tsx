@@ -25,23 +25,25 @@ export default function ScheduleCalls() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token) return
+    if (!apiToken) return
     setLoading(true)
     setError(null)
-    getAllCalls(token)
+    getAllCalls(apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           const data = res.data
@@ -50,15 +52,16 @@ export default function ScheduleCalls() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
       .finally(() => setLoading(false))
-  }, [token])
+  }, [apiToken])
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
 
   return (
     <div className="schedule-calls-wrapper">
-      <header className="schedule-calls-header">
+      <header className="schedule-calls-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Schedule Calls</h1>
+        <h1 className="schedule-calls-header-title">Schedule Calls</h1>
+        <span />
       </header>
       <main className="schedule-calls-main">
         {error && (

@@ -23,22 +23,24 @@ export default function ChatList() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token) return
+    if (!apiToken) return
     setLoading(true)
-    getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, token)
+    getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.friendList) {
           setFriends(res.data.friendList)
@@ -46,15 +48,16 @@ export default function ChatList() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
       .finally(() => setLoading(false))
-  }, [token])
+  }, [apiToken])
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
 
   return (
     <div className="chat-list-wrapper">
-      <header className="chat-list-header">
+      <header className="chat-list-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Messages</h1>
+        <h1 className="chat-list-header-title">Messages</h1>
+        <span />
       </header>
       <main className="chat-list-main">
         {error && <div className="chat-list-error" role="alert">{error}</div>}

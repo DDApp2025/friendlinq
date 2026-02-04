@@ -1,32 +1,30 @@
+/* RN look: green header, people list */
 .chat-list-wrapper {
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: var(--fl-gray-bg);
 }
 
-.chat-list-header {
+.chat-list-header.fl-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6eb;
+  justify-content: space-between;
 }
 
-.chat-list-header a {
-  color: #2d5128;
+.chat-list-header.fl-header a {
+  color: #fff;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
-.chat-list-header a:hover {
+.chat-list-header.fl-header a:hover {
   text-decoration: underline;
 }
 
-.chat-list-header h1 {
+.chat-list-header-title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1c1e21;
+  color: #fff;
 }
 
 .chat-list-main {

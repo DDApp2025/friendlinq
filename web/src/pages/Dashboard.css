@@ -1,215 +1,507 @@
-.dashboard-wrapper {
+/* Dashboard – pixel-perfect match to React Native home screen
+   Model: green header, composer ("What's on your mind"), Friends/Community,
+   Photo | Video | See Friends Posts row, post cards, green bottom nav.
+   Colors: #006633 primary, #004d26 dark, #00873d light (from model styles.css) */
+
+.dashboard-home {
   min-height: 100vh;
-  background-color: #f0f2f5;
-  padding-bottom: 24px;
+  background: #f0f2f5;
+  padding-bottom: 76px;
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
 }
 
-.dashboard-header {
+/* ----- Header (green bar): logo left, profile right ----- */
+.dashboard-header-bar {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6eb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 14px 16px;
+  background: var(--fl-green);
+  box-shadow: 0 2px 8px rgba(0, 77, 38, 0.25);
 }
 
-.dashboard-header h1 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #1c1e21;
-}
-
-.dashboard-header nav {
-  display: flex;
-  gap: 12px;
-}
-
-.dashboard-header nav a {
-  color: #2d5128;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.dashboard-header nav a:hover {
-  text-decoration: underline;
-}
-
-.dashboard-main {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-.dashboard-loading,
-.dashboard-error,
-.dashboard-empty {
-  text-align: center;
-  padding: 32px 16px;
-}
-
-.dashboard-loading {
-  color: #65676b;
-  font-size: 0.95rem;
-}
-
-.dashboard-error {
-  background: #fee;
-  color: #c00;
-  border-radius: 8px;
-  padding: 16px;
-  font-size: 0.95rem;
-}
-
-.dashboard-empty {
-  color: #65676b;
-  font-size: 0.95rem;
-}
-
-.dashboard-empty p {
-  margin: 0;
-  color: #65676b;
-}
-
-/* Feed list */
-.feed-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.feed-item {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e4e6eb;
-}
-
-.feed-item-header {
+.dashboard-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  text-decoration: none;
+  color: #fff;
 }
 
-.feed-avatar {
-  width: 40px;
-  height: 40px;
+.dashboard-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.dashboard-brand-text {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.dashboard-profile-pic {
+  flex-shrink: 0;
+}
+
+.dashboard-profile-pic img,
+.dashboard-composer-avatar img {
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+}
+
+.dashboard-avatar-placeholder {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  display: block;
+}
+
+.dashboard-avatar-placeholder.small {
+  width: 60px;
+  height: 60px;
   background: #e4e6eb;
 }
 
-.feed-avatar[src=""],
-.feed-avatar:not([src]) {
-  visibility: hidden;
+/* ----- Composer (model: .post + .post-public + .public-post) ----- */
+.dashboard-composer {
+  background: #fff;
+  padding: 10px 16px 12px;
+  border-bottom: 1px solid #e4e6eb;
 }
 
-.feed-meta {
+.dashboard-post-row {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.feed-author {
+.dashboard-composer-avatar img,
+.dashboard-composer-avatar .dashboard-avatar-placeholder {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+}
+
+.dashboard-composer-input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 18px;
+  border-radius: 24px;
+  background: #f0f2f5;
+  color: #65676b;
+  font-size: 1rem;
+  font-weight: 400;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  text-align: left;
+}
+
+.dashboard-composer-input:hover {
+  background: #e4e6eb;
+}
+
+.dashboard-post-btn {
+  padding: 10px 24px;
+  background: var(--fl-green);
+  color: #fff;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-post-btn:hover {
+  background: var(--fl-green-light);
+}
+
+/* Friends / Community (model: .post-public) */
+.dashboard-post-public {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 10px;
+  padding: 4px 0;
+}
+
+.dashboard-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
   color: #1c1e21;
 }
 
-.feed-author-link {
-  color: #2d5128;
+.dashboard-radio-label input {
+  accent-color: var(--fl-green);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* Photo | Video | See Friends Posts (model: .public-post) */
+.dashboard-public-post {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 8px 0;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.dashboard-media-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 20px 6px 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  border-right: 2px solid #000;
+}
+
+.dashboard-media-option:hover {
+  color: var(--fl-green);
+}
+
+.dashboard-media-option:last-of-type {
+  border-right: none;
+}
+
+.dashboard-icon-photo::before {
+  content: "📷";
+  font-size: 1.25rem;
+}
+
+.dashboard-icon-video::before {
+  content: "🎬";
+  font-size: 1.25rem;
+}
+
+.dashboard-see-friends-btn {
+  background: var(--fl-green);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+
+.dashboard-see-friends-btn:hover {
+  background: var(--fl-green-light);
+}
+
+/* ----- Main feed ----- */
+.dashboard-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #f0f2f5;
+}
+
+.dashboard-loading,
+.dashboard-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: #65676b;
+  font-size: 1rem;
+}
+
+.dashboard-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.dashboard-people-all-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Post card (model: .person-post + .latest-post + .likecomment-section + .share) */
+.dashboard-person-post-wrap {
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e4e6eb;
+}
+
+.dashboard-person-post {
+  display: flex;
+  align-items: center;
+  padding: 20px 16px 12px;
+  position: relative;
+}
+
+.dashboard-post-author-avatar {
+  margin: 0;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.dashboard-post-author-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.dashboard-post-author-meta {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard-post-author-meta a {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1c1e21;
   text-decoration: none;
 }
 
-.feed-author-link:hover {
+.dashboard-post-author-meta a:hover {
   text-decoration: underline;
 }
 
-.feed-date {
+.dashboard-post-date {
   font-size: 0.8rem;
   color: #65676b;
+  display: block;
 }
 
-.feed-content {
+.dashboard-post-menu {
   margin: 0;
+  flex-shrink: 0;
+}
+
+.dashboard-ellipsis {
+  font-size: 1.25rem;
+  color: #65676b;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.dashboard-latest-post {
   padding: 0 16px 12px;
-  font-size: 0.95rem;
-  line-height: 1.4;
+}
+
+.dashboard-latest-post p {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  line-height: 1.45;
   color: #1c1e21;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-.feed-media {
+.dashboard-post-media-img,
+.dashboard-post-media-video {
   display: block;
   width: 100%;
-  max-height: 400px;
+  max-height: 420px;
   object-fit: contain;
   background: #000;
+  margin-top: 6px;
 }
 
-.feed-actions {
+.dashboard-post-media-video {
+  max-height: 380px;
+}
+
+/* Like/Comment counts row (model: .likecomment-section) */
+.dashboard-likecomment-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 8px 16px 0;
-  border-top: 1px solid #f0f2f5;
-}
-
-.feed-action-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 0.85rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-size: 0.9rem;
   color: #65676b;
-  cursor: pointer;
 }
 
-.feed-action-btn:hover:not(:disabled) {
-  color: #2d5128;
+.dashboard-like-part p,
+.dashboard-comment-part p {
+  margin: 0;
 }
 
-.feed-like.active {
-  color: #2d5128;
+.dashboard-like-icon {
+  margin-right: 6px;
+}
+
+/* Like / Comment / Share row (model: .share) */
+.dashboard-share {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 16px 14px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.dashboard-share-link {
+  font-size: 0.95rem;
   font-weight: 500;
-}
-
-.feed-comment-link {
+  color: #65676b;
   text-decoration: none;
-  color: #65676b;
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.feed-comment-link:hover {
-  color: #2d5128;
+.dashboard-share-link:hover {
+  color: var(--fl-green);
 }
 
-.feed-delete {
-  color: #c00;
-}
-
-.feed-delete:hover:not(:disabled) {
-  text-decoration: underline;
-}
-
-.feed-item .feed-stats {
+/* ----- Bottom nav (fixed green bar, white icons) ----- */
+.dashboard-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
-  gap: 16px;
-  padding: 10px 16px 12px;
-  font-size: 0.85rem;
-  color: #65676b;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 6px 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  background: var(--fl-green);
+  box-shadow: 0 -2px 12px rgba(0, 77, 38, 0.3);
 }
 
-.feed-item .feed-stats span {
-  cursor: default;
+.dashboard-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 6px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dashboard-nav-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dashboard-nav-item.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-nav-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.dashboard-nav-icon[data-icon="home"]::before {
+  content: "🏠";
+  font-size: 1.35rem;
+}
+
+.dashboard-nav-icon[data-icon="gallery"]::before {
+  content: "🖼";
+  font-size: 1.3rem;
+}
+
+.dashboard-nav-icon[data-icon="friend"]::before {
+  content: "👤";
+  font-size: 1.3rem;
+}
+
+.dashboard-nav-icon[data-icon="bell"]::before {
+  content: "🔔";
+  font-size: 1.25rem;
+}
+
+.dashboard-nav-icon[data-icon="chat"]::before {
+  content: "💬";
+  font-size: 1.2rem;
+}
+
+.dashboard-nav-icon[data-icon="groups"]::before {
+  content: "👥";
+  font-size: 1.2rem;
+}
+
+.dashboard-nav-icon[data-icon="call"]::before {
+  content: "📞";
+  font-size: 1.15rem;
+}
+
+.dashboard-nav-label {
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dashboard-public-post {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-media-option {
+    border-right: none;
+    border-bottom: 1px solid #e4e6eb;
+    padding: 10px 12px;
+  }
+
+  .dashboard-media-option:last-of-type {
+    border-bottom: none;
+  }
+
+  .dashboard-bottom-nav {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .dashboard-nav-label {
+    font-size: 0.65rem;
+  }
 }

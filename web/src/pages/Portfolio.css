@@ -1,6 +1,7 @@
-.portfolio-wrapper { min-height: 100vh; background: #f0f2f5; }
-.portfolio-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border-bottom: 1px solid #e4e6eb; }
-.portfolio-header a { color: #2d5128; text-decoration: none; }
-.portfolio-header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.portfolio-wrapper { min-height: 100vh; background: var(--fl-gray-bg); }
+.portfolio-header.fl-header { display: flex; align-items: center; justify-content: space-between; }
+.portfolio-header.fl-header a { color: #fff; text-decoration: none; }
+.portfolio-header.fl-header a:hover { text-decoration: underline; }
+.portfolio-header-title { margin: 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
 .portfolio-main { max-width: 600px; margin: 0 auto; padding: 16px; }
-.portfolio-placeholder { color: #65676b; margin: 0; }
+.portfolio-placeholder { color: var(--fl-gray-text); margin: 0; }

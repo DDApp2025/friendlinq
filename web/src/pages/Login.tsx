@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../api/auth'
 import type { LoginPayload } from '../api/types'
-import './Login.css'
 
 const REMEMBERED_EMAIL_KEY = 'rememberedEmail'
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -71,14 +70,14 @@ export default function Login() {
   }
 
   return (
-    <div className="login-wrapper">
-      <div className="login-container">
-        <div className="logo-box">
-          <img src="/friendlinq_logo.png" alt="Friendlinq" className="logo-img" />
+    <div className="auth-screen">
+      <div className="auth-inner">
+        <div className="logo-icon">
+          <img src="/friendlinq_logo.png" alt="Friendlinq" />
         </div>
 
         <form onSubmit={handleSubmit}>
-          {error && <div className="login-error" role="alert">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
           <div className="form-group">
             <input
               type="email"
@@ -114,7 +113,7 @@ export default function Login() {
           </div>
 
           <div className="options-row">
-            <Link to="/forgotpassword" className="forgot-link">Forgot Password ?</Link>
+            <Link to="/forgotpassword" className="fl-link">Forgot Password ?</Link>
             <div className="remember-me">
               <input
                 type="checkbox"
@@ -127,10 +126,10 @@ export default function Login() {
           </div>
 
           <div className="button-group">
-            <button type="submit" className="btn btn-login" disabled={loading}>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Logging in…' : 'Login'}
             </button>
-            <Link to="/signup" className="btn btn-signup">Sign Up</Link>
+            <Link to="/signup" className="btn btn-secondary">Sign Up</Link>
           </div>
         </form>
 

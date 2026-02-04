@@ -19,10 +19,11 @@ export default function GroupMembers() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     let token: string | null = null
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
@@ -31,13 +32,14 @@ export default function GroupMembers() {
       setLoading(false)
       return
     }
-    if (!token || !groupId) {
+    const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+    if (!apiToken || !groupId) {
       setLoading(false)
       return
     }
     setLoading(true)
     setError(null)
-    getMemberOfGroup(groupId, token)
+    getMemberOfGroup(groupId, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.groupMemberList) {
           setMembers(res.data.groupMemberList)
@@ -53,13 +55,14 @@ export default function GroupMembers() {
   }, [groupId, navigate])
 
   const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-  if (!raw) return null
+  if (!raw && !import.meta.env.DEV) return null
 
   return (
     <div className="group-members-wrapper">
-      <header className="group-members-header">
+      <header className="group-members-header fl-header">
         <Link to={groupId ? `/groups/${groupId}` : '/groups'}>← Back</Link>
-        <h1>Members</h1>
+        <h1 className="group-members-header-title">Members</h1>
+        <span />
       </header>
       <main className="group-members-main">
         {error && (

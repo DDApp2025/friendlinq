@@ -1,33 +1,41 @@
+/* RN look: green header, General Account Settings, Post section */
 .user-profile-wrapper {
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: var(--fl-gray-bg);
   padding-bottom: 24px;
 }
 
-.user-profile-header {
+.user-profile-header.fl-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6eb;
+  justify-content: space-between;
 }
 
-.user-profile-header a {
-  color: #2d5128;
+.user-profile-header.fl-header a {
+  color: #fff;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
-.user-profile-header a:hover {
+.user-profile-header.fl-header a:hover {
   text-decoration: underline;
 }
 
-.user-profile-header h1 {
+.user-profile-header-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1c1e21;
+  color: #fff;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-profile-back-link {
+  color: var(--fl-green);
+  text-decoration: none;
+  font-size: 0.95rem;
 }
 
 .user-profile-main {
@@ -53,13 +61,23 @@
   font-size: 0.9rem;
 }
 
-.user-profile-back-link {
-  color: #2d5128;
-  text-decoration: none;
-  font-size: 0.95rem;
+.user-profile-back-link:hover {
+  text-decoration: underline;
 }
 
-.user-profile-back-link:hover {
+.user-profile-calling-option {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.user-profile-action-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.user-profile-action-link:hover {
   text-decoration: underline;
 }
 
@@ -89,20 +107,63 @@
 }
 
 .user-profile-section {
-  background: #fff;
-  border-radius: 12px;
   padding: 20px 16px;
   margin-bottom: 16px;
-  border: 1px solid #e4e6eb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.user-profile-section-settings {
+  background: var(--fl-green);
+  color: #fff;
+}
+
+.user-profile-section-settings .user-profile-section-title {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  margin-bottom: 20px;
+}
+
+.user-profile-section-settings .user-profile-detail-label {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.user-profile-section-settings .user-profile-detail-value {
+  color: #fff;
+}
+
+.user-profile-section-posts {
+  background: var(--fl-green);
+  color: #fff;
+}
+
+.user-profile-section-posts .user-profile-section-title {
+  color: #fcbe4e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-profile-section-posts .user-profile-post-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.user-profile-section-posts .user-profile-post-author,
+.user-profile-section-posts .user-profile-post-content {
+  color: #fff;
+}
+
+.user-profile-section-posts .user-profile-post-date,
+.user-profile-section-posts .user-profile-post-stats {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .user-profile-section-title {
   margin: 0 0 16px;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1c1e21;
   padding-bottom: 8px;
+}
+
+.user-profile-section:not(.user-profile-section-settings):not(.user-profile-section-posts) .user-profile-section-title {
+  color: #1c1e21;
   border-bottom: 1px solid #f0f2f5;
 }
 

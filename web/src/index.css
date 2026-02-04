@@ -1,14 +1,328 @@
+/* ==========================================================================
+   FRIENDLINQ GLOBAL CSS – shared by all screens. Do not duplicate these
+   styles in per-screen CSS; use these class names and variables instead.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 * {
   box-sizing: border-box;
 }
 
+:root {
+  --fl-green: #006633;
+  --fl-green-dark: #004d26;
+  --fl-green-light: #00873d;
+  --fl-cream: #f5f5dc;
+  --fl-gray-bg: #f0f2f5;
+  --fl-gray-border: #e4e6eb;
+  --fl-gray-text: #65676b;
+  --fl-text: #1c1e21;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  color: #000;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   Auth screens (Login, Signup, ForgotPassword) – shared layout and components
+   -------------------------------------------------------------------------- */
+.auth-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--fl-cream) 0%, #e8e8d0 100%);
+  padding: 40px 20px;
+}
+
+.auth-inner {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auth-inner h1 {
+  color: var(--fl-green);
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0 0 10px;
+  padding-bottom: 10px;
+}
+
+.auth-inner .subtitle {
+  color: var(--fl-gray-text);
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.auth-inner.forgot form p {
+  color: #333;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 15px;
+  margin: 0 0 20px;
+}
+
+.logo-icon {
+  margin-bottom: 20px;
+}
+
+.logo-icon img {
+  width: 120px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 18px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  background: #fff;
+}
+
+.form-control:focus {
+  border-color: var(--fl-green);
+  box-shadow: 0 0 0 3px rgba(0, 102, 51, 0.1);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 48px;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.button-group,
+.form-group.button-div {
+  margin-top: 24px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px 40px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  min-height: 52px;
+  transition: background 0.3s ease;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--fl-green);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--fl-green-light);
+}
+
+.btn-primary:focus {
+  outline: 3px solid var(--fl-green-dark);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background: #728c6e;
+  color: #fff;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #5a6e57;
+}
+
+.form-error,
+.screen-error {
+  margin-bottom: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.password-mismatch {
+  display: block;
+  margin-top: 6px;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.remember-me label {
+  cursor: pointer;
+}
+
+.extra-text {
+  font-size: 18px;
+  color: #333;
+  margin: 15px 0 0;
+}
+
+.extra-text p {
+  margin: 0;
+}
+
+.fl-link {
+  color: var(--fl-green);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.fl-link:hover {
+  text-decoration: underline;
+}
+
+.footer-msg {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--fl-gray-text);
+}
+
+/* --------------------------------------------------------------------------
+   App screens – shared header, nav, cards, errors
+   -------------------------------------------------------------------------- */
+.fl-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--fl-green);
+  box-shadow: 0 2px 8px rgba(0, 77, 38, 0.25);
+}
+
+.fl-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.fl-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--fl-gray-border);
+}
+
+.fl-nav-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 6px 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  background: var(--fl-green);
+  box-shadow: 0 -2px 12px rgba(0, 77, 38, 0.3);
+}
+
+.fl-nav-bottom a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.fl-nav-bottom a:hover,
+.fl-nav-bottom a.active {
+  color: #fff;
+}
+
+/* Back / secondary links in app */
+.app-back {
+  color: var(--fl-green);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.app-back:hover {
+  text-decoration: underline;
+}
+
+/* Loading and empty states */
+.screen-loading,
+.screen-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--fl-gray-text);
+  font-size: 1rem;
 }

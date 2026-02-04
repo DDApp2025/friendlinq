@@ -21,23 +21,25 @@ export default function Portfolio() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token) return
+    if (!apiToken) return
     setLoading(true)
     setError(null)
-    getMyPortfolio(0, 50, token)
+    getMyPortfolio(0, 50, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data) {
           const list = (res.data as { myPortolio?: PortfolioItem[] }).myPortolio ?? []
@@ -63,13 +65,14 @@ export default function Portfolio() {
       .finally(() => setDeletingId(null))
   }
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
 
   return (
     <div className="portfolio-wrapper">
-      <header className="portfolio-header">
+      <header className="portfolio-header fl-header">
         <Link to="/profile">← Back</Link>
-        <h1>Portfolio</h1>
+        <h1 className="portfolio-header-title">Portfolio</h1>
+        <span />
       </header>
       <main className="portfolio-main">
         {error && (

@@ -23,6 +23,8 @@ import GroupMembers from './pages/GroupMembers'
 import Portfolio from './pages/Portfolio'
 import NearbyUsers from './pages/NearbyUsers'
 import ScheduleCalls from './pages/ScheduleCalls'
+import Gallery from './pages/Gallery'
+import NotFound from './pages/NotFound'
 
 // If it does NOT exist, tell me and I’ll adjust the import.
 export default function App() {
@@ -55,8 +57,11 @@ export default function App() {
       <Route path="/profile/:userId" element={<UserProfile />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/friends" element={<Friends />} />
+      <Route path="/gallery" element={<Gallery />} />
+      <Route path="/dev" element={<Gallery />} />
 
-      <Route path="*" element={<Navigate to={import.meta.env.DEV ? '/dashboard' : '/login'} replace />} />
+      {/* Unknown path only: do NOT use Navigate to /dashboard here or valid routes (e.g. /profile) can be missed and users sent to dashboard */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

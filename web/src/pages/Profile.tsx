@@ -48,9 +48,10 @@ export default function Profile() {
       return null
     }
   })()
+  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
 
   useEffect(() => {
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
@@ -65,16 +66,16 @@ export default function Profile() {
     }
     setLoading(true)
     setError(null)
-    getProfile(token)
+    getProfile(apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.customerData) {
-          setUser((prev) => ({ ...res.data!.customerData, accessToken: prev?.accessToken ?? token }))
+          setUser((prev) => ({ ...res.data!.customerData, accessToken: prev?.accessToken ?? apiToken }))
         }
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load profile'))
       .finally(() => setLoading(false))
 
-    getMyPost(0, 50, token)
+    getMyPost(0, 50, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.myPost) {
           setMyPosts(res.data.myPost)
@@ -126,13 +127,13 @@ export default function Profile() {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file || !token) return
+    if (!file || !apiToken) return
     e.target.value = ''
     setUploadLoading(true)
-    uploadProfilePic(token, file)
+    uploadProfilePic(apiToken, file)
       .then((res) => {
         if (res.message === 'Success' && res.data) {
-          const updated = { ...res.data, accessToken: token }
+          const updated = { ...res.data, accessToken: apiToken }
           sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(updated))
           setUser(updated)
         } else {
@@ -148,16 +149,17 @@ export default function Profile() {
     navigate('/login', { replace: true })
   }
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
   if (loading && !user) {
     return (
       <div className="profile-wrapper">
-        <header className="profile-header">
+        <header className="profile-header fl-header">
           <Link to="/dashboard">← Back</Link>
-          <h1>Profile</h1>
+          <h1 className="profile-header-title">Profile</h1>
+          <span />
         </header>
         <main className="profile-main">
-          <p className="profile-loading">Loading…</p>
+          <p className="screen-loading">Loading…</p>
         </main>
       </div>
     )
@@ -167,9 +169,10 @@ export default function Profile() {
 
   return (
     <div className="profile-wrapper">
-      <header className="profile-header">
+      <header className="profile-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Profile</h1>
+        <h1 className="profile-header-title">Profile</h1>
+        <span />
       </header>
 
       <main className="profile-main">
@@ -328,8 +331,8 @@ export default function Profile() {
           </div>
         </section>
 
-        <section className="profile-section">
-          <h2 className="profile-section-title">Posts</h2>
+        <section className="profile-section profile-section-posts">
+          <h2 className="profile-section-title">Post</h2>
           {postsLoading ? (
             <p className="profile-posts-loading">Loading posts…</p>
           ) : myPosts.length === 0 ? (

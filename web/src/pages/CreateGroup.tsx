@@ -31,16 +31,17 @@ export default function CreateGroup() {
       .finally(() => setLoading(false))
   }
 
-  if (!token) {
+  if (!token && !import.meta.env.DEV) {
     navigate('/login', { replace: true })
     return null
   }
 
   return (
     <div className="create-group-wrapper">
-      <header className="create-group-header">
+      <header className="create-group-header fl-header">
         <Link to="/groups">← Cancel</Link>
-        <h1>Create Group</h1>
+        <h1 className="create-group-header-title">Create Group</h1>
+        <span />
       </header>
       <main className="create-group-main">
         {error && <div className="create-group-error" role="alert">{error}</div>}

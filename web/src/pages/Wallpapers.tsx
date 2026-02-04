@@ -19,15 +19,16 @@ export default function Wallpapers() {
 
   const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
   const token = raw ? (() => { try { return (JSON.parse(raw) as { accessToken?: string }).accessToken ?? null; } catch { return null; } })() : null
+  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
 
   const handleSave = () => {
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
     setLoading(true)
     setError(null)
-    updateWallpaper(selected, token)
+    updateWallpaper(selected, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setError(null)
@@ -39,16 +40,17 @@ export default function Wallpapers() {
       .finally(() => setLoading(false))
   }
 
-  if (!token) {
+  if (!token && !import.meta.env.DEV) {
     navigate('/login', { replace: true })
     return null
   }
 
   return (
     <div className="wallpapers-wrapper">
-      <header className="wallpapers-header">
+      <header className="wallpapers-header fl-header">
         <Link to="/settings">← Back</Link>
-        <h1>Wallpapers</h1>
+        <h1 className="wallpapers-header-title">Wallpapers</h1>
+        <span />
       </header>
       <main className="wallpapers-main">
         {error && <div className="wallpapers-error" role="alert">{error}</div>}

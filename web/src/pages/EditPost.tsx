@@ -35,6 +35,18 @@ export default function EditPost() {
   })() : null
 
   useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
+      if (!raw) return
+      const u = JSON.parse(raw) as { imageURL?: { original?: string } }
+      const path = u?.imageURL?.original
+      setUserAvatar(path ? `https://natural.selectnaturally.com/${path}` : '')
+    } catch {
+      setUserAvatar('')
+    }
+  }, [])
+
+  useEffect(() => {
     if (!token || !postId) {
       if (!token && !import.meta.env.DEV) navigate('/login', { replace: true })
       return

@@ -14,36 +14,39 @@ export default function GroupsList() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token) return
-    getGroupList(0, 50, token)
+    if (!apiToken) return
+    getGroupList(0, 50, apiToken)
       .then((res) => {
         if (res.message === 'Success' && res.data?.groupList) {
           setGroups(res.data.groupList)
         }
       })
       .finally(() => setLoading(false))
-  }, [token])
+  }, [apiToken])
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
 
   return (
     <div className="groups-list-wrapper">
-      <header className="groups-list-header">
+      <header className="groups-list-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Groups</h1>
+        <h1 className="groups-list-header-title">Groups</h1>
+        <span />
         <Link to="/groups/create" className="groups-list-create">Create</Link>
       </header>
       <main className="groups-list-main">

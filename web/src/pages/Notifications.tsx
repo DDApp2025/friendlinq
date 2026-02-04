@@ -24,15 +24,16 @@ export default function Notifications() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string }
       setToken(u.accessToken ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
@@ -51,18 +52,20 @@ export default function Notifications() {
 
   const handleViewAll = () => {
     if (!token) return
-    viewAllNotifications(token).then((res) => {
+    viewAllNotifications(apiToken).then((res) => {
       if (res.message === 'Success') setList((prev) => prev.map((n) => ({ ...n, isView: true })))
     })
   }
 
-  if (!token) return null
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+  if (!token && !import.meta.env.DEV) return null
 
   return (
     <div className="notifications-wrapper">
-      <header className="notifications-header">
+      <header className="notifications-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Notifications</h1>
+        <h1 className="notifications-header-title">Notifications</h1>
+        <span />
       </header>
       <main className="notifications-main">
         {error && <div className="notifications-error" role="alert">{error}</div>}
