@@ -10,6 +10,7 @@ export default function EditPost() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [userAvatar, setUserAvatar] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -35,7 +36,7 @@ export default function EditPost() {
 
   useEffect(() => {
     if (!token || !postId) {
-      if (!token) navigate('/login', { replace: true })
+      if (!token && !import.meta.env.DEV) navigate('/login', { replace: true })
       return
     }
     setLoading(true)
@@ -85,51 +86,67 @@ export default function EditPost() {
       .finally(() => setSaving(false))
   }
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
   if (loading && !title && !error) {
     return (
       <div className="edit-post-wrapper">
-        <header className="edit-post-header">
-          <Link to="/dashboard">← Back</Link>
-          <h1>Edit Post</h1>
+        <header className="edit-post-header fl-header">
+          <Link to={postId ? `/post/${postId}` : '/dashboard'}>← Cancel</Link>
+          <h1 className="edit-post-title">Edit Post</h1>
+          <span />
         </header>
-        <main className="edit-post-main"><p>Loading…</p></main>
+        <main className="edit-post-main"><p className="screen-loading">Loading…</p></main>
       </div>
     )
   }
 
   return (
     <div className="edit-post-wrapper">
-      <header className="edit-post-header">
+      <header className="edit-post-header fl-header">
         <Link to={postId ? `/post/${postId}` : '/dashboard'}>← Cancel</Link>
-        <h1>Edit Post</h1>
+        <h1 className="edit-post-title">Edit Post</h1>
+        <span />
       </header>
       <main className="edit-post-main">
-        {error && (
-          <div className="edit-post-error" role="alert">{error}</div>
-        )}
-        <form onSubmit={handleSubmit} className="edit-post-form">
-          <label className="edit-post-label">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="edit-post-input"
-            placeholder="Post title"
-            maxLength={200}
-          />
-          <label className="edit-post-label">Content</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="edit-post-textarea"
-            rows={4}
-            maxLength={5000}
-          />
-          <button type="submit" className="edit-post-submit" disabled={saving || title.trim().length < 2}>
-            {saving ? 'Saving…' : 'Save'}
-          </button>
-        </form>
+        <section className="edit-post-composer dashboard-composer">
+          {error && (
+            <div className="edit-post-error screen-error" role="alert">{error}</div>
+          )}
+          <form onSubmit={handleSubmit} className="edit-post-form">
+            <div className="dashboard-post-row edit-post-row">
+              <div className="dashboard-composer-avatar">
+                {userAvatar ? (
+                  <img src={userAvatar} alt="" />
+                ) : (
+                  <div className="dashboard-avatar-placeholder" aria-hidden />
+                )}
+              </div>
+              <div className="edit-post-fields">
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="edit-post-input"
+                  placeholder="Post title"
+                  maxLength={200}
+                />
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className="edit-post-textarea"
+                  rows={4}
+                  placeholder="What's on your mind?"
+                  maxLength={5000}
+                />
+              </div>
+            </div>
+            <div className="edit-post-actions">
+              <button type="submit" className="dashboard-post-btn edit-post-submit" disabled={saving || title.trim().length < 2}>
+                {saving ? 'Saving…' : 'Save'}
+              </button>
+            </div>
+          </form>
+        </section>
       </main>
     </div>
   )

@@ -1,95 +1,92 @@
+/* RN/Dashboard look: green header, composer-style form */
 .edit-post-wrapper {
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: var(--fl-gray-bg);
 }
 
-.edit-post-header {
+.edit-post-header.fl-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6eb;
+  justify-content: space-between;
 }
 
-.edit-post-header a {
-  color: #2d5128;
+.edit-post-header.fl-header a {
+  color: #fff;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
-.edit-post-header a:hover {
+.edit-post-header.fl-header a:hover {
   text-decoration: underline;
 }
 
-.edit-post-header h1 {
+.edit-post-title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1c1e21;
+  color: #fff;
 }
 
 .edit-post-main {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 0;
 }
 
-.edit-post-error {
-  margin-bottom: 12px;
-  padding: 10px;
-  background: #fee;
-  color: #c00;
-  border-radius: 8px;
-  font-size: 0.9rem;
+.edit-post-composer {
+  border-bottom: none;
 }
 
-.edit-post-form {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid #e4e6eb;
+.edit-post-row {
+  align-items: flex-start;
 }
 
-.edit-post-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #1c1e21;
+.edit-post-fields {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .edit-post-input,
 .edit-post-textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #e4e6eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  margin-bottom: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--fl-gray-border);
+  border-radius: 12px;
+  font-size: 1rem;
   font-family: inherit;
+  background: #fff;
+  outline: none;
+}
+
+.edit-post-input:focus,
+.edit-post-textarea:focus {
+  border-color: var(--fl-green);
+  box-shadow: 0 0 0 2px rgba(0, 102, 51, 0.15);
+}
+
+.edit-post-input::placeholder,
+.edit-post-textarea::placeholder {
+  color: var(--fl-gray-text);
 }
 
 .edit-post-textarea {
-  min-height: 100px;
+  min-height: 120px;
   resize: vertical;
 }
 
+.edit-post-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--fl-gray-border);
+}
+
 .edit-post-submit {
-  padding: 10px 24px;
-  background: #2d5128;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  cursor: pointer;
+  min-width: 120px;
 }
 
-.edit-post-submit:hover:not(:disabled) {
-  background: #244320;
-}
-
-.edit-post-submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.edit-post-error {
+  margin-bottom: 12px;
 }
