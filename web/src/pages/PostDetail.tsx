@@ -8,6 +8,7 @@ import {
   deleteMyPost,
 } from '../api/posts'
 import type { Post, PostComment as PostCommentType } from '../api/types'
+import './Dashboard.css'
 import './PostDetail.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -40,26 +41,28 @@ export default function PostDetail() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) {
+    if (!raw && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
+    if (!raw) return
     try {
       const u = JSON.parse(raw) as { accessToken?: string; _id?: string }
       setToken(u.accessToken ?? null)
       setCurrentUserId(u._id ?? null)
     } catch {
-      navigate('/login', { replace: true })
+      if (!import.meta.env.DEV) navigate('/login', { replace: true })
     }
   }, [navigate])
 
+  const apiToken: string = token ?? (import.meta.env.DEV ? 'dev-token' : '')
   useEffect(() => {
-    if (!token || !postId) return
+    if ((!token && !import.meta.env.DEV) || !postId) return
     setLoading(true)
     setError(null)
     Promise.all([
-      getPostDetail(postId, token),
-      getPostComment(postId, 0, 100, token),
+      getPostDetail(postId, apiToken),
+      getPostComment(postId, 0, 100, apiToken),
     ])
       .then(([detailRes, commentRes]) => {
         if (detailRes.message === 'Success' && detailRes.data?.postDetails) {
@@ -80,7 +83,7 @@ export default function PostDetail() {
     if (!token || !postId || !post) return
     const nextLike = !post.isLike
     setLikeLoading(true)
-    likeUnlikePost(postId, nextLike, token)
+    likeUnlikePost(postId, nextLike, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setPost((p) =>
@@ -101,11 +104,11 @@ export default function PostDetail() {
     e.preventDefault()
     if (!token || !postId || !newComment.trim() || newComment.trim().length < 2) return
     setCommentLoading(true)
-    postComment(postId, newComment.trim(), token)
+    postComment(postId, newComment.trim(), apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           setNewComment('')
-          return getPostComment(postId!, 0, 100, token)
+          return getPostComment(postId!, 0, 100, apiToken)
         }
       })
       .then((res) => {
@@ -131,16 +134,17 @@ export default function PostDetail() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to delete'))
   }
 
-  if (!token) return null
+  if (!token && !import.meta.env.DEV) return null
   if (loading && !post) {
     return (
       <div className="post-detail-wrapper">
-        <header className="post-detail-header">
+        <header className="post-detail-header fl-header">
           <Link to="/dashboard">← Back</Link>
-          <h1>Post</h1>
+          <h1 className="post-detail-title">Post</h1>
+          <span />
         </header>
         <main className="post-detail-main">
-          <p className="post-detail-loading">Loading…</p>
+          <p className="screen-loading">Loading…</p>
         </main>
       </div>
     )
@@ -148,12 +152,13 @@ export default function PostDetail() {
   if ((error && !post) || !post) {
     return (
       <div className="post-detail-wrapper">
-        <header className="post-detail-header">
+        <header className="post-detail-header fl-header">
           <Link to="/dashboard">← Back</Link>
-          <h1>Post</h1>
+          <h1 className="post-detail-title">Post</h1>
+          <span />
         </header>
         <main className="post-detail-main">
-          <div className="post-detail-error">{error || 'Post not found'}</div>
+          <div className="screen-error">{error || 'Post not found'}</div>
           <Link to="/dashboard">Back to dashboard</Link>
         </main>
       </div>
@@ -166,58 +171,74 @@ export default function PostDetail() {
 
   return (
     <div className="post-detail-wrapper">
-      <header className="post-detail-header">
+      <header className="post-detail-header fl-header">
         <Link to="/dashboard">← Back</Link>
-        <h1>Post</h1>
+        <h1 className="post-detail-title">Post</h1>
+        <span />
       </header>
       <main className="post-detail-main">
-        <article className="post-detail-card">
-          <div className="post-detail-author">
-            <Link to={`/profile/${post.postAuthor?._id}`}>
-              <img src={authorAvatar} alt="" className="post-detail-avatar" />
+        <article className="post-detail-card dashboard-person-post-wrap">
+          <div className="post-detail-author dashboard-person-post">
+            <Link to={`/profile/${post.postAuthor?._id}`} className="dashboard-post-author-avatar">
+              <img src={authorAvatar} alt="" />
             </Link>
-            <div className="post-detail-meta">
+            <div className="dashboard-post-author-meta post-detail-meta">
               <Link to={`/profile/${post.postAuthor?._id}`} className="post-detail-author-name">
                 {post.postAuthor?.fullName ?? 'Unknown'}
               </Link>
-              <span className="post-detail-date">{formatDate(post.createdAt)}</span>
+              <span className="dashboard-post-date">{formatDate(post.createdAt)}</span>
             </div>
             {isOwnPost && (
-              <>
+              <div className="dashboard-post-menu post-detail-actions-inline">
                 <Link to={`/post/${post._id}/edit`} className="post-detail-edit">Edit</Link>
                 <button type="button" className="post-detail-delete" onClick={handleDeletePost}>
                   Delete
                 </button>
-              </>
+              </div>
             )}
           </div>
-          {(post.postContent || post.postTitle) && (
-            <p className="post-detail-content">{post.postContent || post.postTitle}</p>
-          )}
-          {post.imageURL?.original && (
-            <img
-              src={`${IMAGE_BASE}/${post.imageURL.original}`}
-              alt=""
-              className="post-detail-media"
-            />
-          )}
-          {post.videoURL && (
-            <video src={`${IMAGE_BASE}/${post.videoURL}`} controls className="post-detail-media" />
-          )}
-          <div className="post-detail-actions">
+          <div className="dashboard-latest-post">
+            {(post.postContent || post.postTitle) && (
+              <p>{post.postContent || post.postTitle}</p>
+            )}
+            {post.imageURL?.original && (
+              <img
+                src={`${IMAGE_BASE}/${post.imageURL.original}`}
+                alt=""
+                className="dashboard-post-media-img"
+              />
+            )}
+            {post.videoURL && (
+              <video src={`${IMAGE_BASE}/${post.videoURL}`} controls className="dashboard-post-media-video" />
+            )}
+          </div>
+          <div className="dashboard-likecomment-section">
+            <div className="dashboard-like-part">
+              <p>
+                <span className="dashboard-like-icon">👍</span>
+                {post.totalLike ?? 0}
+              </p>
+            </div>
+            <div className="dashboard-comment-part">
+              <p>{totalComment} Comments</p>
+            </div>
+          </div>
+          <div className="dashboard-share">
             <button
               type="button"
-              className={`post-detail-like ${post.isLike ? 'active' : ''}`}
+              className={`dashboard-share-link post-detail-like-btn ${post.isLike ? 'active' : ''}`}
               onClick={handleLike}
               disabled={likeLoading}
             >
-              {post.isLike ? '✓ Liked' : 'Like'} · {post.totalLike ?? 0}
+              👍 Like
             </button>
-            <span className="post-detail-comment-count">{totalComment} comments</span>
+            <span className="dashboard-share-link" style={{ cursor: 'default' }}>
+              💬 Comment
+            </span>
           </div>
         </article>
 
-        <section className="post-detail-comments">
+        <section className="post-detail-comments fl-card">
           <h2 className="post-detail-comments-title">Comments</h2>
           <form onSubmit={handleSubmitComment} className="post-detail-comment-form">
             <input
