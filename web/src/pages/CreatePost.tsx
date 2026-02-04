@@ -1,9 +1,23 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { createPost } from '../api/posts'
+import './Dashboard.css'
 import './CreatePost.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
+const IMAGE_BASE = 'https://natural.selectnaturally.com'
+
+function getCurrentUserAvatar(): string {
+  try {
+    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
+    if (!raw) return ''
+    const u = JSON.parse(raw) as { imageURL?: { original?: string } }
+    const path = u?.imageURL?.original
+    return path ? `${IMAGE_BASE}/${path}` : ''
+  } catch {
+    return ''
+  }
+}
 
 export default function CreatePost() {
   const navigate = useNavigate()
@@ -24,6 +38,11 @@ export default function CreatePost() {
       return null
     }
   })()
+  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+
+  useEffect(() => {
+    setUserAvatar(getCurrentUserAvatar())
+  }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -36,7 +55,7 @@ export default function CreatePost() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!token) {
+    if (!token && !import.meta.env.DEV) {
       navigate('/login', { replace: true })
       return
     }
@@ -56,7 +75,7 @@ export default function CreatePost() {
     if (mediaFile) {
       formData.append('mediaFile', mediaFile)
     }
-    createPost(formData, token)
+    createPost(formData, apiToken)
       .then((res) => {
         if (res.message === 'Success') {
           navigate('/dashboard', { replace: true })
@@ -68,73 +87,112 @@ export default function CreatePost() {
       .finally(() => setLoading(false))
   }
 
-  if (!token) {
+  if (!token && !import.meta.env.DEV) {
     navigate('/login', { replace: true })
     return null
   }
 
   return (
     <div className="create-post-wrapper">
-      <header className="create-post-header">
+      <header className="create-post-header fl-header">
         <Link to="/dashboard">← Cancel</Link>
-        <h1>New Post</h1>
+        <h1 className="create-post-title">New Post</h1>
+        <span />
       </header>
       <main className="create-post-main">
-        <form onSubmit={handleSubmit} className="create-post-form">
+        <section className="create-post-composer dashboard-composer">
           {error && (
-            <div className="create-post-error" role="alert">
+            <div className="create-post-error screen-error" role="alert">
               {error}
             </div>
           )}
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="What's on your mind?"
-            className="create-post-textarea"
-            rows={4}
-            maxLength={5000}
-          />
-          {mediaFile && (
-            <div className="create-post-preview">
-              {isVideo ? (
-                <video src={URL.createObjectURL(mediaFile)} controls className="create-post-preview-media" />
-              ) : (
-                <img src={URL.createObjectURL(mediaFile)} alt="" className="create-post-preview-media" />
-              )}
+          <form onSubmit={handleSubmit} className="create-post-form">
+            <div className="dashboard-post-row create-post-row">
+              <Link to="/profile" className="dashboard-composer-avatar">
+                {userAvatar ? (
+                  <img src={userAvatar} alt="" />
+                ) : (
+                  <div className="dashboard-avatar-placeholder" aria-hidden />
+                )}
+              </Link>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="What's on your mind."
+                className="dashboard-composer-input create-post-textarea"
+                rows={3}
+                maxLength={5000}
+              />
               <button
-                type="button"
-                className="create-post-remove-media"
-                onClick={() => setMediaFile(null)}
+                type="submit"
+                className="dashboard-post-btn"
+                disabled={loading || (content.trim().length < 2 && !mediaFile)}
               >
-                Remove
+                {loading ? 'Posting…' : 'Post'}
               </button>
             </div>
-          )}
-          <div className="create-post-actions">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,video/*"
-              onChange={handleFileChange}
-              className="create-post-file-input"
-              aria-hidden
-            />
-            <button
-              type="button"
-              className="create-post-add-media"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              📷 Photo / Video
-            </button>
-            <button
-              type="submit"
-              className="create-post-submit"
-              disabled={loading || (content.trim().length < 2 && !mediaFile)}
-            >
-              {loading ? 'Posting…' : 'Post'}
-            </button>
-          </div>
-        </form>
+            <div className="dashboard-post-public create-post-audience">
+              <label className="dashboard-radio-label">
+                <input
+                  type="radio"
+                  name="audience"
+                  checked={audience === 'FRIEND_ONLY'}
+                  onChange={() => setAudience('FRIEND_ONLY')}
+                />
+                <span>Friends</span>
+              </label>
+              <label className="dashboard-radio-label">
+                <input
+                  type="radio"
+                  name="audience"
+                  checked={audience === 'Public'}
+                  onChange={() => setAudience('Public')}
+                />
+                <span>Community</span>
+              </label>
+            </div>
+            {mediaFile && (
+              <div className="create-post-preview">
+                {isVideo ? (
+                  <video src={URL.createObjectURL(mediaFile)} controls className="create-post-preview-media" />
+                ) : (
+                  <img src={URL.createObjectURL(mediaFile)} alt="" className="create-post-preview-media" />
+                )}
+                <button
+                  type="button"
+                  className="create-post-remove-media"
+                  onClick={() => setMediaFile(null)}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+            <div className="dashboard-public-post create-post-media-row">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,video/*"
+                onChange={handleFileChange}
+                className="create-post-file-input"
+                aria-hidden
+              />
+              <button
+                type="button"
+                className="dashboard-media-option dashboard-icon-photo"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Photo
+              </button>
+              <button
+                type="button"
+                className="dashboard-media-option dashboard-icon-video"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Video
+              </button>
+            </div>
+          </form>
+        </section>
       </main>
     </div>
   )
