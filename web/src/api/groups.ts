@@ -48,6 +48,18 @@ export interface GetGroupListResponseData {
   groupList?: GroupItem[];
 }
 
+/** Backend getGroupDetails returns group info */
+export interface GroupDetailsResponseData {
+  group?: GroupItem;
+  groupMemberList?: { _id?: string; groupMemberId?: { _id?: string; fullName?: string }; [key: string]: unknown }[];
+}
+
+/** Backend getMemberOfGroup returns { totalCount, groupMemberList } */
+export interface GetMemberOfGroupResponseData {
+  totalCount: number;
+  groupMemberList: { _id?: string; groupMemberId?: { _id?: string; fullName?: string }; [key: string]: unknown }[];
+}
+
 /** GET /api/v1/postGroup/getGroupList – query skip, limit */
 export async function getGroupList(
   skip: number,
@@ -69,5 +81,27 @@ export async function createGroup(
   return requestWithAuth<GroupItem>('/v1/postGroup/createGroup', accessToken, {
     method: 'POST',
     body: JSON.stringify({ groupName: groupName.trim() }),
+  });
+}
+
+/** POST /api/postGroup/getGroupDetails – payload { groupId } */
+export async function getGroupDetails(
+  groupId: string,
+  accessToken: string
+): Promise<ApiResponse<GroupDetailsResponseData>> {
+  return requestWithAuth<GroupDetailsResponseData>('/postGroup/getGroupDetails', accessToken, {
+    method: 'POST',
+    body: JSON.stringify({ groupId }),
+  });
+}
+
+/** POST /api/v1/postGroup/getMemberOfGroup – payload { groupId } */
+export async function getMemberOfGroup(
+  groupId: string,
+  accessToken: string
+): Promise<ApiResponse<GetMemberOfGroupResponseData>> {
+  return requestWithAuth<GetMemberOfGroupResponseData>('/v1/postGroup/getMemberOfGroup', accessToken, {
+    method: 'POST',
+    body: JSON.stringify({ groupId }),
   });
 }
