@@ -1,0 +1,517 @@
+'use strict';
+ /*----------------------------------------------------------------------------------
+   * @ file        : AppConstants.js
+   * @ description : It includes all the Constant values using in the application.
+   * @ author      : Anurag Gupta
+   * @ date        : 19/03/19.
+-----------------------------------------------------------------------------------*/
+
+let NOTIFICATION_TYPE ={
+    FRIEND_REQUEST_SEND:"Friend_Request_Send",
+    FRIEND_REQUEST_ACCEPTED:"Friend_Request_Accepted",
+    FRIEND_REQUEST_REJECTED:"Friend_Request_Rejected", 
+    FRIEND_REQUEST_UNFRIEND:"Friend_Request_Unfriend",
+    FRIEND_REQUEST_INVITATION:"Friend_Request_Invitation",
+    FRIEND_REQUEST_CANCELED:"Friend_Request_Canceled",
+    NEW_MESSAGE_SEND:"New_Message_Send",
+    USER_COMMENT_POST:"USER_COMMENT_POST",
+    USER_LIKE_POST:"USER_LIKE_POST",
+    USER_UNLIKE_POST:"USER_UNLIKE_POST",
+    GROUP_ADMIN_ADD_MEMBER:"GROUP_ADMIN_ADD_MEMBER",
+    GROUP_ADMIN_REMOVED_MEMBER:"GROUP_ADMIN_REMOVED_MEMBER",
+    GROUP_LEFT_BY_MEMBER:"GROUP_LEFT_BY_MEMBER",
+}
+
+let DEVICE_TYPES = {
+    ANDROID:"ANDROID",
+    IOS:"IOS",
+    WEB:"WEB"
+}
+let GENDER_TYPES= {
+    Male:"Male",
+    Female:"Female",
+    Other:"Other"
+    
+}
+let SOCIAL_MODE_TYPE ={
+    FACEBOOK:"Facebook",
+    GOOGLE:"GOOGLE",
+}
+
+let POST_STATUS ={
+    PUBLISH:"Publish",
+    UNPUBLISH:"UnPublish",
+}
+
+let POST_TYPES ={
+    PUBLIC:"Public",
+    PRIVATE:"Private",
+    FRIEND_ONLY:"Friend_Only"
+}
+
+let DOCUMENT_FILE_SIZE= {
+    IMAGE_SIZE:1000000*11,//11 MB
+    VIDEO_SIZE:1000000*51,//21 MB
+}
+
+let FCM_KEY = "AAAAxzjL11w:APA91bEjwISn3dkTdH-mBTN4hDOhNmkKuTdpZHJmbUkH4qQGn4zHEQ8MEHv2T64pY-T-hF0OhUPbQXbjTLgVbYeJOS5aNLzRbBFxdSthi3BqwheCH5VnZENOLqtKrPP0sWM7k69p-o09";
+//let FCM_KET = "AAAAKMPYPgc:APA91bFHDuafdH_ri-swQbsZZfT6FN2gmbfKPV7vuVVmmfZLJcQA6pf2UL0OiopfsYEihcDJ4t4DgvNazf5NrHgXtNOQf_YdReTTie1vSeoiAv1UVB9pYaP8w2u-uWGeifrcJYylKcNG" 
+
+let FRIEND_REQUEST_TYPE ={
+    ACCEPTED:"Accepted",
+    SEND:"Send",
+    REJECTED:"Rejected", 
+    UNFRIEND:"Unfriend",
+    INVITATION:"Invitation",
+    CANCELED:"Canceled",   
+}
+
+let  swaggerDefaultResponseMessages = [
+    {code: 200, message: 'OK'},
+    {code: 400, message: 'Bad Request'},
+    {code: 401, message: 'Unauthorized'},
+    {code: 404, message: 'Data Not Found'},
+    {code: 500, message: 'Internal Server Error'}
+];
+
+let RIDE_STATUS = {
+    PENDING     : "Pending",
+    COMPLETED   : "Completed",
+    CANCEL      : "Cancel",
+    UPCOMING    : "Upcoming"
+}
+
+let RIDE_INVITATION_STATUS = {
+    ALL            :  "All",
+    CANCELED       :  "Canceled",
+    INTERESTED     :  "Interested",
+    ACCEPTED       :  "Accepted",   
+    //REJECTED       : "Rejected"
+}
+
+
+let STATUS_MSG = {
+    SUCCESS: {
+        CREATED: {
+            statusCode:201,
+            customMessage : 'Created Successfully',
+            type : 'CREATED'
+        },
+        DEFAULT: {
+            statusCode:200,
+            customMessage : 'Success',
+            type : 'DEFAULT'
+        },
+        DELETED: {
+            statusCode:200,
+            customMessage : 'Deleted Successfully',
+            type : 'DELETED'
+        },
+        LOGOUT: {
+            statusCode:200,
+            customMessage : 'Logged Out Successfully',
+            type : 'LOGOUT'
+        },
+        UPDATED: {
+            statusCode:200,
+            customMessage : 'Updated Successfully',
+            type : 'UPDATED'
+        },
+    },
+    ERROR: {
+    	APP_ERROR: {
+            statusCode:400,
+            customMessage : 'Application Error',
+            type : 'APP_ERROR'
+        },
+        DB_ERROR: {
+            statusCode:400,
+            customMessage : 'DB Error.',
+            type : 'DB_ERROR'
+        },
+        DEVICE_TOKEN_ALREADY_EXISTS:{
+            statusCode:400,
+            customMessage : 'Device Token already exists',
+            type : 'DEVICE_TOKEN_ALREADY_EXISTS'
+
+        },
+        DUPLICATE: {
+            statusCode:400,
+            customMessage : 'Duplicate entry',
+            type : 'DUPLICATE'
+        },
+        EMAIL_EXISTS: {
+            statusCode:400,
+            customMessage : 'Email exists',
+            type : 'EMAIL_EXISTS'
+        },
+        EMAIL_ALREADY_EXISTS: {
+            statusCode:400,
+            customMessage : 'Email already exists',
+            type : 'EMAIL_ALREADY_EXISTS'
+        },
+        EMAIL_NOT_FOUND: {
+            statusCode:400,
+            customMessage : 'Email not found',
+            type : 'EMAIL_NOT_FOUND'
+        },
+        ERROR_IN_EXECUTION:{
+            statusCode:400,
+            customMessage : 'ERROR INEXECUTION',
+            type : 'ERROR_IN_EXECUTION'
+        },
+        FACEBOOK_ID_NOT_FOUND: {
+            statusCode:400,
+            customMessage : 'Facebook id not found',
+            type : 'FACEBOOK_ID_NOT_FOUND'
+        },
+        FACEBOOK_ID_PASSWORD_ERROR: {
+            statusCode:400,
+            customMessage : 'Only one field should be filled at a time, either facebookId or password',
+            type : 'FACEBOOK_ID_PASSWORD_ERROR'
+        },
+        GROUP_NAME_ALREADY_EXISTS: {
+            statusCode:400,
+            customMessage : 'Group name already exists',
+            type : 'GROUP_NAME_ALREADY_EXISTS'
+        },
+        GROUP_MEMBER_ALREADY_EXISTS: {
+            statusCode:400,
+            customMessage : 'User alreday member of this Group',
+            type : 'GROUP_MEMBER_ALREADY_EXISTS'
+        },
+        IMP_ERROR: {
+            statusCode:500,
+            customMessage : 'Implementation Error',
+            type : 'IMP_ERROR'
+        },
+        INCORRECT_OLD_PASS: {
+            statusCode:400,
+            customMessage : 'Incorrect old password',
+            type : 'INCORRECT_OLD_PASS'
+        },
+        INCORRECT_PASSWORD_OTP: {
+            statusCode:400,
+            customMessage : 'Incorrect otp',
+            type : 'INCORRECT_PASSWORD_OTP'
+        },
+        INVALID_IMAGE_FORMAT: {
+            statusCode:400,
+            customMessage : 'Invalid image format',
+            type : 'INVALID_IMAGE_FORMAT'
+        },
+        YOU: {
+            statusCode:400,
+            customMessage : 'Invalid image format',
+            type : 'INVALID_IMAGE_FORMAT'
+        },
+        INVALID_COMMENT_ID: {
+            statusCode:400,
+            customMessage : 'Invalid comment id',
+            type : 'INVALID_COMMENT_ID'
+        },
+        INVALID_INVITATION_ID: {
+            statusCode:400,
+            customMessage : 'Invalid invitation id',
+            type : 'INVALID_INVITATION_ID'
+        },
+        INVALID_POST_ID: {
+            statusCode:400,
+            customMessage : 'Invalid post id',
+            type : 'INVALID_POST_ID'
+        },
+        INVALID_POST_COMMENT_ID: {
+            statusCode:400,
+            customMessage : 'Invalid post comment id',
+            type : 'INVALID_POST_ID'
+        },
+        INVALID_BOOKING_ID: {
+            statusCode:400,
+            customMessage : 'Invalid booking id',
+            type : 'INVALID_BOOKING_ID'
+        },
+        INVALID_GROUP_ID: {
+            statusCode:400,
+            customMessage : 'Invalid group id',
+            type : 'INVALID_GROUP_ID'
+        },
+        INVALID_MEMBER_ID: {
+            statusCode:400,
+            customMessage : 'Invalid member id',
+            type : 'INVALID_MEMBER_ID'
+        },
+        INVALID_LATITUDE_LOGITUDE: {
+            statusCode:400,
+            customMessage : "Please enter Valid latitude and longitude",
+            type : 'INVALID_LATITUDE_LOGITUDE'
+        },
+        YOU_CAN_NOT_SEND_FRIEND_REQUEST_TO_OWN: {
+            statusCode:400,
+            customMessage : 'You already can not  send friend request to own ',
+            type : 'YOU_CAN_NOT_SEND_FRIEND_REQUEST_TO_OWN'
+        },
+        YOU_ALREADY_SEND_FRIEND_REQUEST: {
+            statusCode:400,
+            customMessage : 'You already send friend request ',
+            type : 'YOU_ALREADY_SEND_FRIEND_REQUEST'
+        },
+        YOU_CAN_NOT_POST_THIS_GROUP: {
+            statusCode:400,
+            customMessage : 'You can not Posts in this Group',
+            type : 'YOU_CAN_NOT_POST_THIS_GROUP'
+        },
+        YOU_ALREADY_LIKED_POST: {
+            statusCode:400,
+            customMessage : 'You already liked post',
+            type : 'YOU_ALREADY_LIKED_POST'
+        },
+        YOU_ALREADY_DISLIKED_POST: {
+            statusCode:400,
+            customMessage : 'You already disliked post',
+            type : 'YOU_ALREADY_DISLIKED_POST'
+        },
+        THIS_USER_IS_ALREADY_FRIEND_IN_LIST: {
+            statusCode:400,
+            customMessage : 'this user is already your friend list ',
+            type : 'THIS_USER_IS_ALREADY_FRIEND_IN_LIST'
+        },
+        INVITATION_ALREADY_ACCEPTED: {
+            statusCode:400,
+            customMessage : 'Invalid invitation accepted',
+            type : 'INVITATION_ALREADY_ACCEPTED'
+        },
+        INVITATION_ALREADY_CANCELED: {
+            statusCode:400,
+            customMessage : 'Invalid invitation canceled',
+            type : 'INVITATION_ALREADY_CANCELED'
+        },
+        INCORRECT_PASSWORD: {
+            statusCode:401,
+            customMessage : 'Incorrect password',
+            type : 'INCORRECT_PASSWORD'
+        },
+        INVALID_ACCESS_TOKEN: {
+            statusCode:401,
+            customMessage : 'Invalid access token',
+            type : 'INVALID_ACCESS_TOKEN'
+        },
+        INVALID_COUNTRY_CODE: {
+            statusCode:400,
+            customMessage : 'Invalid country code, Should be in the format +52',
+            type : 'INVALID_COUNTRY_CODE'
+        }, 
+        INVALID_EMAIL_PASSWORD: {
+            statusCode:400,
+            customMessage : 'Invalid email or password',
+            type: 'INVALID_EMAIL_PASSWORD'
+        },
+        INVALID_EMAIL: {
+            statusCode:400,
+            customMessage : 'Invalid email',
+            type: 'INVALID_EMAIL'
+        },
+        INVALID_PHONE_NUMBER_AND_PASSWORD: {
+            statusCode:400,
+            customMessage : 'Invalid mobile or password',
+            type: 'INVALID_PHONE_NUMBER_AND_PASSWORD'
+        },
+        INVALID_FILE: {
+            statusCode:400,
+            customMessage : 'Invalid file',
+            type: 'INVALID_FILE'
+        },
+        
+        INVALID_ID: {
+            statusCode:400,
+            customMessage : 'Invalid Id Provided.',
+            type : 'INVALID_ID'
+        }, 
+        INVALID_OTP: {
+            statusCode:400,
+            customMessage : 'Please enter correct verification code',
+            type : 'INVALID_OTP'
+        },
+        INVALID_PHONE_NO_FORMAT: {
+            statusCode:400,
+            customMessage : 'Phone no. cannot start with 0',
+            type : 'INVALID_PHONE_NO_FORMAT'
+        },        
+        INVALID_PROMO_CODE: {
+            statusCode:400,
+            customMessage : 'Invalid Promo Code',
+            type : 'INVALID_PROMO_CODE'
+        },
+        INVALID_USER_PASS: {
+            statusCode:401,
+            type: 'INVALID_USER_PASS',
+            customMessage : 'Invalid username or password'
+        },
+        MOBILE_NUMBER_ALREADY_EXISTS: {
+            statusCode:400,
+            customMessage : 'Mobile number already exists',
+            type : 'MOBILE_NUMBER_ALREADY_EXISTS'
+        },
+        NOT_FOUND: {
+            statusCode:400,
+            customMessage : 'User not found',
+            type : 'NOT_FOUND'
+        },
+        NOT_FRIEND_REQUEST_FOUND: {
+            statusCode:400,
+            customMessage : 'No friend request Found',
+            type : 'NOT_FRIEND_REQUEST_FOUND'
+        },
+        CATEGORY_NAME_EXISTS: {
+            statusCode:400,
+            customMessage : 'Category name exists',
+            type : 'CATEGORY_NAME_EXISTS'
+        },       
+        PHONE_NO_EXIST: {
+            statusCode:400,
+            customMessage : 'Phone no already exist',
+            type : 'PHONE_NO_EXIST'
+        },
+        PLEASE_SELECT_ONE_VIDEO_AUDIO: {
+            statusCode:400,
+            customMessage : 'Please select one from video or audio type file type',
+            type: 'PLEASE_SELECT_ONE_VIDEO_AUDIO'
+        },
+        TOKEN_NOT_VALID: {
+            statusCode: 400,        
+            customMessage: 'Invalid Token.',
+            type: "TOKEN_NOT_VALID"
+        },
+        TOKEN_ALREADY_EXPIRED: {
+            statusCode:401,
+            customMessage : 'Token Already Expired',
+            type : 'TOKEN_ALREADY_EXPIRED'
+        },
+        SOMETHING_WENT_WRONG: {
+            statusCode:400,
+            customMessage : 'Something went wrong. please try again after sometime.',
+            type : 'SOMETHING_WENT_WRONG'
+        },
+        UNAUTHORIZED: {
+            statusCode:401,
+            customMessage : 'You are not authorized to perform this action',
+            type : 'UNAUTHORIZED'
+        }, 
+        USEAR_IS_BLOCK: {
+            statusCode:400,
+            customMessage : 'User is block.',
+            type : 'USEAR_IS_BLOCK'
+        },
+        YOU_ALREADY_SEND_INTERESTED: {
+            statusCode:400,
+            customMessage : 'You already send inerested ',
+            type : 'YOU_ALREADY_SEND_INTERESTED'
+        },
+        YOU_CAN_NOT_SHOW_INTERESTED_OWN_BOOKING: {
+            statusCode:400,
+            customMessage : 'you can not show Interested own booking.',
+            type : 'YOU_CAN_NOT_SHOW_INTERESTED_OWN_BOOKING'
+        },
+        YOU_CAN_NOT_PERFORM_THIS_ACTION: {
+            statusCode:400,
+            customMessage : 'you can not perform this action.',
+            type : 'YOU_CAN_NOT_PERFORM_THIS_ACTION'
+        },
+        YOU_CAN_NOT_DELETE_GROUP: {
+            statusCode:400,
+            customMessage : 'you can not delete group.',
+            type : 'YOU_CAN_NOT_DELETE_GROUP'
+        },
+        YOU_CAN_NOT_DELETE_MEMBERS_GROUP: {
+            statusCode:400,
+            customMessage : 'you can not delete member of group.',
+            type : 'YOU_CAN_NOT_DELETE_MEMBERS_GROUP'
+        },
+        YOU_ALREADY_ACCEPTED_REQUEST: {
+            statusCode:400,
+            customMessage : 'You already accepted ',
+            type : 'YOU_ALREADY_ACCEPTED_REQUEST'
+        },
+        YOU_CAN_NOT_REJECTED_THIS_REQUEST: {
+            statusCode:400,
+            customMessage : 'you can not rejected this request.',
+            type : 'YOU_CAN_NOT_REJECTED_THIS_REQUEST'
+        },
+        YOU_ALREADY_REJECTED_THIS_REQUEST: {
+            statusCode:400,
+            customMessage : 'You already rejected ',
+            type : 'YOU_ALREADY_REJECTED_REQUEST'
+        },
+        YOU_CAN_NOT_CANCELED_THIS_REQUEST: {
+            statusCode:400,
+            customMessage : 'you can not canceled this request.',
+            type : 'YOU_CAN_NOT_CANCELED_THIS_REQUEST'
+        },
+        YOU_ALREADY_CANCELED_THIS_REQUEST: {
+            statusCode:400,
+            customMessage : 'You already canceled ',
+            type : 'YOU_ALREADY_CANCELED_THIS_REQUEST'
+        },
+        YOU_ALREADY_UNFRIEND_THIS_REQUEST: {
+            statusCode:400,
+            customMessage : 'You already unfriend ',
+            type : 'YOU_ALREADY_UNFRIEND_THIS_REQUEST'
+        },
+        VIDEO_SIZE_LIMIT: {
+            statusCode:400,
+            customMessage : 'You can upload maxmuim 20mb video.',
+            type : 'VIDEO_SIZE_LIMIT'
+        },
+       IMAGE_SIZE_LIMIT: {
+            statusCode:400,
+            customMessage : 'You can upload maxmuim 10mb image.',
+            type : 'IMAGE_SIZE_LIMIT'
+        },
+
+    }
+
+}
+let JWT_KEY = "asedrftgyhujikadfaffererwesdfds@#$ds1257889"; 
+
+
+// let TWILIO_ACCOUNT_SID = "AC0f3405c12ef8d18d430622294e9791d9";
+// let TWILIO_AUTH_TOKEN = "503de609e54da9ff646b1b86b28966a6";
+// let TWILIO_PHONE_NO = "+17722665634";
+let TWILIO_ACCOUNT_SID = "ACefd8722a54f2f02d0dadba864d08de7f";
+let TWILIO_AUTH_TOKEN = "0d68c183abb6a2ffe26d934f841a916e";
+let TWILIO_PHONE_NO = "+16789447278";
+
+let USER_ROLES = {
+    CUSTOMER: 'User',
+    ADMIN:"Admin"
+
+}
+
+const LIKE_TYPE = {
+    LIKE :'0',
+    DISLIKE : '1',
+}
+
+let APP_CONSTANTS = {
+	DEVICE_TYPES: DEVICE_TYPES,
+    GENDER_TYPES: GENDER_TYPES,
+	SOCIAL_MODE_TYPE : SOCIAL_MODE_TYPE,
+	swaggerDefaultResponseMessages:swaggerDefaultResponseMessages,
+	STATUS_MSG:STATUS_MSG,
+    USER_ROLES             :  USER_ROLES,
+    JWT_KEY                :  JWT_KEY,
+    RIDE_STATUS            :  RIDE_STATUS,
+    //RIDE_INVITATION_STATUS :  RIDE_INVITATION_STATUS,
+    POST_STATUS:POST_STATUS,
+    POST_TYPES:POST_TYPES,
+    FRIEND_REQUEST_TYPE:FRIEND_REQUEST_TYPE,
+    DOCUMENT_FILE_SIZE:DOCUMENT_FILE_SIZE,
+    FCM_KEY:FCM_KEY,
+    NOTIFICATION_TYPE:NOTIFICATION_TYPE,
+    TWILIO_ACCOUNT_SID:TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN:TWILIO_AUTH_TOKEN,
+    TWILIO_PHONE_NO:TWILIO_PHONE_NO,
+    LIKE_TYPE: LIKE_TYPE
+}
+
+
+module.exports = APP_CONSTANTS

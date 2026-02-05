@@ -3,6 +3,7 @@ import { useNavigate, Link, useParams } from 'react-router-dom'
 import { getChatMessages, sendChatMessage } from '../api/chat'
 import { getProfileOfAnotherUser } from '../api/profile'
 import type { ChatMessage } from '../api/chat'
+import arrowIcon from '../assets/images/arrow.png'
 import './ChatConversation.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -153,8 +154,8 @@ export default function ChatConversation() {
             className="chat-conv-input"
             maxLength={1000}
           />
-          <button type="submit" className="chat-conv-send" disabled={sending || !input.trim()}>
-            {sending ? '…' : 'Send'}
+          <button type="submit" className="chat-conv-send" disabled={sending || !input.trim()} title="Send">
+            {sending ? '…' : <img src={arrowIcon} alt="Send" className="chat-conv-send-icon" />}
           </button>
         </form>
       </main>

@@ -130,3 +130,33 @@ export async function uploadProfilePic(
   }
   return json;
 }
+
+/** POST /api/v1/user/uploadBannerPic – multipart form field "document" */
+export async function uploadBannerPic(
+  accessToken: string,
+  file: File
+): Promise<ApiResponse<CustomerData>> {
+  const form = new FormData();
+  form.append('document', file);
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}/v1/user/uploadBannerPic`, {
+      method: 'POST',
+      headers: { authorization: accessToken },
+      body: form,
+    });
+  } catch (err) {
+    throw new Error(toConnectionMessage(err));
+  }
+  const text = await res.text();
+  let json: ApiResponse<CustomerData>;
+  try {
+    json = JSON.parse(text) as ApiResponse<CustomerData>;
+  } catch {
+    throw new Error(res.ok ? 'Invalid response' : `HTTP ${res.status}`);
+  }
+  if (!res.ok) {
+    throw new Error(json.message || `HTTP ${res.status}`);
+  }
+  return json;
+}

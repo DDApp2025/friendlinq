@@ -3,9 +3,86 @@
 .groups-list-header.fl-header a { color: #fff; text-decoration: none; }
 .groups-list-header.fl-header a:hover { text-decoration: underline; }
 .groups-list-header-title { margin: 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
-.groups-list-create { font-weight: 500; color: #fff; }
 .groups-list-main { max-width: 600px; margin: 0 auto; padding: 16px; }
+
+.groups-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.groups-list-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+.groups-list-btn-join {
+  background: #fff;
+  color: var(--fl-green);
+  border: 1px solid var(--fl-green);
+}
+.groups-list-btn-join:hover {
+  background: #f0f2f5;
+}
+.groups-list-btn-create {
+  background: var(--fl-green);
+  color: #fff;
+}
+.groups-list-btn-create:hover {
+  background: var(--fl-green-dark);
+}
+
 .groups-list-loading, .groups-list-empty { color: var(--fl-gray-text); margin: 24px 0; }
 .groups-list-ul { list-style: none; margin: 0; padding: 0; }
-.groups-list-item { display: block; padding: 14px; background: #fff; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--fl-gray-border); color: #1c1e21; text-decoration: none; font-weight: 500; }
-.groups-list-item:hover { background: #f8f9fa; color: var(--fl-green); }
+.groups-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--fl-gray-border);
+}
+.groups-list-item {
+  flex: 1;
+  min-width: 0;
+  color: #1c1e21;
+  text-decoration: none;
+  font-weight: 500;
+}
+.groups-list-item:hover { color: var(--fl-green); }
+.groups-list-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.groups-list-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  color: #1c1e21;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.groups-list-icon:hover {
+  background: #f0f2f5;
+  color: var(--fl-green);
+}
+.groups-list-icon-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}

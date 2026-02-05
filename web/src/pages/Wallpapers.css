@@ -1,14 +1,36 @@
-.wallpapers-wrapper { min-height: 100vh; background: var(--fl-gray-bg); }
-.wallpapers-header.fl-header { display: flex; align-items: center; justify-content: space-between; }
-.wallpapers-header.fl-header a { color: #fff; text-decoration: none; }
-.wallpapers-header.fl-header a:hover { text-decoration: underline; }
-.wallpapers-header-title { margin: 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
-.wallpapers-main { max-width: 400px; margin: 0 auto; padding: 16px; }
-.wallpapers-error { margin-bottom: 12px; padding: 10px; background: #fee; color: #c00; border-radius: 8px; font-size: 0.9rem; }
-.wallpapers-intro { margin: 0 0 16px; color: var(--fl-gray-text); font-size: 0.95rem; }
-.wallpapers-list { list-style: none; margin: 0 0 16px; padding: 0; }
-.wallpapers-option { display: flex; align-items: center; gap: 10px; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--fl-gray-border); cursor: pointer; }
-.wallpapers-option input { margin: 0; }
-.wallpapers-save { padding: 10px 24px; background: var(--fl-green); color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; cursor: pointer; }
-.wallpapers-save:hover:not(:disabled) { background: var(--fl-green-dark); }
-.wallpapers-save:disabled { opacity: 0.6; }
+.wallpapers-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wallpapers-grid {
+  margin-top: 10px;
+}
+
+.wallpapers-tile {
+  cursor: pointer; /* Ensures tiles have finger cursor */
+}
+
+/* FIXED: Added cursor: pointer to the Done button */
+.wallpapers-done-btn {
+  cursor: pointer !important;
+  display: block;
+  text-align: center;
+}
+
+.wallpapers-done-btn:hover {
+  opacity: 0.9;
+}
+
+.wallpapers-done-btn:active {
+  transform: scale(0.98);
+}
+
+.wallpapers-error {
+  color: #cc0000;
+  background: #ffeeee;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  text-align: center;
+}

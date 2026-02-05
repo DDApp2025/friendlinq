@@ -6,7 +6,6 @@
 .dashboard-home {
   min-height: 100vh;
   background: #f0f2f5;
-  padding-bottom: 76px;
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
 }
 
@@ -235,6 +234,20 @@
   font-size: 1rem;
 }
 
+.dashboard-loading-gif {
+  display: block;
+  margin: 0 auto;
+  max-width: 48px;
+  height: auto;
+}
+
+.dashboard-icon-photo-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 .dashboard-error {
   background: #fee2e2;
   color: #b91c1c;
@@ -390,95 +403,6 @@
   color: var(--fl-green);
 }
 
-/* ----- Bottom nav (fixed green bar, white icons) ----- */
-.dashboard-bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 10px 6px 14px;
-  padding-bottom: max(14px, env(safe-area-inset-bottom));
-  background: var(--fl-green);
-  box-shadow: 0 -2px 12px rgba(0, 77, 38, 0.3);
-}
-
-.dashboard-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: rgba(255, 255, 255, 0.92);
-  text-decoration: none;
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 6px 6px;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
-}
-
-.dashboard-nav-item:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.dashboard-nav-item.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.dashboard-nav-icon {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-.dashboard-nav-icon[data-icon="home"]::before {
-  content: "🏠";
-  font-size: 1.35rem;
-}
-
-.dashboard-nav-icon[data-icon="gallery"]::before {
-  content: "🖼";
-  font-size: 1.3rem;
-}
-
-.dashboard-nav-icon[data-icon="friend"]::before {
-  content: "👤";
-  font-size: 1.3rem;
-}
-
-.dashboard-nav-icon[data-icon="bell"]::before {
-  content: "🔔";
-  font-size: 1.25rem;
-}
-
-.dashboard-nav-icon[data-icon="chat"]::before {
-  content: "💬";
-  font-size: 1.2rem;
-}
-
-.dashboard-nav-icon[data-icon="groups"]::before {
-  content: "👥";
-  font-size: 1.2rem;
-}
-
-.dashboard-nav-icon[data-icon="call"]::before {
-  content: "📞";
-  font-size: 1.15rem;
-}
-
-.dashboard-nav-label {
-  white-space: nowrap;
-}
-
 /* Responsive */
 @media (max-width: 600px) {
   .dashboard-public-post {
@@ -496,12 +420,4 @@
     border-bottom: none;
   }
 
-  .dashboard-bottom-nav {
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-
-  .dashboard-nav-label {
-    font-size: 0.65rem;
-  }
 }

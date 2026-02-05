@@ -4,4 +4,52 @@
 .schedule-calls-header.fl-header a:hover { text-decoration: underline; }
 .schedule-calls-header-title { margin: 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
 .schedule-calls-main { max-width: 600px; margin: 0 auto; padding: 16px; }
+
+/* Two cards – RN parity */
+.schedule-calls-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--fl-gray-border);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.schedule-calls-card-title {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1c1e21;
+}
+.schedule-calls-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.schedule-calls-card-btn {
+  padding: 10px 18px;
+  background: var(--fl-green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.schedule-calls-card-btn:hover {
+  background: var(--fl-green-dark);
+}
+
+.schedule-calls-list-heading {
+  margin: 24px 0 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1c1e21;
+}
 .schedule-calls-placeholder { color: var(--fl-gray-text); margin: 0; }
+.schedule-calls-loading { color: var(--fl-gray-text); margin: 0; }
+.schedule-calls-error { margin: 0 0 16px; padding: 12px; background: #fee2e2; color: #b91c1c; border-radius: 8px; font-size: 0.9rem; }
+.schedule-calls-list { list-style: none; margin: 0; padding: 0; }
+.schedule-calls-item { background: #fff; border: 1px solid var(--fl-gray-border); border-radius: 10px; padding: 14px; margin-bottom: 8px; }
+.schedule-calls-item-title { margin: 0 0 6px; font-size: 1rem; font-weight: 600; }
+.schedule-calls-item-date, .schedule-calls-item-members { margin: 0; font-size: 0.9rem; color: #65676b; }
+.schedule-calls-item-link { display: inline-block; margin-top: 8px; color: var(--fl-green); font-size: 0.9rem; }
+.schedule-calls-item-ended { font-size: 0.8rem; color: #65676b; margin-left: 8px; }

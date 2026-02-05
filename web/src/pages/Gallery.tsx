@@ -29,6 +29,7 @@ const PAGES: { path: string; label: string }[] = [
   { path: '/portfolio', label: '24. Portfolio' },
   { path: '/nearby', label: '25. Nearby Users' },
   { path: '/schedule-calls', label: '26. Schedule Calls' },
+  { path: '/photo-library', label: 'Photo Library' },
 ]
 
 export default function Gallery() {

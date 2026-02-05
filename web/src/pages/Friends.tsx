@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import {
   getFriendList,
   sendFriendRequest,
@@ -8,6 +8,8 @@ import {
 } from '../api/friends'
 import { FRIEND_LIST_STATUS } from '../api/types'
 import type { CustomerData } from '../api/types'
+import ProfileEditLayout from '../components/ProfileEditLayout'
+import { getCurrentUser, updateCurrentUserProfile } from '../lib/devProfilePersistence'
 import './Friends.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -23,8 +25,13 @@ function avatarUrl(user: CustomerData): string {
 
 export default function Friends() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const fromProfile = searchParams.get('from') === 'profile'
+  const topFourMode = searchParams.get('mode') === 'topFour'
+
   const [token, setToken] = useState<string | null>(null)
-  const [tab, setTab] = useState<Tab>('suggestions')
+  const [tab, setTab] = useState<Tab>(fromProfile && topFourMode ? 'friends' : 'suggestions')
+  const [selectedFriendIds, setSelectedFriendIds] = useState<Set<string>>(new Set())
   const [requests, setRequests] = useState<CustomerData[]>([])
   const [sent, setSent] = useState<CustomerData[]>([])
   const [friends, setFriends] = useState<CustomerData[]>([])
@@ -69,6 +76,15 @@ export default function Friends() {
       .finally(() => setLoading(false))
   }, [apiToken])
 
+  // Load previously saved top four friends from persistence layer
+  useEffect(() => {
+    if (fromProfile && topFourMode) {
+      const u = getCurrentUser() as any
+      const stored = (u?.topFourFriends as CustomerData[] | undefined) ?? []
+      setSelectedFriendIds(new Set(stored.map((f: any) => f._id ?? '').filter(Boolean)))
+    }
+  }, [fromProfile, topFourMode])
+
   const handleSearch = () => {
     if (!apiToken || !searchQuery.trim()) return
     setSearching(true)
@@ -93,6 +109,11 @@ export default function Friends() {
         if (res.message === 'Success') {
           setRequests((prev) => prev.filter((u) => u._id !== userToId))
           setSearchResults((prev) => prev.filter((u) => u._id !== userToId))
+          getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, apiToken).then((accRes) => {
+            if (accRes.message === 'Success' && accRes.data?.friendList) {
+              setFriends(accRes.data.friendList)
+            }
+          })
         } else {
           setError(res.message || 'Failed to send request')
         }
@@ -108,6 +129,11 @@ export default function Friends() {
       .then((res) => {
         if (res.message === 'Success') {
           setRequests((prev) => prev.filter((u) => u._id !== userToId))
+          getFriendList(0, 100, FRIEND_LIST_STATUS.ACCEPTED, apiToken).then((accRes) => {
+            if (accRes.message === 'Success' && accRes.data?.friendList) {
+              setFriends(accRes.data.friendList)
+            }
+          })
         } else {
           setError(res.message || 'Failed to accept')
         }
@@ -128,6 +154,23 @@ export default function Friends() {
       .finally(() => setActionLoading(null))
   }
 
+  const toggleTopFourFriend = (user: CustomerData) => {
+    const id = user._id ?? ''
+    setSelectedFriendIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else if (next.size < 4) next.add(id)
+      return next
+    })
+  }
+
+  const handleSaveTopFour = () => {
+    const selected = friends.filter((u) => selectedFriendIds.has(u._id ?? ''))
+    // Save through the persistence layer
+    updateCurrentUserProfile({ topFourFriends: selected })
+    navigate('/profile')
+  }
+
   if (!token && !import.meta.env.DEV) return null
 
   const displayList =
@@ -139,15 +182,13 @@ export default function Friends() {
           ? sent
           : friends
 
-  return (
-    <div className="friends-wrapper">
-      <header className="friends-header fl-header">
-        <Link to="/dashboard">← Back</Link>
-        <h1 className="friends-header-title">Add Friends</h1>
-        <span />
-      </header>
-
-      <main className="friends-main">
+  const mainContent = (
+    <main className="friends-main">
+        {fromProfile && topFourMode && (
+          <p className="friends-top-four-message">
+            Select up to 4 favorite friends to show on your profile page.
+          </p>
+        )}
         {error && (
           <div className="friends-error" role="alert">
             {error}
@@ -211,23 +252,41 @@ export default function Friends() {
             {tab === 'suggestions' && searchQuery.trim() && !searching && searchResults.length === 0 && (
               <p className="friends-empty">No results found.</p>
             )}
-            {displayList.map((user) => (
-              <li key={user._id ?? ''} className="friends-list-item">
-                <Link to={`/profile/${user._id}`} className="friends-item-avatar-wrap">
-                  <img
-                    src={avatarUrl(user)}
-                    alt=""
-                    className="friends-item-avatar"
-                  />
-                </Link>
-                <div className="friends-item-info">
-                  <Link to={`/profile/${user._id}`} className="friends-item-name">
-                    {user.fullName ?? '—'}
+            {displayList.map((user) => {
+              const isSelected = topFourMode && tab === 'friends' && selectedFriendIds.has(user._id ?? '')
+              return (
+              <li key={user._id ?? ''} className={`friends-list-item ${isSelected ? 'friends-list-item-selected' : ''}`}>
+                {fromProfile && topFourMode && tab === 'friends' ? (
+                  <button
+                    type="button"
+                    className="friends-item-checkbox"
+                    onClick={() => toggleTopFourFriend(user)}
+                    aria-pressed={isSelected}
+                    aria-label={isSelected ? 'Deselect' : 'Select'}
+                  >
+                    {isSelected ? '✓' : ''}
+                  </button>
+                ) : (
+                  <Link to={`/profile/${user._id}`} className="friends-item-avatar-wrap">
+                    <img
+                      src={avatarUrl(user)}
+                      alt=""
+                      className="friends-item-avatar"
+                    />
                   </Link>
+                )}
+                <div className="friends-item-info">
+                  {tab === 'friends' && fromProfile && topFourMode ? (
+                    <span className="friends-item-name">{user.fullName ?? '—'}</span>
+                  ) : (
+                    <Link to={`/profile/${user._id}`} className="friends-item-name">
+                      {user.fullName ?? '—'}
+                    </Link>
+                  )}
                   <span className="friends-item-email">{user.email ?? ''}</span>
                 </div>
                 <div className="friends-item-actions">
-                  {tab === 'suggestions' && (
+                  {tab === 'suggestions' && !topFourMode && (
                     <button
                       type="button"
                       className="friends-btn friends-btn-add"
@@ -243,7 +302,7 @@ export default function Friends() {
                             : 'Add Friend'}
                     </button>
                   )}
-                  {tab === 'requests' && (
+                  {tab === 'requests' && !topFourMode && (
                     <>
                       <button
                         type="button"
@@ -263,14 +322,50 @@ export default function Friends() {
                       </button>
                     </>
                   )}
-                  {tab === 'sent' && <span className="friends-item-status">Request sent</span>}
-                  {tab === 'friends' && <Link to={`/profile/${user._id}`} className="friends-item-view">View profile</Link>}
+                  {tab === 'sent' && !topFourMode && <span className="friends-item-status">Request sent</span>}
+                  {tab === 'friends' && !fromProfile && !topFourMode && <Link to={`/profile/${user._id}`} className="friends-item-view">View profile</Link>}
+                  {tab === 'friends' && fromProfile && topFourMode && (
+                    <span className="friends-item-selected-label">{isSelected ? 'Selected' : ''}</span>
+                  )}
                 </div>
               </li>
-            ))}
+            )
+            })}
           </ul>
         )}
+        {fromProfile && topFourMode && (
+          <div className="friends-save-wrap">
+            <button
+              type="button"
+              className="friends-btn friends-btn-save"
+              onClick={handleSaveTopFour}
+              disabled={selectedFriendIds.size === 0}
+            >
+              Save
+            </button>
+          </div>
+        )}
       </main>
+  )
+
+  if (fromProfile && topFourMode) {
+    return (
+      <ProfileEditLayout title="Top four friends">
+        <div className="friends-wrapper">
+          {mainContent}
+        </div>
+      </ProfileEditLayout>
+    )
+  }
+
+  return (
+    <div className="friends-wrapper">
+      <header className="friends-header fl-header">
+        <Link to="/dashboard">← Back</Link>
+        <h1 className="friends-header-title">Add Friends</h1>
+        <span />
+      </header>
+      {mainContent}
     </div>
   )
 }

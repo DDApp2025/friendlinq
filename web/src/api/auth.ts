@@ -6,44 +6,43 @@ import type {
   RegistrationResponseData,
   SignupPayload,
 } from './types';
+import { getDevUserByEmailAndPassword, DEV_USERS } from '../constants/devUser';
 
 /**
- * FRONTEND-ONLY DEMO MODE
- * Backend auth is intentionally bypassed.
+ * DEV ONLY: match email+password to a dev user. Login page handles DEV locally; this is fallback.
  */
+function getDevCustomerData(payload?: LoginPayload): CustomerData | null {
+  if (!import.meta.env.DEV || !payload?.email) return null;
+  const u = getDevUserByEmailAndPassword(payload.email, payload.password || '');
+  if (!u) return null;
+  return {
+    _id: u._id,
+    fullName: u.fullName,
+    email: u.email,
+    accessToken: u.accessToken,
+    imageURL: u.imageURL,
+  };
+}
 
 export async function login(
-  _payload: LoginPayload
+  payload: LoginPayload
 ): Promise<ApiResponse<LoginResponseData>> {
-  const customerData: CustomerData = {
-    _id: 'dev-user',
-    fullName: 'Dev User',
-    email: 'dev@local.test',
-    accessToken: 'dev-token',
-  };
-
-  localStorage.setItem('token', 'dev-token');
-  localStorage.setItem('userData', JSON.stringify(customerData));
-
-  return {
-    message: 'Success',
-    data: { customerData },
-  };
+  if (import.meta.env.DEV) {
+    const customerData = getDevCustomerData(payload);
+    if (customerData) return { message: 'Success', data: { customerData } };
+    return { message: 'Invalid email or password.', data: null };
+  }
+  return { message: 'Login not available.', data: null };
 }
 
 export async function signup(
   _payload: SignupPayload
 ): Promise<ApiResponse<RegistrationResponseData>> {
-  const customerData: CustomerData = {
-    _id: 'dev-user',
-    email: _payload.email,
-    fullName: _payload.fullName,
-    accessToken: 'dev-token',
-  };
-  return {
-    message: 'Success',
-    data: { customerData },
-  };
+  const u = import.meta.env.DEV ? DEV_USERS[0] : null;
+  const customerData = u
+    ? { _id: u._id, fullName: u.fullName, email: u.email, accessToken: u.accessToken, imageURL: u.imageURL }
+    : ({} as CustomerData);
+  return { message: 'Success', data: { customerData } };
 }
 
 export async function forgotPassword(

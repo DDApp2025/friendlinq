@@ -326,3 +326,320 @@ body {
   color: var(--fl-gray-text);
   font-size: 1rem;
 }
+
+/* --------------------------------------------------------------------------
+   Global profile menu (top-right): trigger = user profile image, RN-style
+   -------------------------------------------------------------------------- */
+.profile-menu-wrap {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 1001;
+}
+
+.profile-menu-trigger {
+  display: block;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.profile-menu-trigger:hover {
+  opacity: 0.9;
+}
+
+.profile-menu-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-menu-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.profile-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  min-width: 200px;
+  padding: 6px 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--fl-gray-border);
+}
+
+.profile-menu-user-info {
+  padding: 10px 16px 8px;
+  border-bottom: 1px solid var(--fl-gray-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-menu-user-name {
+  font-weight: 600;
+  color: var(--fl-text);
+  font-size: 0.95rem;
+}
+
+.profile-menu-user-email {
+  font-size: 0.8rem;
+  color: var(--fl-gray-text);
+}
+
+.profile-menu-dev-user {
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  color: var(--fl-gray-text);
+  background: var(--fl-gray-bg);
+  margin: 4px 0;
+}
+
+.profile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--fl-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: var(--fl-gray-bg);
+  color: var(--fl-green);
+}
+
+.profile-menu-divider {
+  height: 1px;
+  margin: 6px 0;
+  background: var(--fl-gray-border);
+}
+
+.profile-menu-logout {
+  color: #c00;
+}
+
+.profile-menu-logout:hover {
+  color: #a00;
+  background: #fee2e2;
+}
+
+/* --------------------------------------------------------------------------
+   Profile page / Profile edit screens: menu icon UPPER RIGHT (no profile photo)
+   -------------------------------------------------------------------------- */
+.profile-page-menu-wrap {
+  position: relative;
+}
+
+.profile-page-menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.35rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.profile-page-menu-trigger:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.profile-page-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  min-width: 200px;
+  padding: 6px 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--fl-gray-border);
+  z-index: 1002;
+}
+
+.profile-page-menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--fl-text);
+  cursor: pointer;
+}
+
+.profile-page-menu-item:hover {
+  background: var(--fl-gray-bg);
+  color: var(--fl-green);
+}
+
+.profile-page-menu-cancel {
+  border-top: 1px solid var(--fl-gray-border);
+  margin-top: 4px;
+  color: var(--fl-gray-text);
+}
+
+.profile-edit-layout {
+  min-height: 100vh;
+  background: var(--fl-gray-bg);
+}
+
+.profile-edit-header.fl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-edit-back {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.profile-edit-back:hover {
+  text-decoration: underline;
+}
+
+.profile-edit-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.profile-edit-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ----- Global bottom navigation (matches RN order; shown on all app screens) ----- */
+.app-layout-content {
+  padding-bottom: 76px;
+}
+
+.app-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 6px 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  background: var(--fl-green);
+  box-shadow: 0 -2px 12px rgba(0, 77, 38, 0.3);
+}
+
+.app-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 6px 6px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.app-bottom-nav-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.app-bottom-nav-item.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app-bottom-nav-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.app-bottom-nav-icon[data-icon="home"]::before {
+  content: "🏠";
+  font-size: 1.35rem;
+}
+
+.app-bottom-nav-icon[data-icon="gallery"]::before {
+  content: "🖼";
+  font-size: 1.3rem;
+}
+
+.app-bottom-nav-icon[data-icon="friend"]::before {
+  content: "👤";
+  font-size: 1.3rem;
+}
+
+.app-bottom-nav-icon[data-icon="bell"]::before {
+  content: "🔔";
+  font-size: 1.25rem;
+}
+
+.app-bottom-nav-icon[data-icon="chat"]::before {
+  content: "💬";
+  font-size: 1.2rem;
+}
+
+.app-bottom-nav-icon[data-icon="groups"]::before {
+  content: "👥";
+  font-size: 1.2rem;
+}
+
+.app-bottom-nav-icon[data-icon="call"]::before {
+  content: "📞";
+  font-size: 1.15rem;
+}
+
+.app-bottom-nav-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .app-bottom-nav {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .app-bottom-nav-label {
+    font-size: 0.65rem;
+  }
+}

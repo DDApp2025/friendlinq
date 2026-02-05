@@ -50,9 +50,16 @@ export default function ScheduleCalls() {
           setList(Array.isArray(data) ? data : [])
         }
       })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
+      .catch(() => setList([]))
       .finally(() => setLoading(false))
   }, [apiToken])
+
+  const goToFriends = (context: 'hostNow' | 'schedule') => {
+    navigate('/friends', { state: { callContext: context } })
+  }
+  const goToGroups = (context: 'hostNow' | 'schedule') => {
+    navigate('/groups', { state: { callContext: context } })
+  }
 
   if (!token && !import.meta.env.DEV) return null
 
@@ -64,15 +71,59 @@ export default function ScheduleCalls() {
         <span />
       </header>
       <main className="schedule-calls-main">
+        {/* Card 1: Host a Voice or Video Call Now */}
+        <section className="schedule-calls-card">
+          <h2 className="schedule-calls-card-title">Host a Voice or Video Call Now</h2>
+          <div className="schedule-calls-card-actions">
+            <button
+              type="button"
+              className="schedule-calls-card-btn"
+              onClick={() => goToFriends('hostNow')}
+            >
+              Select Friends
+            </button>
+            <button
+              type="button"
+              className="schedule-calls-card-btn"
+              onClick={() => goToGroups('hostNow')}
+            >
+              Select a Group
+            </button>
+          </div>
+        </section>
+
+        {/* Card 2: Schedule a future Voice or Video Call */}
+        <section className="schedule-calls-card">
+          <h2 className="schedule-calls-card-title">Schedule a future Voice or Video Call</h2>
+          <div className="schedule-calls-card-actions">
+            <button
+              type="button"
+              className="schedule-calls-card-btn"
+              onClick={() => goToFriends('schedule')}
+            >
+              Select Friends
+            </button>
+            <button
+              type="button"
+              className="schedule-calls-card-btn"
+              onClick={() => goToGroups('schedule')}
+            >
+              Select a Group
+            </button>
+          </div>
+        </section>
+
+        {/* Existing: list of scheduled calls */}
         {error && (
           <div className="schedule-calls-error" role="alert">
             {error}
           </div>
         )}
+        <h3 className="schedule-calls-list-heading">Your scheduled calls</h3>
         {loading ? (
           <p className="schedule-calls-loading">Loading…</p>
         ) : list.length === 0 ? (
-          <p className="schedule-calls-placeholder">No scheduled calls. Schedule a call from the app when available.</p>
+          <p className="schedule-calls-placeholder">No scheduled calls. Use the cards above to schedule.</p>
         ) : (
           <ul className="schedule-calls-list">
             {list.map((item) => (

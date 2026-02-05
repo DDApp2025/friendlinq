@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { createPost } from '../api/posts'
+import photoImg from '../assets/images/photo.png'
 import './Dashboard.css'
 import './CreatePost.css'
 
@@ -183,6 +184,7 @@ export default function CreatePost() {
                 className="dashboard-media-option dashboard-icon-photo"
                 onClick={() => fileInputRef.current?.click()}
               >
+                <img src={photoImg} alt="" className="dashboard-icon-photo-img" />
                 Photo
               </button>
               <button

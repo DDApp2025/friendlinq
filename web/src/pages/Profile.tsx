@@ -1,376 +1,266 @@
-import { useEffect, useState, useRef } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { getProfile, saveProfileData, uploadProfilePic } from '../api/profile'
-import { getMyPost } from '../api/posts'
-import type { CustomerData, Post, SaveProfilePayload } from '../api/types'
-import { COUNTRY_OPTIONS, GENDER_OPTIONS } from '../constants/profile'
+import { useEffect, useState } from 'react'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
+import ProfilePageMenu from '../components/ProfilePageMenu'
+import { getCurrentUser } from '../lib/devProfilePersistence'
+import defaultAvatar from '../assets/images/user.jfif'
 import './Profile.css'
 
-const LOGGED_IN_USER_KEY = 'loggedInUser'
 const IMAGE_BASE = 'https://natural.selectnaturally.com'
-
-function formatDate(s?: string): string {
-  if (!s) return ''
-  try {
-    const d = new Date(s)
-    return d.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: '2-digit', hour: 'numeric', minute: '2-digit' })
-  } catch {
-    return s
-  }
-}
-
-function avatarUrl(user: CustomerData | undefined): string {
-  if (!user?.imageURL || typeof user.imageURL !== 'object') return ''
-  const orig = (user.imageURL as { original?: string }).original
-  return orig ? `${IMAGE_BASE}/${orig}` : ''
-}
 
 export default function Profile() {
   const navigate = useNavigate()
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [user, setUser] = useState<CustomerData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [isEdit, setIsEdit] = useState(false)
-  const [form, setForm] = useState<SaveProfilePayload>({})
-  const [saveLoading, setSaveLoading] = useState(false)
-  const [uploadLoading, setUploadLoading] = useState(false)
-  const [myPosts, setMyPosts] = useState<Post[]>([])
-  const [postsLoading, setPostsLoading] = useState(true)
-
-  const token = (() => {
-    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (!raw) return null
-    try {
-      const u = JSON.parse(raw) as { accessToken?: string }
-      return u.accessToken ?? null
-    } catch {
-      return null
-    }
-  })()
-  const apiToken = token ?? (import.meta.env.DEV ? 'dev-token' : '')
+  const location = useLocation()
+  const [user, setUser] = useState<any>(null)
+  const [wallpaperUrl, setWallpaperUrl] = useState<string | null>(null)
+  const [bannerPhoto, setBannerPhoto] = useState<string | null>(null)
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
+  const [topFourImages, setTopFourImages] = useState<string[]>([])
+  const [profileVideo, setProfileVideo] = useState<string | null>(null)
+  const [topFourFriends, setTopFourFriends] = useState<any[]>([])
 
   useEffect(() => {
-    if (!token && !import.meta.env.DEV) {
-      navigate('/login', { replace: true })
-      return
+    // Single source of truth: read everything from the persistence layer
+    const devUser = getCurrentUser() as any
+    if (devUser) {
+      setUser(devUser)
+
+      // Wallpaper (color or base64 image)
+      const wp = devUser.profileWallpaper || devUser.customWallpaper || null
+      setWallpaperUrl(wp)
+
+      // Banner photo
+      setBannerPhoto(devUser.profileBannerPhoto || null)
+
+      // Profile photo
+      setProfilePhoto(devUser.profilePhoto || null)
+
+      // Top four images
+      setTopFourImages(Array.isArray(devUser.topFourImages) ? devUser.topFourImages : [])
+
+      // Profile video
+      setProfileVideo(devUser.profileVideo || null)
+
+      // Top four friends
+      setTopFourFriends(Array.isArray(devUser.topFourFriends) ? devUser.topFourFriends : [])
     }
-    const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw) as CustomerData & { accessToken?: string }
-        setUser(parsed)
-      } catch {
-        // ignore
-      }
-    }
-    setLoading(true)
-    setError(null)
-    getProfile(apiToken)
-      .then((res) => {
-        if (res.message === 'Success' && res.data?.customerData) {
-          setUser((prev) => ({ ...res.data!.customerData, accessToken: prev?.accessToken ?? apiToken }))
-        }
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load profile'))
-      .finally(() => setLoading(false))
+  }, [location])
 
-    getMyPost(0, 50, apiToken)
-      .then((res) => {
-        if (res.message === 'Success' && res.data?.myPost) {
-          setMyPosts(res.data.myPost)
-        }
-      })
-      .catch(() => {})
-      .finally(() => setPostsLoading(false))
-  }, [navigate, token])
+  // Wallpaper logic: color vs image
+  const isColor = wallpaperUrl && wallpaperUrl.startsWith('#')
+  const isImage = wallpaperUrl && !wallpaperUrl.startsWith('#')
 
-  const handleEdit = () => {
-    setIsEdit(true)
-    setForm({
-      fullName: user?.fullName ?? '',
-      country: (user?.country as string) ?? '',
-      gender: (user?.gender as string) ?? '',
-      state: (user?.state as string) ?? '',
-      city: (user?.city as string) ?? '',
-      phoneNumber: (user?.phoneNumber as string) ?? '',
-    })
+  const dynamicWrapperStyle: React.CSSProperties = {
+    minHeight: '100vh',
+    width: '100%',
+    backgroundImage: isImage ? `url(${wallpaperUrl})` : 'none',
+    backgroundColor: isColor ? wallpaperUrl : isImage ? 'transparent' : '#f4f4f4',
+    backgroundSize: isImage ? 'cover' : undefined,
+    backgroundPosition: isImage ? 'center' : undefined,
+    backgroundRepeat: isImage ? 'no-repeat' : undefined,
+    display: 'flex',
+    flexDirection: 'column',
   }
 
-  const handleCancel = () => {
-    setIsEdit(false)
-    setForm({})
+  const hasWallpaper = !!wallpaperUrl
+
+  function friendAvatar(friend: any): string {
+    const img = friend?.imageURL as { original?: string; thumbnail?: string } | undefined
+    const path = img?.original ?? img?.thumbnail
+    return path ? `${IMAGE_BASE}/${path}` : ''
   }
 
-  const handleSave = () => {
-    if (!token) return
-    setSaveLoading(true)
-    saveProfileData(token, form)
-      .then((res) => {
-        if (res.message === 'Success' && res.data?.customerData) {
-          const updated = { ...res.data.customerData, accessToken: token }
-          sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(updated))
-          setUser(updated)
-          setIsEdit(false)
-          setForm({})
-        } else {
-          setError(res.message || 'Save failed')
-        }
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Save failed'))
-      .finally(() => setSaveLoading(false))
-  }
-
-  const handlePhotoClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file || !apiToken) return
-    e.target.value = ''
-    setUploadLoading(true)
-    uploadProfilePic(apiToken, file)
-      .then((res) => {
-        if (res.message === 'Success' && res.data) {
-          const updated = { ...res.data, accessToken: apiToken }
-          sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(updated))
-          setUser(updated)
-        } else {
-          setError(res.message || 'Upload failed')
-        }
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Upload failed'))
-      .finally(() => setUploadLoading(false))
-  }
-
-  const handleLogout = () => {
-    sessionStorage.removeItem(LOGGED_IN_USER_KEY)
-    navigate('/login', { replace: true })
-  }
-
-  if (!token && !import.meta.env.DEV) return null
-  if (loading && !user) {
-    return (
-      <div className="profile-wrapper">
-        <header className="profile-header fl-header">
-          <Link to="/dashboard">← Back</Link>
-          <h1 className="profile-header-title">Profile</h1>
-          <span />
-        </header>
-        <main className="profile-main">
-          <p className="screen-loading">Loading…</p>
-        </main>
-      </div>
-    )
-  }
-
-  const photoUrl = avatarUrl(user ?? undefined)
+  // Semi-transparent card background so wallpaper shows through
+  const cardBg = 'rgba(255, 255, 255, 0.85)'
 
   return (
-    <div className="profile-wrapper">
-      <header className="profile-header fl-header">
-        <Link to="/dashboard">← Back</Link>
-        <h1 className="profile-header-title">Profile</h1>
-        <span />
+    <div className="profile-wrapper" style={dynamicWrapperStyle}>
+      {/* Header */}
+      <header
+        className="profile-header fl-header"
+        style={{
+          background: '#006B3F',
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 16px',
+          color: 'white',
+        }}
+      >
+        <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>← Back</Link>
+        <h1 style={{ flex: 1, textAlign: 'center', margin: 0, fontSize: '1.2rem' }}>Profile</h1>
+        <ProfilePageMenu />
       </header>
 
-      <main className="profile-main">
-        {error && (
-          <div className="profile-error" role="alert">
-            {error}
+      <main className="profile-main" style={{ flex: 1, padding: '0 16px 20px' }}>
+
+        {/* ============================================================
+            BANNER + OVERLAPPING PROFILE PHOTO (RN-style layout)
+            ============================================================ */}
+        <div style={{ position: 'relative', marginBottom: '50px' }}>
+          {/* Banner photo area */}
+          <div
+            style={{
+              width: '100%',
+              height: '200px',
+              borderRadius: '0 0 12px 12px',
+              overflow: 'hidden',
+              background: bannerPhoto ? 'transparent' : (hasWallpaper ? 'rgba(255,255,255,0.2)' : '#ddd'),
+            }}
+          >
+            {bannerPhoto ? (
+              <img
+                src={bannerPhoto}
+                alt="Banner"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            ) : (
+              <div style={{
+                width: '100%', height: '100%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: hasWallpaper ? 'rgba(255,255,255,0.6)' : '#999', fontSize: '0.9rem',
+              }}>
+                No banner photo
+              </div>
+            )}
           </div>
+
+          {/* Profile photo — overlapping bottom-left of the banner */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-40px',
+              left: '16px',
+            }}
+          >
+            <img
+              src={profilePhoto || defaultAvatar}
+              alt="Profile"
+              style={{
+                width: '90px',
+                height: '90px',
+                borderRadius: '50%',
+                border: '4px solid white',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.25)',
+                objectFit: 'cover',
+                background: '#fff',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* User name */}
+        <h2
+          style={{
+            margin: '0 0 16px 0',
+            paddingLeft: '4px',
+            color: hasWallpaper ? 'white' : '#333',
+            textShadow: hasWallpaper ? '2px 2px 4px rgba(0,0,0,0.8)' : 'none',
+            fontSize: '1.3rem',
+          }}
+        >
+          {user?.fullName || 'User'}
+        </h2>
+
+        {/* ============================================================
+            PROFILE VIDEO
+            ============================================================ */}
+        {profileVideo && (
+          <section style={{ background: cardBg, padding: '15px', borderRadius: '12px', marginBottom: '16px' }}>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#006B3F' }}>
+              Profile Video
+            </h3>
+            <video
+              src={profileVideo}
+              controls
+              playsInline
+              style={{
+                width: '100%',
+                maxHeight: '200px',
+                borderRadius: '8px',
+                background: '#000',
+              }}
+            />
+          </section>
         )}
 
-        <div className="profile-banner">
-          <div className="profile-banner-img-wrap">
-            {photoUrl ? (
-              <img src={photoUrl} alt="" className="profile-banner-img" />
-            ) : (
-              <div className="profile-banner-placeholder" />
-            )}
-            <button
-              type="button"
-              className="profile-banner-upload"
-              onClick={handlePhotoClick}
-              disabled={uploadLoading}
-              title="Change photo"
-            >
-              {uploadLoading ? '…' : '📷'}
-            </button>
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="profile-file-input"
-            onChange={handlePhotoChange}
-            aria-hidden
-          />
-        </div>
-
-        <section className="profile-section">
-          <h2 className="profile-section-title">General account settings</h2>
-          <div className="profile-details-list">
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Name</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{user?.fullName ?? '—'}</span>
-              ) : (
-                <input
-                  type="text"
-                  value={form.fullName ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                  className="profile-detail-input"
-                  placeholder="Full name"
+        {/* ============================================================
+            TOP FOUR IMAGES
+            ============================================================ */}
+        {topFourImages.length > 0 && (
+          <section style={{ background: cardBg, padding: '15px', borderRadius: '12px', marginBottom: '16px' }}>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#006B3F' }}>
+              Top Four Images
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              {topFourImages.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    height: '100px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                  }}
                 />
-              )}
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Location</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{(user?.country as string) ?? '—'}</span>
-              ) : (
-                <select
-                  value={form.country ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))}
-                  className="profile-detail-input"
-                >
-                  <option value="">Choose country</option>
-                  {COUNTRY_OPTIONS.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              )}
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Gender</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{(user?.gender as string) ?? '—'}</span>
-              ) : (
-                <select
-                  value={form.gender ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, gender: e.target.value }))}
-                  className="profile-detail-input"
-                >
-                  <option value="">Choose gender</option>
-                  {GENDER_OPTIONS.map((g) => (
-                    <option key={g} value={g}>{g}</option>
-                  ))}
-                </select>
-              )}
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">State</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{(user?.state as string) ?? '—'}</span>
-              ) : (
-                <input
-                  type="text"
-                  value={form.state ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, state: e.target.value }))}
-                  className="profile-detail-input"
-                  placeholder="State"
-                />
-              )}
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">City</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{(user?.city as string) ?? '—'}</span>
-              ) : (
-                <input
-                  type="text"
-                  value={form.city ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                  className="profile-detail-input"
-                  placeholder="City"
-                />
-              )}
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Email</span>
-              <span className="profile-detail-value">{user?.email ?? '—'}</span>
-            </div>
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Phone</span>
-              {!isEdit ? (
-                <span className="profile-detail-value">{(user?.phoneNumber as string) ?? '—'}</span>
-              ) : (
-                <input
-                  type="text"
-                  value={form.phoneNumber ?? ''}
-                  onChange={(e) => setForm((f) => ({ ...f, phoneNumber: e.target.value }))}
-                  className="profile-detail-input"
-                  placeholder="Phone number"
-                  maxLength={10}
-                />
-              )}
-            </div>
-            <div className="profile-detail-row profile-detail-actions">
-              {!isEdit ? (
-                <button type="button" className="profile-btn profile-btn-edit" onClick={handleEdit}>
-                  Edit
-                </button>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    className="profile-btn profile-btn-save"
-                    onClick={handleSave}
-                    disabled={saveLoading}
-                  >
-                    {saveLoading ? 'Saving…' : 'Save'}
-                  </button>
-                  <button type="button" className="profile-btn profile-btn-cancel" onClick={handleCancel}>
-                    Cancel
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="profile-section profile-section-posts">
-          <h2 className="profile-section-title">Post</h2>
-          {postsLoading ? (
-            <p className="profile-posts-loading">Loading posts…</p>
-          ) : myPosts.length === 0 ? (
-            <p className="profile-posts-empty">No posts yet.</p>
-          ) : (
-            <ul className="profile-posts-list">
-              {myPosts.map((post) => (
-                <li key={post._id ?? Math.random()} className="profile-post-item">
-                  <div className="profile-post-meta">
-                    <span className="profile-post-author">{post.postAuthor?.fullName ?? 'Unknown'}</span>
-                    <span className="profile-post-date">{formatDate(post.createdAt)}</span>
-                  </div>
-                  {post.postContent && <p className="profile-post-content">{post.postContent}</p>}
-                  {post.imageURL?.original && (
-                    <img
-                      src={`${IMAGE_BASE}/${post.imageURL.original}`}
-                      alt=""
-                      className="profile-post-media"
-                    />
-                  )}
-                  {post.videoURL && (
-                    <video src={`${IMAGE_BASE}/${post.videoURL}`} controls className="profile-post-media" />
-                  )}
-                  <div className="profile-post-stats">
-                    {post.totalLike ?? 0} likes · {post.totalComment ?? 0} comments
-                  </div>
-                </li>
               ))}
-            </ul>
-          )}
-        </section>
+            </div>
+          </section>
+        )}
 
-        <div className="profile-actions-wrap">
-          <Link to="/settings" className="profile-settings-link">Settings</Link>
-          <button type="button" className="profile-logout" onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
+        {/* ============================================================
+            TOP FOUR FRIENDS
+            ============================================================ */}
+        {topFourFriends.length > 0 && (
+          <section style={{ background: cardBg, padding: '15px', borderRadius: '12px', marginBottom: '16px' }}>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#006B3F' }}>
+              Top Friends
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              {topFourFriends.map((friend, idx) => (
+                <div
+                  key={friend._id || idx}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '10px',
+                    background: 'rgba(255,255,255,0.6)',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <img
+                    src={friendAvatar(friend) || defaultAvatar}
+                    alt=""
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: '2px solid #006B3F',
+                    }}
+                    onError={(e) => { (e.target as HTMLImageElement).src = defaultAvatar }}
+                  />
+                  <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#333', textAlign: 'center' }}>
+                    {friend.fullName || '—'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ============================================================
+            STATUS
+            ============================================================ */}
+        <section style={{ background: cardBg, padding: '15px', borderRadius: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+            <strong>Status</strong>
+            <span style={{ color: '#006B3F' }}>Active</span>
+          </div>
+        </section>
       </main>
     </div>
   )

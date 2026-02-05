@@ -34,6 +34,15 @@
   padding: 16px;
 }
 
+.friends-top-four-message {
+  margin: 0 0 16px;
+  padding: 12px;
+  background: rgba(0, 102, 51, 0.08);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1c1e21;
+}
+
 .friends-error {
   margin-bottom: 16px;
   padding: 12px;
@@ -129,6 +138,31 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+.friends-list-item-selected {
+  border-color: var(--fl-green);
+  background: rgba(0, 102, 51, 0.06);
+}
+
+.friends-item-checkbox {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #e4e6eb;
+  background: #fff;
+  font-size: 1.25rem;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.friends-item-checkbox[aria-pressed="true"] {
+  background: var(--fl-green);
+  border-color: var(--fl-green);
+}
+
 .friends-item-avatar-wrap {
   flex-shrink: 0;
 }
@@ -157,6 +191,32 @@
 .friends-item-name:hover {
   text-decoration: underline;
   color: #2d5128;
+}
+
+.friends-save-wrap {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e4e6eb;
+}
+
+.friends-btn-save {
+  background: var(--fl-green);
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.friends-btn-save:hover:not(:disabled) {
+  background: var(--fl-green-dark);
+}
+
+.friends-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .friends-item-email {

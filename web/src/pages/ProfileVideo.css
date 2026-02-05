@@ -1,0 +1,7 @@
+.profile-video-wrapper {
+  min-height: 100vh;
+  background-color: var(--fl-gray-bg);
+}
+.profile-video-main {
+  padding: 24px 16px;
+}

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signup as signupApi } from '../api/auth'
 import type { SignupPayload } from '../api/types'
+import friendlinqLogo from '../assets/images/friendlinq_logo.png'
 
 function generateGuid(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -72,7 +73,7 @@ export default function Signup() {
     <div className="auth-screen">
       <div className="auth-inner">
         <div className="logo-icon">
-          <img src="/friendlinq_logo.png" alt="Friendlinq" />
+          <img src={friendlinqLogo} alt="Friendlinq" />
         </div>
 
         <form onSubmit={handleSubmit}>

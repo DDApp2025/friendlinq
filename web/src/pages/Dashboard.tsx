@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getFriendFeed } from '../api/posts'
 import type { Post } from '../api/types'
+import friendlinqLogo from '../assets/images/friendlinq_logo.png'
+import photoImg from '../assets/images/photo.png'
+import loadingGif from '../assets/images/loading.gif'
 import './Dashboard.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -81,7 +84,7 @@ export default function Dashboard() {
       {/* Header: logo + FriendLinq + profile pic */}
       <header className="dashboard-header-bar">
         <Link to="/dashboard" className="dashboard-brand">
-          <img src="/friendlinq_logo.png" alt="FriendLinq" className="dashboard-logo" />
+          <img src={friendlinqLogo} alt="FriendLinq" className="dashboard-logo" />
           <span className="dashboard-brand-text">FriendLinq</span>
         </Link>
         <Link to="/profile" className="dashboard-profile-pic">
@@ -122,7 +125,7 @@ export default function Dashboard() {
         </div>
         <div className="dashboard-public-post">
           <Link to="/create-post" className="dashboard-media-option">
-            <span className="dashboard-icon-photo" aria-hidden />
+            <img src={photoImg} alt="" className="dashboard-icon-photo-img" />
             Photo
           </Link>
           <Link to="/create-post" className="dashboard-media-option">
@@ -144,7 +147,9 @@ export default function Dashboard() {
         )}
 
         {loading ? (
-          <p className="dashboard-loading">Loading…</p>
+          <div className="dashboard-loading">
+            <img src={loadingGif} alt="" className="dashboard-loading-gif" />
+          </div>
         ) : posts.length === 0 ? (
           <p className="dashboard-empty">
             No posts yet. Create a post or add friends to see their posts.
@@ -244,38 +249,6 @@ export default function Dashboard() {
           </div>
         )}
       </main>
-
-      {/* Bottom nav: green bar – Home, Gallery, Friends, Notifications, Chat, Groups, Call (model) */}
-      <nav className="dashboard-bottom-nav" aria-label="Main">
-        <Link to="/dashboard" className="dashboard-nav-item active" aria-current="page">
-          <span className="dashboard-nav-icon" data-icon="home" aria-hidden />
-          <span className="dashboard-nav-label">Home</span>
-        </Link>
-        <Link to="/gallery" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="gallery" aria-hidden />
-          <span className="dashboard-nav-label">Gallery</span>
-        </Link>
-        <Link to="/friends" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="friend" aria-hidden />
-          <span className="dashboard-nav-label">Friends</span>
-        </Link>
-        <Link to="/notifications" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="bell" aria-hidden />
-          <span className="dashboard-nav-label">Notifications</span>
-        </Link>
-        <Link to="/chat" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="chat" aria-hidden />
-          <span className="dashboard-nav-label">Chat</span>
-        </Link>
-        <Link to="/groups" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="groups" aria-hidden />
-          <span className="dashboard-nav-label">Groups</span>
-        </Link>
-        <Link to="/schedule-calls" className="dashboard-nav-item">
-          <span className="dashboard-nav-icon" data-icon="call" aria-hidden />
-          <span className="dashboard-nav-label">Call</span>
-        </Link>
-      </nav>
     </div>
   )
 }

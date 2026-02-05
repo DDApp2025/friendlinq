@@ -41,6 +41,8 @@ export interface GroupItem {
   _id?: string;
   groupName?: string;
   createdBy?: string;
+  /** Admin user id – backend populates from groupAdminId; used to show Edit/Pause only for admin */
+  groupAdminId?: string | { _id?: string };
 }
 
 export interface GetGroupListResponseData {

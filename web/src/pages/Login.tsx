@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../api/auth'
 import type { LoginPayload } from '../api/types'
+import { getDevUserByEmailAndPassword, LOGGED_IN_USER_KEY, DEV_ACTIVE_USER_EMAIL_KEY } from '../constants/devUser'
+import friendlinqLogo from '../assets/images/friendlinq_logo.png'
 
 const REMEMBERED_EMAIL_KEY = 'rememberedEmail'
-const LOGGED_IN_USER_KEY = 'loggedInUser'
 
 function generateGuid(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -55,12 +56,23 @@ export default function Login() {
 
     setLoading(true)
     try {
-      const result = await login(payload)
-      if (result && result.message === 'Success' && result.data?.customerData) {
-        sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(result.data.customerData))
-        navigate('/dashboard', { replace: true })
+      if (import.meta.env.DEV) {
+        const devUser = getDevUserByEmailAndPassword(email.trim(), password)
+        if (devUser) {
+          localStorage.setItem(DEV_ACTIVE_USER_EMAIL_KEY, devUser.email)
+          sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(devUser))
+          navigate('/dashboard', { replace: true })
+        } else {
+          setError('Invalid email or password. Use a DEV user: julio@gmail.com or Christi@gmail.com, pw 123456')
+        }
       } else {
-        setError(result?.message || 'Login failed.')
+        const result = await login(payload)
+        if (result && result.message === 'Success' && result.data?.customerData) {
+          sessionStorage.setItem(LOGGED_IN_USER_KEY, JSON.stringify(result.data.customerData))
+          navigate('/dashboard', { replace: true })
+        } else {
+          setError(result?.message || 'Login failed.')
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed. Check the console for details.')
@@ -73,7 +85,7 @@ export default function Login() {
     <div className="auth-screen">
       <div className="auth-inner">
         <div className="logo-icon">
-          <img src="/friendlinq_logo.png" alt="Friendlinq" />
+          <img src={friendlinqLogo} alt="Friendlinq" />
         </div>
 
         <form onSubmit={handleSubmit}>

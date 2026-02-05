@@ -154,6 +154,9 @@
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-conv-send:hover:not(:disabled) {
@@ -163,4 +166,11 @@
 .chat-conv-send:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.chat-conv-send-icon {
+  height: 20px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
 }

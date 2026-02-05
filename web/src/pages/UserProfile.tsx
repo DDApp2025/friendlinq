@@ -3,6 +3,7 @@ import { useNavigate, Link, useParams } from 'react-router-dom'
 import { getProfileOfAnotherUser } from '../api/profile'
 import { getAnotherUsersPost } from '../api/posts'
 import type { CustomerData, Post } from '../api/types'
+import bannerFallback from '../assets/images/banner1.jpg'
 import './UserProfile.css'
 
 const LOGGED_IN_USER_KEY = 'loggedInUser'
@@ -126,7 +127,7 @@ export default function UserProfile() {
             {photoUrl ? (
               <img src={photoUrl} alt="" className="user-profile-banner-img" />
             ) : (
-              <div className="user-profile-banner-placeholder" />
+              <img src={bannerFallback} alt="" className="user-profile-banner-img user-profile-banner-fallback" />
             )}
           </div>
         </div>
