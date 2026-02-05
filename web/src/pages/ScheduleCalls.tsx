@@ -54,13 +54,6 @@ export default function ScheduleCalls() {
       .finally(() => setLoading(false))
   }, [apiToken])
 
-  const goToFriends = (context: 'hostNow' | 'schedule') => {
-    navigate('/friends', { state: { callContext: context } })
-  }
-  const goToGroups = (context: 'hostNow' | 'schedule') => {
-    navigate('/groups', { state: { callContext: context } })
-  }
-
   if (!token && !import.meta.env.DEV) return null
 
   return (
@@ -78,14 +71,14 @@ export default function ScheduleCalls() {
             <button
               type="button"
               className="schedule-calls-card-btn"
-              onClick={() => goToFriends('hostNow')}
+              onClick={() => navigate('/send-invitation?mode=hostNow&type=friends')}
             >
               Select Friends
             </button>
             <button
               type="button"
               className="schedule-calls-card-btn"
-              onClick={() => goToGroups('hostNow')}
+              onClick={() => navigate('/send-invitation?mode=hostNow&type=group')}
             >
               Select a Group
             </button>
@@ -99,14 +92,14 @@ export default function ScheduleCalls() {
             <button
               type="button"
               className="schedule-calls-card-btn"
-              onClick={() => goToFriends('schedule')}
+              onClick={() => navigate('/send-invitation?mode=schedule&type=friends')}
             >
               Select Friends
             </button>
             <button
               type="button"
               className="schedule-calls-card-btn"
-              onClick={() => goToGroups('schedule')}
+              onClick={() => navigate('/send-invitation?mode=schedule&type=group')}
             >
               Select a Group
             </button>

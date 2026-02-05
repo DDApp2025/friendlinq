@@ -1,9 +1,227 @@
-.settings-wrapper { min-height: 100vh; background: var(--fl-gray-bg); }
-.settings-header.fl-header { display: flex; align-items: center; justify-content: space-between; }
-.settings-header.fl-header a { color: #fff; text-decoration: none; }
-.settings-header.fl-header a:hover { text-decoration: underline; }
-.settings-header-title { margin: 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
-.settings-main { max-width: 600px; margin: 0 auto; padding: 16px; }
-.settings-nav { display: flex; flex-direction: column; gap: 8px; }
-.settings-link { display: block; padding: 14px; background: #fff; border-radius: 10px; border: 1px solid var(--fl-gray-border); color: #1c1e21; text-decoration: none; font-weight: 500; }
-.settings-link:hover { background: #f8f9fa; color: var(--fl-green); }
+.settings-wrapper {
+  min-height: 100vh;
+  background: var(--fl-gray-bg);
+}
+
+.settings-header.fl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-header.fl-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.settings-header.fl-header a:hover {
+  text-decoration: underline;
+}
+
+.settings-header-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.settings-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ---- Settings Row (shared base) ---- */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid var(--fl-gray-border);
+  text-decoration: none;
+  color: var(--fl-text);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: default;
+  width: 100%;
+  text-align: left;
+}
+
+.settings-row:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.settings-row:last-child {
+  border-radius: 0 0 12px 12px;
+  border-bottom: none;
+}
+
+.settings-row-link {
+  cursor: pointer;
+}
+
+.settings-row-link:hover {
+  background: #f8f9fa;
+}
+
+.settings-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-row-icon {
+  width: 28px;
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--fl-gray-text);
+}
+
+.settings-row-label {
+  font-weight: 600;
+  color: var(--fl-text);
+}
+
+.settings-row-chevron {
+  font-size: 1.4rem;
+  color: #ccc;
+  font-weight: 300;
+}
+
+/* Disabled row */
+.settings-row-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-row-badge {
+  font-size: 0.75rem;
+  color: var(--fl-gray-text);
+  background: var(--fl-gray-bg);
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+/* Danger row (Delete Account) */
+.settings-row-danger .settings-row-label {
+  color: #c00;
+}
+
+/* Logout row */
+.settings-row-logout .settings-row-label {
+  color: var(--fl-gray-text);
+}
+
+/* ---- Toggle Switch ---- */
+.settings-toggle {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  border-radius: 14px;
+  border: 2px solid #ccc;
+  background: #e0e0e0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.settings-toggle-on {
+  background: var(--fl-green);
+  border-color: var(--fl-green);
+}
+
+.settings-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s;
+}
+
+.settings-toggle-on .settings-toggle-knob {
+  transform: translateX(22px);
+}
+
+/* ---- Delete Confirmation Modal ---- */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.settings-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.settings-modal-title {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fl-text);
+}
+
+.settings-modal-text {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  color: var(--fl-gray-text);
+  line-height: 1.4;
+}
+
+.settings-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-modal-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.settings-modal-btn-cancel {
+  background: var(--fl-gray-bg);
+  color: var(--fl-text);
+}
+
+.settings-modal-btn-cancel:hover {
+  background: #e4e6eb;
+}
+
+.settings-modal-btn-delete {
+  background: #c00;
+  color: #fff;
+}
+
+.settings-modal-btn-delete:hover {
+  background: #a00;
+}

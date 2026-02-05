@@ -25,6 +25,7 @@ import GroupMembers from './pages/GroupMembers'
 import Portfolio from './pages/Portfolio'
 import NearbyUsers from './pages/NearbyUsers'
 import ScheduleCalls from './pages/ScheduleCalls'
+import SendInvitation from './pages/SendInvitation'
 import Gallery from './pages/Gallery'
 import PhotoLibrary from './pages/PhotoLibrary'
 import ProfileVideo from './pages/ProfileVideo'
@@ -35,7 +36,7 @@ import ProfileTopFourImages from './pages/ProfileTopFourImages'
 import ProfileTopFourFriends from './pages/ProfileTopFourFriends'
 import NotFound from './pages/NotFound'
 
-// If it does NOT exist, tell me and I’ll adjust the import.
+// If it does NOT exist, tell me and I'll adjust the import.
 function RootRedirect() {
   if (!import.meta.env.DEV) return <Navigate to="/login" replace />
   try {
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/nearby" element={<NearbyUsers />} />
         <Route path="/schedule-calls" element={<ScheduleCalls />} />
+        <Route path="/send-invitation" element={<SendInvitation />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/profile/photo" element={<ProfilePhoto />} />
         <Route path="/profile/banner" element={<ProfileBanner />} />

@@ -12,7 +12,12 @@ function getProfileImageUrl(): string {
   try {
     const raw = sessionStorage.getItem(LOGGED_IN_USER_KEY)
     if (!raw) return ''
-    const u = JSON.parse(raw) as { imageURL?: { original?: string } }
+    const u = JSON.parse(raw) as { profilePhoto?: string; imageURL?: { original?: string } }
+
+    // 1. Check for dev-uploaded profile photo first (base64)
+    if (u?.profilePhoto) return u.profilePhoto
+
+    // 2. Fall back to API-provided image
     const path = u?.imageURL?.original
     return path ? `${IMAGE_BASE}/${path}` : ''
   } catch {
@@ -39,10 +44,12 @@ export default function HamburgerMenu() {
   const location = useLocation()
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // Re-read profile image on every route change so it updates after upload
   useEffect(() => {
     setProfileImageUrl(getProfileImageUrl())
     setUserDisplay(getCurrentUserDisplay())
-  }, [])
+  }, [location])
+
   useEffect(() => {
     if (open) setUserDisplay(getCurrentUserDisplay())
   }, [open])

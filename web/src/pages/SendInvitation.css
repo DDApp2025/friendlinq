@@ -1,0 +1,310 @@
+.send-inv-wrapper {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.send-inv-header.fl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.send-inv-header.fl-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.send-inv-header-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.send-inv-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Send Invitation Button */
+.send-inv-btn-primary {
+  display: block;
+  width: 70%;
+  max-width: 280px;
+  margin: 0 auto 20px;
+  padding: 14px;
+  background: var(--fl-green);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.send-inv-btn-primary:hover:not(:disabled) {
+  background: var(--fl-green-light);
+}
+
+.send-inv-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send-inv-success {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 16px;
+  background: #d1fae5;
+  color: #065f46;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Call Title Field */
+.send-inv-field {
+  margin-bottom: 16px;
+}
+
+.send-inv-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--fl-gray-text);
+  margin-bottom: 6px;
+}
+
+.send-inv-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.send-inv-input:focus {
+  border-color: var(--fl-green);
+}
+
+/* Date/Time Wrapper */
+.send-inv-date-wrapper {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Date Badge — clickable */
+.send-inv-date-badge {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--fl-gray-bg);
+  border: none;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  color: var(--fl-text);
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.send-inv-date-badge:hover {
+  background: #e4e6eb;
+}
+
+/* Date/Time Picker Modal */
+.send-inv-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2000;
+  padding: 0;
+}
+
+.send-inv-picker-modal {
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  animation: send-inv-slide-up 0.25s ease-out;
+}
+
+@keyframes send-inv-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.send-inv-picker-title {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--fl-text);
+  text-align: center;
+}
+
+.send-inv-picker-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--fl-text);
+  margin-bottom: 20px;
+}
+
+.send-inv-picker-input:focus {
+  border-color: var(--fl-green);
+}
+
+.send-inv-picker-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.send-inv-picker-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.send-inv-picker-btn-cancel {
+  background: var(--fl-gray-bg);
+  color: var(--fl-text);
+}
+
+.send-inv-picker-btn-cancel:hover {
+  background: #e4e6eb;
+}
+
+.send-inv-picker-btn-confirm {
+  background: var(--fl-green);
+  color: #fff;
+}
+
+.send-inv-picker-btn-confirm:hover {
+  background: var(--fl-green-light);
+}
+
+/* Audio / Video Radio */
+.send-inv-type-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 20px;
+  padding: 8px 0;
+}
+
+.send-inv-type-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--fl-text);
+}
+
+.send-inv-type-option input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--fl-green);
+  cursor: pointer;
+}
+
+/* Loading / Empty */
+.send-inv-loading,
+.send-inv-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--fl-gray-text);
+}
+
+/* Friend List */
+.send-inv-friend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.send-inv-friend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f2f5;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.send-inv-friend-item:hover {
+  background: #f8f9fa;
+}
+
+.send-inv-friend-selected {
+  background: #f0fdf4;
+}
+
+.send-inv-friend-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.send-inv-friend-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.send-inv-friend-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--fl-text);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Green checkbox */
+.send-inv-friend-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.send-inv-friend-check-on {
+  background: var(--fl-green);
+  border-color: var(--fl-green);
+}
